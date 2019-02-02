@@ -28,4 +28,6 @@ public interface CouponDAO {
 	List<Coupon> getAllCouponsByType(long couponId, String typeName) throws Exception;
 	
 	List<Coupon> getAllCouponsByPrice(long couponId, double priceTop) throws Exception;
+	
+	List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception;
 }

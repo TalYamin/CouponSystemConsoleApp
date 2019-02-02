@@ -89,6 +89,8 @@ public class Test {
 			
 //			companyUserFacade.getAllCouponsByPrice(100);
 			
+//			companyUserFacade.getAllCouponsByDate("1/1/2020");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

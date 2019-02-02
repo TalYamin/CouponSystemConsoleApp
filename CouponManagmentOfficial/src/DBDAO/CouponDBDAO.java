@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -309,6 +310,55 @@ public class CouponDBDAO implements CouponDAO {
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon where ID = " + couponId + " and PRICE < " + priceTop;
+		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+
+			while (resultSet.next()) {
+				Coupon coupon = new Coupon();
+				coupon.setCouponId(resultSet.getLong(1));
+				coupon.setTitle(resultSet.getString(2));
+				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
+				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setAmount(resultSet.getInt(5));
+				switch (resultSet.getString(6)) {
+				case "Resturants":
+					coupon.setType(CouponType.RESTURANTS);
+					break;
+				case "Health":
+					coupon.setType(CouponType.HEALTH);
+					break;
+				case "Sports":
+					coupon.setType(CouponType.SPORTS);
+					break;
+				case "Traveling":
+					coupon.setType(CouponType.TRAVELING);
+					break;
+				default:
+					break;
+				}
+				coupon.setCouponMessage(resultSet.getString(7));
+				coupon.setPrice(resultSet.getDouble(8));
+				coupon.setImage(resultSet.getString(9));
+
+				list.add(coupon);
+			}
+
+		} catch (SQLException e) {
+			System.out.println(e);
+			e.printStackTrace();
+			throw new Exception("unable to get Coupon data");
+		} finally {
+			connection.close();
+		}
+		return list;
+	}
+
+	@Override
+	public List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception {
+		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+		List<Coupon> list = new ArrayList<>();
+		LocalDate untilLocalDate = LocalDate.parse(untilDate, formatter);
+		String sql = "select * from Coupon where ID = " + couponId + " and END_DATE < '" + untilLocalDate.toString()+"'";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
 
 			while (resultSet.next()) {

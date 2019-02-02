@@ -177,5 +177,24 @@ public class CompanyUserFacade {
 			throw new Exception("Company failed to get coupons data by Price");
 		}
 	}
+	
+	// get all coupons that belongs to company and with date limit
+		public List<Coupon> getAllCouponsByDate(String untilDate) throws Exception {
+
+			try {
+				// get all coupons that belongs to company from Company_Coupon table
+				List<Long> coupons = com_couCompany.getCouponId(this.company.getCompanyId());
+				List<Coupon> couponsToGet = new ArrayList<>();
+				for (Long cId : coupons) {
+					// get all Coupons objects that belongs to company and has relevant date
+					couponsToGet.addAll(coupCompany.getAllCouponsByDate(cId, untilDate));
+
+				}
+				System.out.println(couponsToGet);
+				return couponsToGet;
+			} catch (Exception e) {
+				throw new Exception("Company failed to get coupons data by Date");
+			}
+		}
 
 }
