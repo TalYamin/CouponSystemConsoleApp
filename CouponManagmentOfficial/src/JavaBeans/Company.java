@@ -67,7 +67,7 @@ public class Company {
 	}
 
 	public List<Coupon> getCoupons() {
-		return coupons;
+		return this.coupons;
 	}
 
 	public void setCoupons(List<Coupon> coupons) {
@@ -87,7 +87,7 @@ public class Company {
 	//List add and remove methods of Company
 	public void addCoupon(Coupon coupon) {
 
-		coupons.add(coupon);
+		this.coupons.add(coupon);
 	}
 
 	public void removeCoupon(Coupon coupon) {

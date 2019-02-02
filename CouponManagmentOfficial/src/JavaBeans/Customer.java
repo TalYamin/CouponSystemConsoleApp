@@ -58,7 +58,7 @@ public class Customer {
 	}
 
 	public List<Coupon> getCoupons() {
-		return coupons;
+		return this.coupons;
 	}
 
 	public void setCoupons(List<Coupon> coupons) {
