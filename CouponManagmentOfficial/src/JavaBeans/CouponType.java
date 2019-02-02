@@ -8,23 +8,7 @@ public enum CouponType {
 	    public String toString() {
 	      return "Resturants";
 		}
-	},
-	
-	FOOD
-	{
-		@Override
-	    public String toString() {
-	      return "Food";
-		}
-	},
-	
-	ELECTRICITY
-	{
-		@Override
-	    public String toString() {
-	      return "Electricity";
-		}
-	},
+	},	
 	
 	HEALTH
 	{
@@ -39,14 +23,6 @@ public enum CouponType {
 		@Override
 	    public String toString() {
 	      return "Sports";
-		}
-	},
-	
-	CAMPING
-	{
-		@Override
-	    public String toString() {
-	      return "Camping";
 		}
 	},
 	
