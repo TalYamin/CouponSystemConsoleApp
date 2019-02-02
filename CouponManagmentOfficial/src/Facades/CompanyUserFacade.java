@@ -38,8 +38,7 @@ public class CompanyUserFacade {
 
 	}
 
-	// full CTOR of CompanyUserFacade : check for duplicate and if not exist -
-	// insert into Company table
+	//  CTOR of CompanyUserFacade
 	public CompanyUserFacade(Company company) throws Exception {
 	
 		this.company = company;
