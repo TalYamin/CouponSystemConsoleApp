@@ -107,6 +107,7 @@ public class AdminUserFacade {
 	// get all companies
 	public List<Company> getAllCompanies() throws Exception {
 		try {
+			System.out.println(compAdmin.getAllCompanies());
 			return compAdmin.getAllCompanies();
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all companies");
@@ -116,6 +117,7 @@ public class AdminUserFacade {
 	// get specific company by companyId
 	public Company getCompany(long companyId) throws Exception {
 		try {
+			System.out.println(compAdmin.getCompany(companyId));
 			return compAdmin.getCompany(companyId);
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get a company");
@@ -173,6 +175,7 @@ public class AdminUserFacade {
 	// get all customers
 	public List<Customer> getAllCustomers() throws Exception {
 		try {
+			System.out.println(custAdmin.getAllCustomers());
 			return custAdmin.getAllCustomers();
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all customers");
@@ -182,6 +185,7 @@ public class AdminUserFacade {
 	// get specific customer by customerId
 	public Customer getCustomer(long customerId) throws Exception {
 		try {
+			System.out.println(custAdmin.getCustomer(customerId));
 			return custAdmin.getCustomer(customerId);
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get a customer");
