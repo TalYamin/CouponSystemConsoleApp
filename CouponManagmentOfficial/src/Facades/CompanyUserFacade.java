@@ -12,6 +12,8 @@ import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import Exceptions.CouponExistsException;
+import Exceptions.EndDatePassedException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -47,6 +49,10 @@ public class CompanyUserFacade {
 	//insert coupon - check there is no duplicate title: insert into Coupon, Company_Coupon tables
 	public void insertCoupon(Coupon coupon) throws Exception {
 		try {
+			
+			if (coupon.getEndDate().isBefore(LocalDate.now())) {
+				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. end date, coupon, company: ", coupon.getEndDate().toString(), coupon.getCouponId(), this.company.getCompanyId());
+			}
 
 			List<Coupon> coupons = coupCompany.getAllCoupons();
 
@@ -55,7 +61,7 @@ public class CompanyUserFacade {
 			while (i.hasNext()) {
 				Coupon current = i.next();
 				if (coupon.getTitle().equals(current.getTitle())) {
-					throw new Exception("Company failed to add coupon - this coupon already exists");
+					throw new CouponExistsException("Company failed to add coupon - this coupon already exists. coupon, company: ", coupon.getTitle(), this.company.getCompanyId());
 				}
 			}
 			if (!i.hasNext()) {

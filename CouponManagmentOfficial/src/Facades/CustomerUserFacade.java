@@ -9,6 +9,9 @@ import java.util.List;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import Exceptions.CouponExpiredException;
+import Exceptions.OutOfStockException;
+import Exceptions.SamePurchaseException;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
 
@@ -49,18 +52,18 @@ public class CustomerUserFacade {
 			while (i.hasNext()) {
 				long current = i.next();
 				if (this.customer.getCustomerId() == current) {
-					throw new Exception("Customer unable to purchase - already purchased same coupon");
+					throw new SamePurchaseException("Customer unable to purchase - already purchased same coupon. coupon, customer: ", couponId, this.customer.getCustomerId());
 				}
 			}
 			if (!i.hasNext()) {
 
 				Coupon c = couCustomer.getCoupon(couponId);
 				if (c.getAmount() <= 0) {
-					throw new Exception("Customer unable to purchase - this coupon is out of stock");
+					throw new OutOfStockException("Customer unable to purchase - this coupon is out of stock. amount, coupon, customer: ", c.getAmount(), couponId, this.customer.getCustomerId());
 
 				}
 				if (c.getEndDate().isBefore(LocalDate.now())) {
-					throw new Exception("Customer unable to purchase - this coupon has expired");
+					throw new CouponExpiredException("Customer unable to purchase - this coupon has expired. end date, coupon, customer: ", c.getEndDate().toString(), couponId, this.customer.getCustomerId());
 				}else {
 
 				

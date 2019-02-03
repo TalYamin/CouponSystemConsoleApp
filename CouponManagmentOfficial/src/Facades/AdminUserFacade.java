@@ -8,6 +8,8 @@ import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import Exceptions.CompanyExistsException;
+import Exceptions.CustomerExistsException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -45,7 +47,7 @@ public class AdminUserFacade {
 			while (i.hasNext()) {
 				Company current = i.next();
 				if (company.getCompanyName().equals(current.getCompanyName())) {
-					throw new Exception("Admin failed to add company - this company already exists");
+					throw new CompanyExistsException("Admin failed to add company - this company already exists: ", company.getCompanyName());
 
 				}
 			}
@@ -134,7 +136,7 @@ public class AdminUserFacade {
 			while (i.hasNext()) {
 				Customer current = i.next();
 				if (customer.getCustomerName().equals(current.getCustomerName())) {
-					throw new Exception("Admin failed to add customer - this customer already exists");
+					throw new CustomerExistsException("Admin failed to add customer - this customer already exists: ", customer.getCustomerName());
 				}
 			}
 
