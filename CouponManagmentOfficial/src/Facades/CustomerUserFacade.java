@@ -1,6 +1,7 @@
 package Facades;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
@@ -77,51 +78,60 @@ public class CustomerUserFacade {
 
 	}
 
+	
+	
+	// get all coupons which customer purchased
 	public List<Coupon> getAllPurchases() throws Exception {
 
 		try {
+			// get all coupons that belongs to customer from Customer_Coupon table
 			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
-			List<Coupon> couponsToGet = null;
+			List<Coupon> couponsToGet = new ArrayList<>();
 			// run on ID of coupons in loop
 			for (Long cId : coupons) {
-				couponsToGet = couCustomer.getAllCoupons(cId);
+				// get all Coupons objects that belongs to customer
+				couponsToGet.add(couCustomer.getCoupon(cId));
 			}
-
+			System.out.println(couponsToGet);
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Custoemr failed to get all purchase history");
 		}
 	}
 
+	// get all coupons that belongs to customer and by specific type
 	public List<Coupon> getAllCouponsByType(String typeName) throws Exception {
 
 		try {
 			// get all coupons that belongs to customer from Customer_Coupon table
 			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
-			List<Coupon> couponsToGet = null;
+			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
-				// get all Coupons objects that belongs to company and has relevant type
-				couponsToGet = couCustomer.getAllCouponsByType(cId, typeName);
+				// get all Coupons objects that belongs to customer and has relevant type
+				couponsToGet.addAll(couCustomer.getAllCouponsByType(cId, typeName));
 
 			}
+			System.out.println(couponsToGet);
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Type");
 		}
 
 	}
-
+	
+	// get all coupons that belongs to customer and with price limit
 	public List<Coupon> getAllCouponsByPrice(double priceTop) throws Exception {
 
 		try {
 			// get all coupons that belongs to customer from Customer_Coupon table
 			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
-			List<Coupon> couponsToGet = null;
+			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to customer and has relevant price
-				couponsToGet = couCustomer.getAllCouponsByPrice(cId, priceTop);
+				couponsToGet.addAll(couCustomer.getAllCouponsByPrice(cId, priceTop));
 
 			}
+			System.out.println(couponsToGet);
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Price");

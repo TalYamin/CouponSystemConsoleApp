@@ -55,6 +55,8 @@ public class Test {
 
 			
 			AdminUserFacade adminUserFacade = new AdminUserFacade();
+			CompanyUserFacade companyUserFacade = new CompanyUserFacade(company);
+			CustomerUserFacade customerUserFacade = new CustomerUserFacade(customer);
 			
 
 //			Company_CouponDBDAO company_CouponDBDAO = new Company_CouponDBDAO();
@@ -100,7 +102,16 @@ public class Test {
 //			
 //			customerUserFacade.purchaseCoupon(111);
 			
+//			customerUserFacade.purchaseCoupon(123);
+//			customerUserFacade.purchaseCoupon(789);
+//			customerUserFacade.purchaseCoupon(717);
+//			customerUserFacade.purchaseCoupon(111);
+
+//			customerUserFacade.getAllPurchases();
 			
+//			customerUserFacade.getAllCouponsByType("Sports");
+			
+//			customerUserFacade.getAllCouponsByPrice(550);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
