@@ -76,7 +76,7 @@ public class CompanyUserFacade {
 		}catch (CouponExistsException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
-			throw new Exception("Company failed to add coupon");
+			throw new Exception("Company failed to add coupon. couponId: " + coupon.getCouponId());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class CompanyUserFacade {
 			}
 
 		} catch (Exception e) {
-			throw new Exception("Compnay failed to remove coupon");
+			throw new Exception("Compnay failed to remove coupon. couponId: " + couponId);
 		}
 
 	}
@@ -118,7 +118,7 @@ public class CompanyUserFacade {
 		} catch (EndDatePassedException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
-			throw new Exception("Company failed to update coupon");
+			throw new Exception("Company failed to update coupon. couponId: " + couponId);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class CompanyUserFacade {
 			System.out.println(compCompany.getCompany(this.company.getCompanyId()));
 			return compCompany.getCompany(this.company.getCompanyId());
 		} catch (Exception e) {
-			throw new Exception("Company failed to get company details");
+			throw new Exception("Company failed to get company details. companyId: " + this.company.getCompanyId());
 		}
 	}
 
@@ -152,7 +152,7 @@ public class CompanyUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Company failed to get coupons data");
+			throw new Exception("Company failed to get coupons data. companyId: " + this.company.getCompanyId());
 		}
 
 	}
@@ -176,7 +176,7 @@ public class CompanyUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Company failed to get coupons data by Type");
+			throw new Exception("Company failed to get coupons data by Type. companyId: " + this.company.getCompanyId() + " couponType: " + typeName);
 		}
 
 	}
@@ -199,7 +199,7 @@ public class CompanyUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Company failed to get coupons data by Price");
+			throw new Exception("Company failed to get coupons data by Price. companyId: " + this.company.getCompanyId() + " priceTop: " + priceTop);
 		}
 	}
 	
@@ -221,7 +221,7 @@ public class CompanyUserFacade {
 				}
 				return couponsToGet;
 			} catch (Exception e) {
-				throw new Exception("Company failed to get coupons data by Date");
+				throw new Exception("Company failed to get coupons data by Date. companyId: " + this.company.getCompanyId() + " untilDate: " + untilDate);
 			}
 		}
 

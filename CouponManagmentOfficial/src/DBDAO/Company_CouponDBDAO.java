@@ -41,7 +41,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 
 			System.out.println("Company_Coupon added. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} catch (Exception e) {
-			throw new Exception("Company_Coupon addition failed");
+			throw new Exception("Company_Coupon addition failed. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -63,7 +63,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			preparedStatement.setLong(2, coupon.getCouponId());
 			preparedStatement.executeUpdate();
 			connection.commit();
-			System.out.println("Company_Coupon remove succeeded.");
+			System.out.println("Company_Coupon remove succeeded. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 
 		} catch (SQLException e) {
 			try {
@@ -71,7 +71,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Company_Coupon");
+			throw new Exception("failed to remove Company_Coupon. companyId "+ company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -92,7 +92,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			preparedStatement.setLong(1, company.getCompanyId());
 			preparedStatement.executeUpdate();
 			connection.commit();
-			System.out.println("Company_Coupon remove succeeded.");
+			System.out.println("Company_Coupon remove succeeded. comapnyId: "+ company.getCompanyId());
 
 		} catch (SQLException e) {
 			try {
@@ -100,7 +100,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Company_Coupon");
+			throw new Exception("failed to remove Company_Coupon. comapnyId: "+ company.getCompanyId());
 		} finally {
 			connection.close();
 		}
@@ -121,7 +121,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			preparedStatement.setLong(1, coupon.getCouponId());
 			preparedStatement.executeUpdate();
 			connection.commit();
-			System.out.println("Company_Coupon remove succeeded.");
+			System.out.println("Company_Coupon remove succeeded. couponId: " + coupon.getCouponId());
 
 		} catch (SQLException e) {
 			try {
@@ -129,7 +129,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Company_Coupon");
+			throw new Exception("failed to remove Company_Coupon. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -150,7 +150,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 				companiesId.add(companyId);
 			}
 		} catch (SQLException e) {
-			throw new Exception("unable to get Company_Coupon data");
+			throw new Exception("unable to get Company_Coupon data. couponId: " + couponId);
 		} finally {
 			connection.close();
 		}
@@ -193,7 +193,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 				couponsId.add(couponId);
 			}
 		} catch (SQLException e) {
-			throw new Exception("unable to get Company_Coupon data");
+			throw new Exception("unable to get Company_Coupon data. companyId: " + companyId);
 		} finally {
 			connection.close();
 		}

@@ -82,7 +82,7 @@ public class CustomerUserFacade {
 		}catch (CouponExpiredException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
-			throw new Exception("Customer failed to purchase coupon");
+			throw new Exception("Customer failed to purchase coupon. couponId: " + couponId + " customerId: " + this.customer.getCustomerId());
 		}
 
 	}
@@ -107,7 +107,7 @@ public class CustomerUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Custoemr failed to get all purchase history");
+			throw new Exception("Custoemr failed to get all purchase history. customerId: " + this.customer.getCustomerId());
 		}
 	}
 
@@ -129,7 +129,7 @@ public class CustomerUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Customer failed to get coupons data by Type");
+			throw new Exception("Customer failed to get coupons data by Type. customerId: " + this.customer.getCustomerId() + " couponType: " + typeName);
 		}
 
 	}
@@ -152,7 +152,7 @@ public class CustomerUserFacade {
 			}
 			return couponsToGet;
 		} catch (Exception e) {
-			throw new Exception("Customer failed to get coupons data by Price");
+			throw new Exception("Customer failed to get coupons data by Price. customerId: " + this.customer.getCustomerId() + " priceTop: " + priceTop);
 		}
 	}
 }

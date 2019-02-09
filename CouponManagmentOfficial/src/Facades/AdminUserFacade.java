@@ -60,7 +60,7 @@ public class AdminUserFacade {
 		}catch (CompanyExistsException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
-			throw new Exception("Admin failed to add company");
+			throw new Exception("Admin failed to add company. companyId: " + company.getCompanyId());
 
 		}
 
@@ -91,7 +91,7 @@ public class AdminUserFacade {
 			// remove company from Company table
 			compAdmin.removeCompany(company);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to remove company");
+			throw new Exception("Admin failed to remove company. companyId: " +company.getCompanyId());
 		}
 
 	}
@@ -103,7 +103,7 @@ public class AdminUserFacade {
 			company.setCompanyEmail(newCompanyEmail);
 			compAdmin.updateCompany(company);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to update company");
+			throw new Exception("Admin failed to update company. companyId: " +company.getCompanyId());
 		}
 	}
 
@@ -126,7 +126,7 @@ public class AdminUserFacade {
 			System.out.println(compAdmin.getCompany(companyId));
 			return compAdmin.getCompany(companyId);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to get a company");
+			throw new Exception("Admin failed to get a company. companyId: " + companyId);
 		}
 	}
 
@@ -151,7 +151,7 @@ public class AdminUserFacade {
 		} catch (CustomerExistsException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
-			throw new Exception("Admin failed to add customer");
+			throw new Exception("Admin failed to add customer. customerId: " + customer.getCustomerId());
 		}
 
 	}
@@ -165,7 +165,7 @@ public class AdminUserFacade {
 			custAdmin.removeCustomer(customer);
 
 		} catch (Exception e) {
-			throw new Exception("Admin failed to remove customer");
+			throw new Exception("Admin failed to remove customer.  customerId: " + customer.getCustomerId());
 		}
 
 	}
@@ -176,7 +176,7 @@ public class AdminUserFacade {
 			customer.setCustomerPassword(newCustomerPassword);
 			custAdmin.updateCustomer(customer);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to update customer");
+			throw new Exception("Admin failed to update customer. customerId: " + customer.getCustomerId());
 		}
 	}
 
@@ -199,7 +199,7 @@ public class AdminUserFacade {
 			System.out.println(custAdmin.getCustomer(customerId));
 			return custAdmin.getCustomer(customerId);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to get a customer");
+			throw new Exception("Admin failed to get a customer. customerId: " + customerId);
 		}
 	}
 

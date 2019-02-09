@@ -41,7 +41,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 			System.out.println("Customer created: " + customer.toString());
 		} catch (SQLException e) {
-			throw new Exception("Customer creation failed");
+			throw new Exception("Customer creation failed. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
 		}
@@ -70,7 +70,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Customer");
+			throw new Exception("failed to remove Customer. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
 		}
@@ -92,7 +92,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 			System.out.println("update Customer succeeded. id which updated: " + customer.getCustomerId());
 		} catch (SQLException e) {
-			throw new Exception("update Customer failed");
+			throw new Exception("update Customer failed. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
 		}
@@ -114,7 +114,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			customer.setCustomerPassword(resultSet.getString(3));
 
 		} catch (SQLException e) {
-			throw new Exception("unable to get Customer data");
+			throw new Exception("unable to get Customer data. customerId: " + customerId);
 		} finally {
 			connection.close();
 		}

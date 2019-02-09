@@ -51,7 +51,7 @@ public class CouponDBDAO implements CouponDAO {
 			System.out.println("Coupon created: " + coupon.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new Exception("Coupon creation failed");
+			throw new Exception("Coupon creation failed. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -80,7 +80,7 @@ public class CouponDBDAO implements CouponDAO {
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Coupon");
+			throw new Exception("failed to remove Coupon. couponId: " +coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -106,7 +106,7 @@ public class CouponDBDAO implements CouponDAO {
 
 			System.out.println("update Coupon succeeded. id which updated: " + coupon.getCouponId());
 		} catch (SQLException e) {
-			throw new Exception("update Coupon failed");
+			throw new Exception("update Coupon failed. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
 		}
@@ -149,7 +149,7 @@ public class CouponDBDAO implements CouponDAO {
 			coupon.setImage(resultSet.getString(9));
 
 		} catch (SQLException e) {
-			throw new Exception("unable to get Coupon data");
+			throw new Exception("unable to get Coupon data. couponId: " +couponId);
 		} finally {
 			connection.close();
 		}
@@ -247,7 +247,7 @@ public class CouponDBDAO implements CouponDAO {
 
 		} catch (SQLException e) {
 			System.out.println(e);
-			throw new Exception("unable to get Coupon data");
+			throw new Exception("unable to get Coupon data. couponId: " + couponId);
 		} finally {
 			connection.close();
 		}
@@ -296,7 +296,7 @@ public class CouponDBDAO implements CouponDAO {
 
 		} catch (SQLException e) {
 			System.out.println(e);
-			throw new Exception("unable to get Coupon data");
+			throw new Exception("unable to get Coupon data. couponId: " + couponId + " couponType: "+ typeName);
 		} finally {
 			connection.close();
 		}
@@ -345,7 +345,7 @@ public class CouponDBDAO implements CouponDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 			e.printStackTrace();
-			throw new Exception("unable to get Coupon data");
+			throw new Exception("unable to get Coupon data. couponId: " + couponId + " priceTop: " +priceTop);
 		} finally {
 			connection.close();
 		}
@@ -394,7 +394,7 @@ public class CouponDBDAO implements CouponDAO {
 		} catch (SQLException e) {
 			System.out.println(e);
 			e.printStackTrace();
-			throw new Exception("unable to get Coupon data");
+			throw new Exception("unable to get Coupon data. couponId: " + couponId + " untilDate: " + untilDate);
 		} finally {
 			connection.close();
 		}

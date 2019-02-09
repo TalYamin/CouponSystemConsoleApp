@@ -43,7 +43,7 @@ public class CompanyDBDAO implements CompanyDAO {
 
 			System.out.println("Company created: " + company.toString());
 		} catch (SQLException e) {
-			throw new Exception("Company creation failed");
+			throw new Exception("Company creation failed. companyId: "+ company.getCompanyId());
 		} finally {
 			connection.close();
 		}
@@ -73,7 +73,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			} catch (SQLException e2) {
 				throw new Exception("DataBase error");
 			}
-			throw new Exception("failed to remove Company");
+			throw new Exception("failed to remove Company. companyId: " + company.getCompanyId());
 		} finally {
 			connection.close();
 		} 
@@ -96,7 +96,7 @@ public class CompanyDBDAO implements CompanyDAO {
 
 			System.out.println("update Company succeeded. id which updated: " + company.getCompanyId());
 		} catch (SQLException e) {
-			throw new Exception("update Compnay failed");
+			throw new Exception("update Compnay failed. companyId: "+ company.getCompanyId());
 		} finally {
 			connection.close();
 		}
@@ -119,7 +119,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			company.setCompanyEmail(resultSet.getString(4));
 
 		} catch (SQLException e) {
-			throw new Exception("unable to get Company data");
+			throw new Exception("unable to get Company data. companyId: " + companyId);
 		} finally {
 			connection.close();
 		}
