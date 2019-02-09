@@ -1,24 +1,26 @@
 package Exceptions;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class EndDatePassedException extends Exception {
 	
-	private LocalDate endDate;
+	private String endDate;
 	private long couponId;
 	private long companyId;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 
 	public EndDatePassedException(String message, String endDate, long couponId, long companyId) {
-		super(message);
-		LocalDate endLocalDate = LocalDate.parse(endDate, this.formatter);
-		this.endDate = endLocalDate;
+		super(String.format(message + "endDate: %s, couponId: %d, companyId: %d", endDate, couponId, companyId));
+		this.endDate = endDate;
 		this.couponId = couponId;
 		this.companyId = companyId;
 	}
 
-	public LocalDate getEndDate() {
+	public String getEndDate() {
 		return this.endDate;
 	}
 

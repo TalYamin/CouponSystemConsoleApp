@@ -1,12 +1,17 @@
 package Exceptions;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public class CouponExistsException extends Exception {
 	
 	private String title;
 	private long companyId; 
 	
 	public CouponExistsException (String message, String title, long companyId) {
-		super(message);
+		super(String.format(message + "couponTitle: %s, companyId: %d", title, companyId));
 		this.title = title;
 		this.companyId = companyId;
 	}

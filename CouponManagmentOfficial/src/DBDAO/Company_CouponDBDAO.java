@@ -39,7 +39,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 
 			preparedStatement.executeUpdate();
 
-			System.out.println("Company_Coupon added");
+			System.out.println("Company_Coupon added. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} catch (Exception e) {
 			throw new Exception("Company_Coupon addition failed");
 		} finally {

@@ -1,24 +1,26 @@
 package Exceptions;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class CouponExpiredException extends Exception {
 	
-	private LocalDate endDate;
+	private String endDate;
 	private long couponId;
 	private long customerId;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 	
 	public CouponExpiredException (String message, String endDate, long couponId, long customerId) {
-		super(message);
-		LocalDate endLocalDate = LocalDate.parse(endDate, this.formatter);
-		this.endDate = endLocalDate;
+		super(String.format(message + "endDate: %s, couponId: %d, customerId: %d", endDate, couponId, customerId));
+		this.endDate = endDate;
 		this.couponId = couponId;
 		this.customerId = customerId;
 	}
 
-	public LocalDate getEndDate() {
+	public String getEndDate() {
 		return this.endDate;
 	}
 

@@ -1,5 +1,10 @@
 package JavaBeans;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public enum CouponType {
 
 	RESTURANTS

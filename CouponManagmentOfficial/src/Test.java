@@ -46,17 +46,27 @@ public class Test {
 			Company company = new Company(1793, "Dell", "dell1793", "israel@dell.com");
 			Company company2 = new Company(4562, "Cellcom", "cellcom4562", "israel@cellcom.com");
 			Company company3 = new Company(7893, "Elbit", "Elbit7893", "israel@elbit.com");
-			
+			Company company4 = new Company(1212, "Tzhal", "tzhal1212", "israel@tzhal.com");
 			
 			Customer customer = new Customer(3133, "Tal Yamin", "tal3133");
 			Customer customer2 = new Customer(2046, "Ofek Mesika", "Ofek2046");
 			Customer customer3 = new Customer(7894, "Peleg Yamin", "hello");
 			Customer customer4 = new Customer(7854, "Yoni Haviv", "yoni7854");
+			Customer customer5 = new Customer(3333, "Eti Levi", "eti3333");
 
 			
 			AdminUserFacade adminUserFacade = new AdminUserFacade();
+			
 			CompanyUserFacade companyUserFacade = new CompanyUserFacade(company);
+			CompanyUserFacade companyUserFacade2 = new CompanyUserFacade(company2);
+			CompanyUserFacade companyUserFacade3 = new CompanyUserFacade(company3);
+			CompanyUserFacade companyUserFacade4 = new CompanyUserFacade(company4);
+			
 			CustomerUserFacade customerUserFacade = new CustomerUserFacade(customer);
+			CustomerUserFacade customerUserFacade2 = new CustomerUserFacade(customer2);
+			CustomerUserFacade customerUserFacade3 = new CustomerUserFacade(customer3);
+			CustomerUserFacade customerUserFacade4 = new CustomerUserFacade(customer4);
+			CustomerUserFacade customerUserFacade5 = new CustomerUserFacade(customer5);
 			
 
 //			Company_CouponDBDAO company_CouponDBDAO = new Company_CouponDBDAO();
@@ -112,6 +122,109 @@ public class Test {
 //			customerUserFacade.getAllCouponsByType("Sports");
 			
 //			customerUserFacade.getAllCouponsByPrice(550);
+			
+//			adminUserFacade.insertCompany(company2);
+			
+//			companyUserFacade.insertCoupon(coupon5);
+			
+//			customerUserFacade.purchaseCoupon(111);
+			
+//			adminUserFacade.insertCustomer(customer2);
+			
+//			companyUserFacade.insertCoupon(coupon);
+			
+//			customerUserFacade.purchaseCoupon(456);
+			
+//			adminUserFacade.insertCompany(company);
+//			System.out.println("continue");
+				
+//			adminUserFacade.insertCompany(company4);
+			
+//			companyUserFacade.updateCoupon(717, "1/1/2019", 50);
+			
+//			************************facades tests**************************************************
+			
+//			adminUserFacade.insertCompany(company);
+//			adminUserFacade.insertCompany(company2);
+//			adminUserFacade.insertCompany(company3);
+//			adminUserFacade.insertCompany(company4);
+			
+//			adminUserFacade.insertCustomer(customer);
+//			adminUserFacade.insertCustomer(customer2);
+//			adminUserFacade.insertCustomer(customer3);
+//			adminUserFacade.insertCustomer(customer4);
+//			adminUserFacade.insertCustomer(customer5);
+			
+//			adminUserFacade.insertCompany(company);
+			
+//			companyUserFacade.insertCoupon(coupon);
+//			companyUserFacade.insertCoupon(coupon2);
+			
+//			companyUserFacade2.insertCoupon(coupon3);
+			
+//			companyUserFacade3.insertCoupon(coupon4);
+			
+//			companyUserFacade4.insertCoupon(coupon);
+			
+//			customerUserFacade.purchaseCoupon(123);
+//			customerUserFacade2.purchaseCoupon(456);
+//			customerUserFacade3.purchaseCoupon(789);
+//			customerUserFacade4.purchaseCoupon(717);
+			
+//			customerUserFacade.purchaseCoupon(789);
+			
+//			customerUserFacade.purchaseCoupon(456);
+			
+//			customerUserFacade.purchaseCoupon(123);
+			
+//			customerUserFacade2.purchaseCoupon(789);
+			
+//			customerUserFacade4.purchaseCoupon(789);
+			
+//			customerUserFacade5.purchaseCoupon(789);
+			
+//			adminUserFacade.removeCompany(company);
+			
+//			adminUserFacade.updateCompany(company4, "12tzhal12", "tzhal_info@tzhal.com");
+			
+//			adminUserFacade.getAllCompanies();
+			
+//			adminUserFacade.getCompany(7893);
+			
+//			adminUserFacade.insertCustomer(customer);
+			
+//			adminUserFacade.removeCustomer(customer3);
+			
+//			adminUserFacade.updateCustomer(customer, "31tal33");
+			
+//			adminUserFacade.getAllCustomers();
+			
+//			adminUserFacade.getCustomer(3333);
+			
+//			customerUserFacade.purchaseCoupon(717);
+//			customerUserFacade2.purchaseCoupon(717);
+//			customerUserFacade4.purchaseCoupon(717);
+//			customerUserFacade5.purchaseCoupon(717);
+				
+//			companyUserFacade3.removeCoupon(717);
+			
+//			companyUserFacade2.updateCoupon(789, "1/1/2019", 2000);
+//			companyUserFacade2.updateCoupon(789, "1/10/2019", 2000);
+			
+//			customerUserFacade2.getAllPurchases();
+			
+//			companyUserFacade2.getCompany();
+//			companyUserFacade2.insertCoupon(coupon);
+//			companyUserFacade2.getAllCoupons();
+//			companyUserFacade2.insertCoupon(coupon4);
+//			companyUserFacade2.getAllCouponsByType("Resturants");
+//			companyUserFacade2.getAllCouponsByPrice(499.9);
+//			companyUserFacade2.getAllCouponsByDate("31/12/2019");
+//			companyUserFacade2.insertCoupon(coupon5);
+//			customerUserFacade.purchaseCoupon(717);
+//			customerUserFacade.getAllPurchases();
+//			customerUserFacade.getAllCouponsByType("Sports");
+//			customerUserFacade.getAllCouponsByPrice(75);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

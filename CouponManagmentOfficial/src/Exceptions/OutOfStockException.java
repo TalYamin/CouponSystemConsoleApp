@@ -1,5 +1,10 @@
 package Exceptions;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public class OutOfStockException extends Exception {
 	
 	private int amount;
@@ -7,7 +12,7 @@ public class OutOfStockException extends Exception {
 	private long customerId;
 	
 	public OutOfStockException (String message, int amount, long couponId, long customerId) {
-		super(message);
+		super(String.format(message + "amount: %d, couponId: %d, customerId: %d", amount, couponId, customerId));
 		this.amount = amount;
 		this.couponId = couponId;
 		this.customerId = customerId;

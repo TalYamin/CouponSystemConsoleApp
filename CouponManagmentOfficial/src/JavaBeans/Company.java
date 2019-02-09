@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * @author Tal Yamin
+ * @author Shay Ben Haroush
  *
  */
 public class Company {

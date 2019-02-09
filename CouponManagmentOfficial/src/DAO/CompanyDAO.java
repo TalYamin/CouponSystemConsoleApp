@@ -5,7 +5,7 @@ import java.util.List;
 import JavaBeans.Company;
 
 /**
- * @author Tal Yamin
+ * @author Shay Ben Haroush
  *
  */
 

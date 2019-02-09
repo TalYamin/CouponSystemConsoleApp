@@ -57,8 +57,9 @@ public class AdminUserFacade {
 
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch (CompanyExistsException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to add company");
 
 		}
@@ -109,7 +110,10 @@ public class AdminUserFacade {
 	// get all companies
 	public List<Company> getAllCompanies() throws Exception {
 		try {
-			System.out.println(compAdmin.getAllCompanies());
+			List<Company>companies = compAdmin.getAllCompanies();
+			for(Company c: companies) {
+				System.out.println(c);
+			}
 			return compAdmin.getAllCompanies();
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all companies");
@@ -139,12 +143,14 @@ public class AdminUserFacade {
 					throw new CustomerExistsException("Admin failed to add customer - this customer already exists: ", customer.getCustomerName());
 				}
 			}
-
+			
 			if (!i.hasNext()) {
 				custAdmin.insertCustomer(customer);
 				System.out.println("Admin added new custoemr: " + customer.getCustomerId());
 			}
-		} catch (Exception e) {
+		} catch (CustomerExistsException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to add customer");
 		}
 
@@ -177,7 +183,10 @@ public class AdminUserFacade {
 	// get all customers
 	public List<Customer> getAllCustomers() throws Exception {
 		try {
-			System.out.println(custAdmin.getAllCustomers());
+			List<Customer>customers = custAdmin.getAllCustomers();
+			for(Customer c: customers) {
+				System.out.println(c);
+			}
 			return custAdmin.getAllCustomers();
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all customers");

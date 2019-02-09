@@ -1,12 +1,17 @@
 package Exceptions;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public class CompanyExistsException extends Exception {
 	
 	private String comanyName;
 	
 	
 	public CompanyExistsException(String message, String companyName) {
-		super(message);
+		super(String.format(message + "%s", companyName));
 		this.comanyName = companyName;
 	}
 	

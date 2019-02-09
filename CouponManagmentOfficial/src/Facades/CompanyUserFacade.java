@@ -51,7 +51,7 @@ public class CompanyUserFacade {
 		try {
 			
 			if (coupon.getEndDate().isBefore(LocalDate.now())) {
-				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. end date, coupon, company: ", coupon.getEndDate().toString(), coupon.getCouponId(), this.company.getCompanyId());
+				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ", coupon.getEndDate().toString(), coupon.getCouponId(), this.company.getCompanyId());
 			}
 
 			List<Coupon> coupons = coupCompany.getAllCoupons();
@@ -61,18 +61,21 @@ public class CompanyUserFacade {
 			while (i.hasNext()) {
 				Coupon current = i.next();
 				if (coupon.getTitle().equals(current.getTitle())) {
-					throw new CouponExistsException("Company failed to add coupon - this coupon already exists. coupon, company: ", coupon.getTitle(), this.company.getCompanyId());
+					throw new CouponExistsException("Company failed to add coupon - this coupon already exists. ", coupon.getTitle(), this.company.getCompanyId());
 				}
 			}
 			if (!i.hasNext()) {
 				coupCompany.insertCoupon(coupon);
 				com_couCompany.insertCompany_Coupon(this.company, coupon);
 				this.company.addCoupon(coupon);
-				System.out.println("Company add new coupon");
+				System.out.println("Company " + this.company.getCompanyName() +  " add new coupon: " + coupon.getCouponId());
 			}
 
+		}catch (EndDatePassedException e) {
+			System.out.println(e.getMessage());
+		}catch (CouponExistsException e) {
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new Exception("Company failed to add coupon");
 		}
 	}
@@ -101,12 +104,20 @@ public class CompanyUserFacade {
 	//update coupon by couponId - only can update end date & price
 	public void updateCoupon(long couponId, String newEndDate, double newPrice) throws Exception {
 		try {
+			
 			Coupon coupon = coupCompany.getCoupon(couponId);
 			LocalDate endLocalDate = LocalDate.parse(newEndDate, this.formatter);
 			coupon.setEndDate(endLocalDate);
 			coupon.setPrice(newPrice);
+			
+			if (coupon.getEndDate().isBefore(LocalDate.now())) {
+				throw new EndDatePassedException("Company failed to update coupon - the end date already passed. ", newEndDate, coupon.getCouponId(), this.company.getCompanyId());
+			}
+			
 			coupCompany.updateCoupon(coupon);
-		} catch (Exception e) {
+		} catch (EndDatePassedException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Company failed to update coupon");
 		}
 	}
@@ -135,7 +146,10 @@ public class CompanyUserFacade {
 				// get all Coupons objects that belongs to company
 				couponsToGet.add(coupCompany.getCoupon(cId));
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Company failed to get coupons data");
@@ -156,7 +170,10 @@ public class CompanyUserFacade {
 				couponsToGet.addAll(coupCompany.getAllCouponsByType(cId, typeName));
 
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Company failed to get coupons data by Type");
@@ -176,7 +193,10 @@ public class CompanyUserFacade {
 				couponsToGet.addAll(coupCompany.getAllCouponsByPrice(cId, priceTop));
 
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Company failed to get coupons data by Price");
@@ -195,7 +215,10 @@ public class CompanyUserFacade {
 					couponsToGet.addAll(coupCompany.getAllCouponsByDate(cId, untilDate));
 
 				}
-				System.out.println(couponsToGet);
+				List<Coupon>couponsToView = couponsToGet;
+				for(Coupon c: couponsToView) {
+					System.out.println(c);
+				}
 				return couponsToGet;
 			} catch (Exception e) {
 				throw new Exception("Company failed to get coupons data by Date");

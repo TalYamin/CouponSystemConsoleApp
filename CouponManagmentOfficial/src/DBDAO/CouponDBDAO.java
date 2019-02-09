@@ -309,7 +309,7 @@ public class CouponDBDAO implements CouponDAO {
 		
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
 		List<Coupon> list = new ArrayList<>();
-		String sql = "select * from Coupon where ID = " + couponId + " and PRICE < " + priceTop;
+		String sql = "select * from Coupon where ID = " + couponId + " and PRICE <= " + priceTop;
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
 
 			while (resultSet.next()) {
@@ -358,7 +358,7 @@ public class CouponDBDAO implements CouponDAO {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 		List<Coupon> list = new ArrayList<>();
 		LocalDate untilLocalDate = LocalDate.parse(untilDate, formatter);
-		String sql = "select * from Coupon where ID = " + couponId + " and END_DATE < '" + untilLocalDate.toString()+"'";
+		String sql = "select * from Coupon where ID = " + couponId + " and END_DATE <= '" + untilLocalDate.toString()+"'";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
 
 			while (resultSet.next()) {

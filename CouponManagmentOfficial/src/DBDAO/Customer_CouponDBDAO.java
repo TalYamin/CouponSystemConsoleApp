@@ -39,7 +39,7 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 			preparedStatement.executeUpdate();
 
-			System.out.println("Customer_Coupon added");
+			System.out.println("Customer_Coupon added. customerId: " + customer.getCustomerId() + " couponId: " + coupon.getCouponId());
 		} catch (SQLException e) {
 			throw new Exception("Customer_Coupon addition failed");
 		} finally {

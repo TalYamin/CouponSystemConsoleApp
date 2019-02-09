@@ -6,7 +6,7 @@ import JavaBeans.Coupon;
 import JavaBeans.Customer;
 
 /**
- * @author Tal Yamin
+ * @author Shay Ben Haroush
  *
  */
 

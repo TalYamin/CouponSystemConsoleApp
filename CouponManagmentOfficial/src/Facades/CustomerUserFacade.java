@@ -52,18 +52,18 @@ public class CustomerUserFacade {
 			while (i.hasNext()) {
 				long current = i.next();
 				if (this.customer.getCustomerId() == current) {
-					throw new SamePurchaseException("Customer unable to purchase - already purchased same coupon. coupon, customer: ", couponId, this.customer.getCustomerId());
+					throw new SamePurchaseException("Customer unable to purchase - already purchased same coupon. ", couponId, this.customer.getCustomerId());
 				}
 			}
 			if (!i.hasNext()) {
 
 				Coupon c = couCustomer.getCoupon(couponId);
 				if (c.getAmount() <= 0) {
-					throw new OutOfStockException("Customer unable to purchase - this coupon is out of stock. amount, coupon, customer: ", c.getAmount(), couponId, this.customer.getCustomerId());
+					throw new OutOfStockException("Customer unable to purchase - this coupon is out of stock. ", c.getAmount(), couponId, this.customer.getCustomerId());
 
 				}
 				if (c.getEndDate().isBefore(LocalDate.now())) {
-					throw new CouponExpiredException("Customer unable to purchase - this coupon has expired. end date, coupon, customer: ", c.getEndDate().toString(), couponId, this.customer.getCustomerId());
+					throw new CouponExpiredException("Customer unable to purchase - this coupon has expired. ", c.getEndDate().toString(), couponId, this.customer.getCustomerId());
 				}else {
 
 				
@@ -72,10 +72,16 @@ public class CustomerUserFacade {
 				couCustomer.updateCoupon(newCoupon);
 				this.customer.addCoupon(newCoupon);
 				cus_couCustomer.insertCustomer_Coupon(this.customer, newCoupon);
+				System.out.println("Customer " + customer.getCustomerName() + " purchased successfully Coupon " + couponId);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch (SamePurchaseException e) {
+			System.out.println(e.getMessage());
+		}catch (OutOfStockException e) {
+			System.out.println(e.getMessage());
+		}catch (CouponExpiredException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Customer failed to purchase coupon");
 		}
 
@@ -95,7 +101,10 @@ public class CustomerUserFacade {
 				// get all Coupons objects that belongs to customer
 				couponsToGet.add(couCustomer.getCoupon(cId));
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Custoemr failed to get all purchase history");
@@ -114,7 +123,10 @@ public class CustomerUserFacade {
 				couponsToGet.addAll(couCustomer.getAllCouponsByType(cId, typeName));
 
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Type");
@@ -134,7 +146,10 @@ public class CustomerUserFacade {
 				couponsToGet.addAll(couCustomer.getAllCouponsByPrice(cId, priceTop));
 
 			}
-			System.out.println(couponsToGet);
+			List<Coupon>couponsToView = couponsToGet;
+			for(Coupon c: couponsToView) {
+				System.out.println(c);
+			}
 			return couponsToGet;
 		} catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Price");
