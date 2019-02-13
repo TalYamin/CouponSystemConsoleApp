@@ -12,11 +12,22 @@ import Facades.CustomerUserFacade;
 import JavaBeans.Company;
 import JavaBeans.Customer;
 
+
+/**
+ * @author Tal Yamin
+ *
+ */
+
 public class Client {
 
+	//access to DBDAO objects
+	
 	private CompanyDBDAO comClientDAO = new CompanyDBDAO();
 	private CustomerDBDAO cusClientDAO = new CustomerDBDAO();
 
+	
+	//login method which check client type, and according to client check the validity of the input values 
+	
 	public CouponClientFacade login(String userName, String password, ClientType clientType) throws Exception {
 
 		try {
@@ -35,9 +46,11 @@ public class Client {
 			
 			case COMPANY:
 				
+				//take the list of companies from DB
 				List<Company>companies = comClientDAO.getAllCompanies();
 				Iterator<Company>i = companies.iterator();
 				
+				//for any company in DB check if details valid
 				if (i.hasNext()) {
 					Company current = i.next();
 					if (current.getCompanyName().equals(userName) && current.getCompanyPassword().equals(password)) {
@@ -51,9 +64,11 @@ public class Client {
 				
 			case CUSTOMER:
 				
+				//take the list of customers from DB
 				List<Customer>customers = cusClientDAO.getAllCustomers();
 				Iterator<Customer>it = customers.iterator();
 				
+				//for any customer in DB check if details valid
 				if (it.hasNext()) {
 					Customer current = it.next();
 					if (current.getCustomerName().equals(userName) && current.getCustomerPassword().equals(password)) {

@@ -226,6 +226,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			}
 		}
 
+		// override from interface - make it available to return facade for login method
 		@Override
 		public void login(String name, String password, ClientType clientType) throws Exception {
 			

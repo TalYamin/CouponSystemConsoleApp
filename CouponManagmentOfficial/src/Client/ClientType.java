@@ -1,5 +1,13 @@
 package Client;
 
+/**
+ * @author Tal Yamin
+ *
+ */
+
+
+//Enum which define three kinds of client type
+
 public enum ClientType {
 	
 	ADMIN
