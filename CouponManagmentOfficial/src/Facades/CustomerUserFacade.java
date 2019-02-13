@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
+import Client.ClientType;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
@@ -20,7 +21,7 @@ import JavaBeans.Customer;
  *
  */
 
-public class CustomerUserFacade {
+public class CustomerUserFacade implements CouponClientFacade {
 
 	// data members of CustomerUserFacade
 	private Customer customer;
@@ -154,5 +155,10 @@ public class CustomerUserFacade {
 		} catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Price. customerId: " + this.customer.getCustomerId() + " priceTop: " + priceTop);
 		}
+	}
+
+	@Override
+	public void login(String name, String password, ClientType clientType) throws Exception {
+		
 	}
 }

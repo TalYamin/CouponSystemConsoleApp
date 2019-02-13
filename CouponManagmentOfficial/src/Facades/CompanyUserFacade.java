@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import Client.ClientType;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
@@ -23,7 +24,7 @@ import JavaBeans.Customer;
  *
  */
 
-public class CompanyUserFacade {
+public class CompanyUserFacade implements CouponClientFacade {
 
 	// data members of CompanyUserFacade
 	private Company company;
@@ -223,6 +224,11 @@ public class CompanyUserFacade {
 			} catch (Exception e) {
 				throw new Exception("Company failed to get coupons data by Date. companyId: " + this.company.getCompanyId() + " untilDate: " + untilDate);
 			}
+		}
+
+		@Override
+		public void login(String name, String password, ClientType clientType) throws Exception {
+			
 		}
 
 }

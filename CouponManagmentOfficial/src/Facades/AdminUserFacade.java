@@ -3,6 +3,7 @@ package Facades;
 import java.util.Iterator;
 import java.util.List;
 
+import Client.ClientType;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
@@ -19,7 +20,7 @@ import JavaBeans.Customer;
  *
  */
 
-public class AdminUserFacade {
+public class AdminUserFacade implements CouponClientFacade {
 
 	// data members of AdminUserFacade
 	private String userName = "admin";
@@ -201,6 +202,11 @@ public class AdminUserFacade {
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get a customer. customerId: " + customerId);
 		}
+	}
+
+	@Override
+	public void login(String name, String password, ClientType clientType) throws Exception {
+		
 	}
 
 }

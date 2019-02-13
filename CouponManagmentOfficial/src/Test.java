@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import Client.Client;
+import Client.ClientType;
 import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
@@ -55,18 +57,18 @@ public class Test {
 			Customer customer5 = new Customer(3333, "Eti Levi", "eti3333");
 
 			
-			AdminUserFacade adminUserFacade = new AdminUserFacade();
-			
-			CompanyUserFacade companyUserFacade = new CompanyUserFacade(company);
-			CompanyUserFacade companyUserFacade2 = new CompanyUserFacade(company2);
-			CompanyUserFacade companyUserFacade3 = new CompanyUserFacade(company3);
-			CompanyUserFacade companyUserFacade4 = new CompanyUserFacade(company4);
-			
-			CustomerUserFacade customerUserFacade = new CustomerUserFacade(customer);
-			CustomerUserFacade customerUserFacade2 = new CustomerUserFacade(customer2);
-			CustomerUserFacade customerUserFacade3 = new CustomerUserFacade(customer3);
-			CustomerUserFacade customerUserFacade4 = new CustomerUserFacade(customer4);
-			CustomerUserFacade customerUserFacade5 = new CustomerUserFacade(customer5);
+//			AdminUserFacade adminUserFacade = new AdminUserFacade();
+//			
+//			CompanyUserFacade companyUserFacade = new CompanyUserFacade(company);
+//			CompanyUserFacade companyUserFacade2 = new CompanyUserFacade(company2);
+//			CompanyUserFacade companyUserFacade3 = new CompanyUserFacade(company3);
+//			CompanyUserFacade companyUserFacade4 = new CompanyUserFacade(company4);
+//			
+//			CustomerUserFacade customerUserFacade = new CustomerUserFacade(customer);
+//			CustomerUserFacade customerUserFacade2 = new CustomerUserFacade(customer2);
+//			CustomerUserFacade customerUserFacade3 = new CustomerUserFacade(customer3);
+//			CustomerUserFacade customerUserFacade4 = new CustomerUserFacade(customer4);
+//			CustomerUserFacade customerUserFacade5 = new CustomerUserFacade(customer5);
 			
 
 //			Company_CouponDBDAO company_CouponDBDAO = new Company_CouponDBDAO();
@@ -225,6 +227,17 @@ public class Test {
 //			customerUserFacade.getAllPurchases();
 //			customerUserFacade.getAllCouponsByType("Sports");
 //			customerUserFacade.getAllCouponsByPrice(75);
+			
+//			Client admin = new Client();
+//			AdminUserFacade adminUserFacade =  (AdminUserFacade) admin.login("admin", "1234", ClientType.ADMIN);
+//			adminUserFacade.insertCompany(new Company(96369, "Asus", "Asus96369", "israel@asus.com"));
+//			Client asus = new Client();
+//			CompanyUserFacade companyUserFacade = (CompanyUserFacade) asus.login("Asus", "Asus96369", ClientType.COMPANY);
+//			adminUserFacade.insertCustomer(new Customer(2023, "Moran Yamin", "Moran2023"));	
+//			Client moranYamin = new Client();
+//			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
