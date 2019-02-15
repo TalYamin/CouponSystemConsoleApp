@@ -237,7 +237,7 @@ public class Test {
 //			Client moranYamin = new Client();
 //			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
 			
-			
+			Company company5=new Company();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
