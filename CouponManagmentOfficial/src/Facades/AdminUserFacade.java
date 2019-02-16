@@ -69,12 +69,12 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	// remove company - include: remove all coupons from Coupon, Company_Coupon,
 	// Customer_Coupon tables
-	public void removeCompany(Company company) throws Exception {
+	public void removeCompany(long companyId) throws Exception {
 
 		try {
 
 			// get all coupons that belongs to company from Company_Coupon table
-			List<Long> coupons = com_couAdmin.getCouponId(company.getCompanyId());
+			List<Long> coupons = com_couAdmin.getCouponId(companyId);
 
 			// run on ID of coupons in loop
 			for (Long cId : coupons) {
@@ -90,21 +90,22 @@ public class AdminUserFacade implements CouponClientFacade {
 
 			}
 			// remove company from Company table
-			compAdmin.removeCompany(company);
+			compAdmin.removeCompany(compAdmin.getCompany(companyId));
 		} catch (Exception e) {
-			throw new Exception("Admin failed to remove company. companyId: " +company.getCompanyId());
+			throw new Exception("Admin failed to remove company. companyId: " + companyId);
 		}
 
 	}
 
 	// update company - can't update companyId or compayName
-	public void updateCompany(Company company, String newCompanyPassword, String newCompanyEmail) throws Exception {
+	public void updateCompany(long companyId, String newCompanyPassword, String newCompanyEmail) throws Exception {
 		try {
+			Company company = compAdmin.getCompany(companyId);
 			company.setCompanyPassword(newCompanyPassword);
 			company.setCompanyEmail(newCompanyEmail);
 			compAdmin.updateCompany(company);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to update company. companyId: " +company.getCompanyId());
+			throw new Exception("Admin failed to update company. companyId: " +companyId);
 		}
 	}
 
@@ -159,25 +160,28 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	// remove customer - include: remove all coupons that belong to customer from
 	// Customer_Coupon table and customer from Customer table
-	public void removeCustomer(Customer customer) throws Exception {
-
+	public void removeCustomer(long customerId) throws Exception {
+		
 		try {
+			Customer customer = custAdmin.getCustomer(customerId); 
 			cus_couAdmin.removeCustomer_Coupon(customer);
 			custAdmin.removeCustomer(customer);
 
 		} catch (Exception e) {
-			throw new Exception("Admin failed to remove customer.  customerId: " + customer.getCustomerId());
+			throw new Exception("Admin failed to remove customer.  customerId: " + customerId);
 		}
 
 	}
 
 	// update customer - can't update customerId or customerName
-	public void updateCustomer(Customer customer, String newCustomerPassword) throws Exception {
+	public void updateCustomer(long customerId, String newCustomerPassword) throws Exception {
+		
 		try {
+			Customer customer = custAdmin.getCustomer(customerId);
 			customer.setCustomerPassword(newCustomerPassword);
 			custAdmin.updateCustomer(customer);
 		} catch (Exception e) {
-			throw new Exception("Admin failed to update customer. customerId: " + customer.getCustomerId());
+			throw new Exception("Admin failed to update customer. customerId: " + customerId);
 		}
 	}
 

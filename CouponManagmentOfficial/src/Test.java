@@ -39,22 +39,22 @@ public class Test {
 //			DataBase.createCompany_CouponTable();
 //			DataBase.createCustomer_CouponTable();
 			
-			Coupon coupon = new Coupon(123, "BBB", "31/12/2019", 10, CouponType.RESTURANTS, "BBB for couple", 70.4, "bbb image");
-			Coupon coupon2 = new Coupon(456, "Gilboa", "1/6/2019", 5, CouponType.TRAVELING, "trip to giboa", 500, "giboa image");
-			Coupon coupon3 = new Coupon(789, "ski", "1/3/2019", 4, CouponType.SPORTS, "ski weekend", 1500, "ski image");
-			Coupon coupon4 = new Coupon(717, "Domino Pizza", "31/12/2019", 20, CouponType.RESTURANTS, "family pizza", 50, "domino image");
-			Coupon coupon5 = new Coupon(111, "spa", "1/1/2019", 15, CouponType.HEALTH, "spa for couple", 100.5, "spa image");
-			
-			Company company = new Company(1793, "Dell", "dell1793", "israel@dell.com");
-			Company company2 = new Company(4562, "Cellcom", "cellcom4562", "israel@cellcom.com");
-			Company company3 = new Company(7893, "Elbit", "Elbit7893", "israel@elbit.com");
-			Company company4 = new Company(1212, "Tzhal", "tzhal1212", "israel@tzhal.com");
-			
-			Customer customer = new Customer(3133, "Tal Yamin", "tal3133");
-			Customer customer2 = new Customer(2046, "Ofek Mesika", "Ofek2046");
-			Customer customer3 = new Customer(7894, "Peleg Yamin", "hello");
-			Customer customer4 = new Customer(7854, "Yoni Haviv", "yoni7854");
-			Customer customer5 = new Customer(3333, "Eti Levi", "eti3333");
+//			Coupon coupon = new Coupon(123, "BBB", "31/12/2019", 10, CouponType.RESTURANTS, "BBB for couple", 70.4, "bbb image");
+//			Coupon coupon2 = new Coupon(456, "Gilboa", "1/6/2019", 5, CouponType.TRAVELING, "trip to giboa", 500, "giboa image");
+//			Coupon coupon3 = new Coupon(789, "ski", "1/3/2019", 4, CouponType.SPORTS, "ski weekend", 1500, "ski image");
+//			Coupon coupon4 = new Coupon(717, "Domino Pizza", "31/12/2019", 20, CouponType.RESTURANTS, "family pizza", 50, "domino image");
+//			Coupon coupon5 = new Coupon(111, "spa", "1/1/2019", 15, CouponType.HEALTH, "spa for couple", 100.5, "spa image");
+//			
+//			Company company = new Company(1793, "Dell", "dell1793", "israel@dell.com");
+//			Company company2 = new Company(4562, "Cellcom", "cellcom4562", "israel@cellcom.com");
+//			Company company3 = new Company(7893, "Elbit", "Elbit7893", "israel@elbit.com");
+//			Company company4 = new Company(1212, "Tzhal", "tzhal1212", "israel@tzhal.com");
+//			
+//			Customer customer = new Customer(3133, "Tal Yamin", "tal3133");
+//			Customer customer2 = new Customer(2046, "Ofek Mesika", "Ofek2046");
+//			Customer customer3 = new Customer(7894, "Peleg Yamin", "hello");
+//			Customer customer4 = new Customer(7854, "Yoni Haviv", "yoni7854");
+//			Customer customer5 = new Customer(3333, "Eti Levi", "eti3333");
 
 			
 //			AdminUserFacade adminUserFacade = new AdminUserFacade();
@@ -237,7 +237,7 @@ public class Test {
 //			Client moranYamin = new Client();
 //			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
 	
-//			Client client = new Client();
+			Client client = new Client();
 //			AdminUserFacade adminUserFacade = (AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN);
 //			adminUserFacade.insertCompany(new Company(5193, "Lenovo", "Lenovo5193", "israel@lenovo.com"));
 //			CompanyUserFacade companyUserFacade = (CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY);
@@ -245,7 +245,7 @@ public class Test {
 //			companyUserFacade.insertCoupon(new Coupon(963, "Swimming Lesson", "30/5/2019", 5, CouponType.SPORTS, "two hours to learn swimming", 75.3, "swim image"));
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo519", ClientType.COMPANY)).getAllCoupons();
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
-			
+			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCustomer(3133);
 			
 			
 		} catch (Exception e) {
