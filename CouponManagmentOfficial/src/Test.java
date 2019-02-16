@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.xml.crypto.Data;
+
 import Client.Client;
 import Client.ClientType;
 import DB.DataBase;
@@ -262,10 +264,24 @@ public class Test {
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).updateCoupon(11111, "1/1/2022",100);
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
 			
-//			Client client = new Client();
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(9876, "BMW", "Bmw9876", "israel@bmw.com"));
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(3133, "Tal Yamin", "Tal3133"));
-//			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).insertCoupon(new Coupon(147, "Racing Trip", "19/5/2022", 5, CouponType.SPORTS, "weekend with sport car", 1550.75, "Racing car image"));
+//			********************************************login test**********************************************************************
+//			DataBase.DropDB();
+//			DataBase.BuildDB();
+			
+			Client client = new Client();
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "31/12/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(1);
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "Spa", "31/3/2019", 10, CouponType.HEALTH, "spa for couple", 78.8, "spa image"));
+//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(2);
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).removeCoupon(1);
+//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).getAllPurchases();
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCompany(1234);
+			
+//			DataBase.alterTableAdditon("Company_Coupon", "test", "bigint");
+			
+//			DataBase.alterTableDropping("Customer", "test");
 			
 		} catch (Exception e) {
 			e.printStackTrace();

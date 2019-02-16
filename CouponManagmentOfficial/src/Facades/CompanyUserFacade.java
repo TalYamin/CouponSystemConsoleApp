@@ -16,6 +16,7 @@ import DBDAO.Customer_CouponDBDAO;
 import Exceptions.CouponExistsException;
 import Exceptions.EndDatePassedException;
 import Exceptions.NoDetailsFoundException;
+import Exceptions.ObjectNotFoundException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -98,7 +99,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
+				throw new ObjectNotFoundException("couponId does not exist in system. ", this.company.getCompanyId(), this.clientType, couponId);
 			}
 			
 			Coupon coupon = coupCompanyDAO.getCoupon(couponId);
@@ -106,7 +107,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			com_couCompany.removeCompany_Coupon(coupon);
 			coupCompanyDAO.removeCoupon(coupon);
 
-		}catch (NoDetailsFoundException e) {
+		}catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
 			throw new Exception("Compnay failed to remove coupon. couponId: " + couponId);
@@ -129,7 +130,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
+				throw new ObjectNotFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType, couponId);
 			}
 			
 			Coupon coupon = coupCompanyDAO.getCoupon(couponId);
@@ -142,7 +143,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			}
 			
 			coupCompanyDAO.updateCoupon(coupon);
-		}catch (NoDetailsFoundException e) {
+		}catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
 		}catch (EndDatePassedException e) {
 			System.out.println(e.getMessage());

@@ -11,6 +11,7 @@ import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
 import Exceptions.CouponExpiredException;
 import Exceptions.NoDetailsFoundException;
+import Exceptions.ObjectNotFoundException;
 import Exceptions.OutOfStockException;
 import Exceptions.SamePurchaseException;
 import JavaBeans.Coupon;
@@ -57,7 +58,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 				}
 			}
 			if (!it.hasNext() && flag == 0) {
-				throw new NoDetailsFoundException("couponId does not exist in system", this.customer.getCustomerId(), this.clientType);
+				throw new ObjectNotFoundException("couponId does not exist in system. ", this.customer.getCustomerId(), this.clientType, couponId);
 			}
 
 			List<Long> customers = cus_couCustomerDAO.getCustomerId(couponId);
@@ -89,7 +90,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 				System.out.println("Customer " + customer.getCustomerName() + " purchased successfully Coupon " + couponId);
 				}
 			}
-		}catch (NoDetailsFoundException e) {
+		}catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
 		}catch (SamePurchaseException e) {
 			System.out.println(e.getMessage());

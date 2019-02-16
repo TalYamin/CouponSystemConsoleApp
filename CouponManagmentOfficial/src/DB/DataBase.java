@@ -2,6 +2,7 @@ package DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -12,25 +13,23 @@ import java.sql.Statement;
 
 public class DataBase {
 
-	//DB connection port
+	// DB connection port
 	private static String connectionString = "jdbc:derby://localhost:3301/CouponManagment;create=true";
-	//DB derby driver
+	// DB derby driver
 	private static String DriverConnection = "org.apache.derby.jdbc.ClientDriver";
-	//static connection - should be in connection pool 
+	// static connection - should be in connection pool
 	private static Connection connection;
 
-	
-	//get method for DB connection port
+	// get method for DB connection port
 	public static String getConnectionString() {
 		return connectionString;
 	}
 
-	//get method for DB derby driver
+	// get method for DB derby driver
 	public static String getDriverConnextion() {
 		return DriverConnection;
 	}
 
-	
 	// create Company table
 	public static void createCompanyTable() throws Exception {
 
@@ -242,31 +241,69 @@ public class DataBase {
 			connection.close();
 		}
 	}
-	
-	public static void BuildDB() throws Exception{
-		
+
+	public static void BuildDB() throws Exception {
+
 		try {
 			DataBase.createCompanyTable();
 			DataBase.createCustomerTable();
 			DataBase.createCouponTable();
 			DataBase.createCompany_CouponTable();
 			DataBase.createCustomer_CouponTable();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new Exception("unable to build all tables of DB");
-		}	
+		}
 	}
-	
-	public static void DropDB() throws Exception{
-		
+
+	public static void DropDB() throws Exception {
+
 		try {
 			DataBase.dropCompanyTable();
 			DataBase.dropCustomerTable();
 			DataBase.dropCouponTable();
 			DataBase.dropCompany_CouponTable();
 			DataBase.dropCustomer_CouponTable();
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			throw new Exception("unable to drop all tables of DB");
 		}
 	}
-	
+
+	public static void alterTableAdditon(String table, String columnName, String dataType) throws Exception {
+
+		connection = DriverManager.getConnection(DataBase.getConnectionString());
+
+		String sql = String.format("alter table %s add %s %s", table, columnName, dataType);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			preparedStatement.executeUpdate();
+
+			System.out.println("Company table has been altered - column " + columnName + " has been added");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception("alter Company table failed.");
+		} finally {
+			connection.close();
+		}
+	}
+
+	public static void alterTableDropping(String table, String columnName) throws Exception {
+
+		connection = DriverManager.getConnection(DataBase.getConnectionString());
+
+		String sql = String.format("alter table %s drop column %s", table, columnName);
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			preparedStatement.executeUpdate();
+
+			System.out.println("Company table has been altered - column " + columnName + " has been dropped");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Exception("alter Company table failed.");
+		} finally {
+			connection.close();
+		}
+	}
+
 }
