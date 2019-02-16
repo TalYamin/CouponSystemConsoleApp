@@ -3,6 +3,8 @@ package Client;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 import DBDAO.CompanyDBDAO;
 import DBDAO.CustomerDBDAO;
 import Facades.AdminUserFacade;
@@ -11,6 +13,8 @@ import Facades.CouponClientFacade;
 import Facades.CustomerUserFacade;
 import JavaBeans.Company;
 import JavaBeans.Customer;
+import Exceptions.LoginCouponSystemException;
+
 
 
 /**
@@ -38,10 +42,10 @@ public class Client {
 
 				if (userName.equals("admin") && password.equals("1234")) {
 					AdminUserFacade adminF = new AdminUserFacade();
-					System.out.println("Admin loginned to system");
+					System.out.println("Admin logged in to system");
 					return adminF;
 				}else {
-					throw new Exception("invalid details for Admin user");
+					throw new LoginCouponSystemException("invalid details for Admin user. ", userName, password, clientType);
 				}
 			
 			case COMPANY:
@@ -55,10 +59,10 @@ public class Client {
 					Company current = i.next();
 					if (current.getCompanyName().equals(userName) && current.getCompanyPassword().equals(password)) {
 						CompanyUserFacade companyF = new CompanyUserFacade(current);
-						System.out.println("Company " + current.getCompanyName() + " loginned to system");
+						System.out.println("Company " + current.getCompanyName() + " logged in to system");
 						return companyF;
 					}else if (!i.hasNext()) {
-						throw new Exception("invalid details for Company user");
+						throw new LoginCouponSystemException("invalid details for Company user. ", userName, password, clientType);
 					}
 				}
 				
@@ -73,16 +77,18 @@ public class Client {
 					Customer current = it.next();
 					if (current.getCustomerName().equals(userName) && current.getCustomerPassword().equals(password)) {
 						CustomerUserFacade customerF = new CustomerUserFacade(current);
-						System.out.println("Customer " + current.getCustomerName() + " loginned to system");
+						System.out.println("Customer " + current.getCustomerName() + " logged in to system");
 						return customerF;
 					}else if (!it.hasNext()){
-						throw new Exception("invalid details for Customer user");
+						throw new LoginCouponSystemException("invalid details for Customer user. ", userName, password, clientType);
 					}
 				}
 
 			}	
-		} catch (Exception e) {
+		} catch (LoginCouponSystemException e) {
 			System.out.println(e.getMessage());
+		}catch (Exception e) {
+			throw new Exception("Login failed");
 		}
 		return null;
 
