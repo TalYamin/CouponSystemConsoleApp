@@ -230,6 +230,7 @@ public class AdminUserFacade implements CouponClientFacade {
 	@Override
 	public void login(String name, String password, ClientType clientType) throws Exception {
 		
+		
 	}
 
 }

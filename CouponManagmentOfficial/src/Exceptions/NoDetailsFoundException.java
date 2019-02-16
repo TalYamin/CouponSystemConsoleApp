@@ -20,6 +20,7 @@ public class NoDetailsFoundException extends Exception {
 	public ClientType getClientType() {
 		return clientType;
 	}
+	
 
 	
 }

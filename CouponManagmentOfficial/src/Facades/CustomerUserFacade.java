@@ -183,5 +183,6 @@ public class CustomerUserFacade implements CouponClientFacade {
 	@Override
 	public void login(String name, String password, ClientType clientType) throws Exception {
 		
+		
 	}
 }
