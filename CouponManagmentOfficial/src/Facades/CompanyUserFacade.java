@@ -30,9 +30,9 @@ public class CompanyUserFacade implements CouponClientFacade {
 	// data members of CompanyUserFacade
 	private Company company;
 	private ClientType clientType = ClientType.COMPANY;
-	private CompanyDBDAO compCompany = new CompanyDBDAO();
-	private CustomerDBDAO cusCompany = new CustomerDBDAO();
-	private CouponDBDAO coupCompany = new CouponDBDAO();
+	private CompanyDBDAO compCompanyDAO = new CompanyDBDAO();
+	private CustomerDBDAO cusCompanyDAO = new CustomerDBDAO();
+	private CouponDBDAO coupCompanyDAO = new CouponDBDAO();
 	private Company_CouponDBDAO com_couCompany = new Company_CouponDBDAO();
 	private Customer_CouponDBDAO cus_couCompany = new Customer_CouponDBDAO();
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -56,7 +56,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ", coupon.getEndDate().toString(), coupon.getCouponId(), this.company.getCompanyId());
 			}
 
-			List<Coupon> coupons = coupCompany.getAllCoupons();
+			List<Coupon> coupons = coupCompanyDAO.getAllCoupons();
 
 			Iterator<Coupon> i = coupons.iterator();
 
@@ -67,9 +67,8 @@ public class CompanyUserFacade implements CouponClientFacade {
 				}
 			}
 			if (!i.hasNext()) {
-				coupCompany.insertCoupon(coupon);
+				coupCompanyDAO.insertCoupon(coupon);
 				com_couCompany.insertCompany_Coupon(this.company, coupon);
-				this.company.addCoupon(coupon);
 				System.out.println("Company " + this.company.getCompanyName() +  " add new coupon: " + coupon.getCouponId());
 			}
 
@@ -89,7 +88,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 		try {
 			
 			//check if couponId exist
-			List<Coupon>coupons = coupCompany.getAllCoupons();
+			List<Coupon>coupons = coupCompanyDAO.getAllCoupons();
 			Iterator<Coupon>i = coupons.iterator();
 			int flag = 0;
 			while(i.hasNext()) {
@@ -102,15 +101,10 @@ public class CompanyUserFacade implements CouponClientFacade {
 				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
 			}
 			
-			Coupon coupon = coupCompany.getCoupon(couponId);
+			Coupon coupon = coupCompanyDAO.getCoupon(couponId);
 			cus_couCompany.removeCustomer_Coupon(coupon);
 			com_couCompany.removeCompany_Coupon(coupon);
-			coupCompany.removeCoupon(coupon);
-			this.company.removeCoupon(coupon);
-			List<Customer> customers = cusCompany.getAllCustomers();
-			for (Customer c : customers) {
-				c.removeCoupon(coupon);
-			}
+			coupCompanyDAO.removeCoupon(coupon);
 
 		}catch (NoDetailsFoundException e) {
 			System.out.println(e.getMessage());
@@ -125,7 +119,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 		try {
 			
 			//check if couponId exist
-			List<Coupon>coupons = coupCompany.getAllCoupons();
+			List<Coupon>coupons = coupCompanyDAO.getAllCoupons();
 			Iterator<Coupon>i = coupons.iterator();
 			int flag = 0;
 			while(i.hasNext()) {
@@ -138,7 +132,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
 			}
 			
-			Coupon coupon = coupCompany.getCoupon(couponId);
+			Coupon coupon = coupCompanyDAO.getCoupon(couponId);
 			LocalDate endLocalDate = LocalDate.parse(newEndDate, this.formatter);
 			coupon.setEndDate(endLocalDate);
 			coupon.setPrice(newPrice);
@@ -147,7 +141,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				throw new EndDatePassedException("Company failed to update coupon - the end date already passed. ", newEndDate, coupon.getCouponId(), this.company.getCompanyId());
 			}
 			
-			coupCompany.updateCoupon(coupon);
+			coupCompanyDAO.updateCoupon(coupon);
 		}catch (NoDetailsFoundException e) {
 			System.out.println(e.getMessage());
 		}catch (EndDatePassedException e) {
@@ -162,8 +156,8 @@ public class CompanyUserFacade implements CouponClientFacade {
 	public Company getCompany() throws Exception {
 
 		try {
-			System.out.println(compCompany.getCompany(this.company.getCompanyId()));
-			return compCompany.getCompany(this.company.getCompanyId());
+			System.out.println(compCompanyDAO.getCompany(this.company.getCompanyId()));
+			return compCompanyDAO.getCompany(this.company.getCompanyId());
 		} catch (Exception e) {
 			throw new Exception("Company failed to get company details. companyId: " + this.company.getCompanyId());
 		}
@@ -179,7 +173,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			// run on ID of coupons in loop
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to company
-				couponsToGet.add(coupCompany.getCoupon(cId));
+				couponsToGet.add(coupCompanyDAO.getCoupon(cId));
 			}
 			
 			if (couponsToGet.isEmpty()) {
@@ -210,7 +204,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to company and has relevant type
-				couponsToGet.addAll(coupCompany.getAllCouponsByType(cId, typeName));
+				couponsToGet.addAll(coupCompanyDAO.getAllCouponsByType(cId, typeName));
 
 			}
 			
@@ -241,7 +235,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to company and has relevant price
-				couponsToGet.addAll(coupCompany.getAllCouponsByPrice(cId, priceTop));
+				couponsToGet.addAll(coupCompanyDAO.getAllCouponsByPrice(cId, priceTop));
 
 			}
 			
@@ -271,7 +265,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				List<Coupon> couponsToGet = new ArrayList<>();
 				for (Long cId : coupons) {
 					// get all Coupons objects that belongs to company and has relevant date
-					couponsToGet.addAll(coupCompany.getAllCouponsByDate(cId, untilDate));
+					couponsToGet.addAll(coupCompanyDAO.getAllCouponsByDate(cId, untilDate));
 
 				}
 				

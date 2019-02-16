@@ -242,7 +242,7 @@ public class Test {
 //			Client moranYamin = new Client();
 //			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
 	
-			Client client = new Client();
+//			Client client = new Client();
 //			AdminUserFacade adminUserFacade = (AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN);
 //			adminUserFacade.insertCompany(new Company(5193, "Lenovo", "Lenovo5193", "israel@lenovo.com"));
 //			CompanyUserFacade companyUserFacade = (CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY);
@@ -254,13 +254,18 @@ public class Test {
 //			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).removeCoupon(147);
 //			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).getAllCouponsByDate("31/12/2050");
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(3133, "Tal Yamin", "Tal3133"));
-			((CustomerUserFacade) client.login("Tal Yamin", "Tal3133", ClientType.CUSTOMER)).purchaseCoupon(111111);
+//			((CustomerUserFacade) client.login("Tal Yamin", "Tal3133", ClientType.CUSTOMER)).purchaseCoupon(111111);
 			
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).getCustomer(139852);
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).getAllCustomers();
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCustomer(3133);
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).updateCoupon(11111, "1/1/2022",100);
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
+			
+//			Client client = new Client();
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(9876, "BMW", "Bmw9876", "israel@bmw.com"));
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(3133, "Tal Yamin", "Tal3133"));
+//			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).insertCoupon(new Coupon(147, "Racing Trip", "19/5/2022", 5, CouponType.SPORTS, "weekend with sport car", 1550.75, "Racing car image"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -16,7 +16,6 @@ public class Company {
 	private String companyName;
 	private String companyPassword;
 	private String companyEmail;
-	private List<Coupon> coupons = new ArrayList<>();
 
 	//empty CTOR Company
 	public Company() {
@@ -65,15 +64,6 @@ public class Company {
 	public void setCompanyEmail(String companyEmail) {
 		this.companyEmail = companyEmail;
 	}
-
-	public List<Coupon> getCoupons() {
-		return this.coupons;
-	}
-
-	public void setCoupons(List<Coupon> coupons) {
-		this.coupons = coupons;
-	}
-
 	
 	//toString method of Company
 	
@@ -81,18 +71,6 @@ public class Company {
 	public String toString() {
 		return "Company [companyId=" + this.getCompanyId() + ", companyName=" + this.getCompanyName()
 				+ ", companyPassword=" + this.getCompanyPassword() + ", companyEmail=" + this.getCompanyEmail() + "]";
-	}
-
-	
-	//List add and remove methods of Company
-	public void addCoupon(Coupon coupon) {
-
-		this.coupons.add(coupon);
-	}
-
-	public void removeCoupon(Coupon coupon) {
-
-		this.coupons.remove(coupon);
 	}
 
 }

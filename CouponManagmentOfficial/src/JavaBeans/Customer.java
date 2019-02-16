@@ -15,7 +15,7 @@ public class Customer {
 	private long customerId;
 	private String customerName;
 	private String customerPassword;
-	private List<Coupon>coupons = new ArrayList<>();
+	
 
 	
 	//empty CTOR Customer
@@ -57,31 +57,12 @@ public class Customer {
 		this.customerPassword = customerPassword;
 	}
 
-	public List<Coupon> getCoupons() {
-		return this.coupons;
-	}
-
-	public void setCoupons(List<Coupon> coupons) {
-		this.coupons = coupons;
-	}
 
 	//toString method of Customer
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + this.getCustomerId() + ", customerName=" + this.getCustomerName()
 				+ ", customerPassword=" + this.getCustomerPassword() + "]";
-	}
-	
-	
-	////List add and remove methods of Customer
-	public void addCoupon(Coupon coupon) {
-		
-		this.coupons.add(coupon);
-	}
-	
-	public void removeCoupon(Coupon coupon) {
-		
-		this.coupons.remove(coupon);
 	}
 
 }

@@ -2,7 +2,6 @@ package Facades;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,9 +26,9 @@ public class CustomerUserFacade implements CouponClientFacade {
 	// data members of CustomerUserFacade
 	private Customer customer;
 	private ClientType clientType = ClientType.CUSTOMER;
-	private Customer_CouponDBDAO cus_couCustomer = new Customer_CouponDBDAO();
-	private Company_CouponDBDAO com_couCustomer = new Company_CouponDBDAO();
-	private CouponDBDAO couCustomer = new CouponDBDAO();
+	private Customer_CouponDBDAO cus_couCustomerDAO = new Customer_CouponDBDAO();
+	private Company_CouponDBDAO com_couCustomerDAO = new Company_CouponDBDAO();
+	private CouponDBDAO couCustomerDAO = new CouponDBDAO();
 
 	// empty CTOR of CustomerUserFacade
 	public CustomerUserFacade() {
@@ -48,7 +47,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 		try {
 			
 			//check if couponId exist
-			List<Coupon>coupons = couCustomer.getAllCoupons();
+			List<Coupon>coupons = couCustomerDAO.getAllCoupons();
 			Iterator<Coupon>it = coupons.iterator();
 			int flag = 0;
 			while(it.hasNext()) {
@@ -61,7 +60,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 				throw new NoDetailsFoundException("couponId does not exist in system", this.customer.getCustomerId(), this.clientType);
 			}
 
-			List<Long> customers = cus_couCustomer.getCustomerId(couponId);
+			List<Long> customers = cus_couCustomerDAO.getCustomerId(couponId);
 
 			Iterator<Long> i = customers.iterator();
 
@@ -73,7 +72,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 			}
 			if (!i.hasNext()) {
 
-				Coupon c = couCustomer.getCoupon(couponId);
+				Coupon c = couCustomerDAO.getCoupon(couponId);
 				if (c.getAmount() <= 0) {
 					throw new OutOfStockException("Customer unable to purchase - this coupon is out of stock. ", c.getAmount(), couponId, this.customer.getCustomerId());
 
@@ -83,11 +82,10 @@ public class CustomerUserFacade implements CouponClientFacade {
 				}else {
 
 				
-				Coupon newCoupon = couCustomer.getCoupon(couponId);
+				Coupon newCoupon = couCustomerDAO.getCoupon(couponId);
 				newCoupon.setAmount(newCoupon.getAmount() - 1);
-				couCustomer.updateCoupon(newCoupon);
-				this.customer.addCoupon(newCoupon);
-				cus_couCustomer.insertCustomer_Coupon(this.customer, newCoupon);
+				couCustomerDAO.updateCoupon(newCoupon);
+				cus_couCustomerDAO.insertCustomer_Coupon(this.customer, newCoupon);
 				System.out.println("Customer " + customer.getCustomerName() + " purchased successfully Coupon " + couponId);
 				}
 			}
@@ -112,12 +110,12 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 		try {
 			// get all coupons that belongs to customer from Customer_Coupon table
-			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
+			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
 			// run on ID of coupons in loop
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to customer
-				couponsToGet.add(couCustomer.getCoupon(cId));
+				couponsToGet.add(couCustomerDAO.getCoupon(cId));
 			}
 			
 			if (couponsToGet.isEmpty()) {
@@ -142,11 +140,11 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 		try {
 			// get all coupons that belongs to customer from Customer_Coupon table
-			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
+			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to customer and has relevant type
-				couponsToGet.addAll(couCustomer.getAllCouponsByType(cId, typeName));
+				couponsToGet.addAll(couCustomerDAO.getAllCouponsByType(cId, typeName));
 
 			}
 			
@@ -172,11 +170,11 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 		try {
 			// get all coupons that belongs to customer from Customer_Coupon table
-			List<Long> coupons = cus_couCustomer.getCouponId(this.customer.getCustomerId());
+			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to customer and has relevant price
-				couponsToGet.addAll(couCustomer.getAllCouponsByPrice(cId, priceTop));
+				couponsToGet.addAll(couCustomerDAO.getAllCouponsByPrice(cId, priceTop));
 
 			}
 			if (couponsToGet.isEmpty()) {
