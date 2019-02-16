@@ -97,6 +97,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new Exception("Compnay failed to remove coupon. couponId: " + couponId);
 		}
 

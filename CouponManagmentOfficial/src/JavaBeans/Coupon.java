@@ -1,5 +1,6 @@
 package JavaBeans;
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -21,6 +22,8 @@ public class Coupon {
 	private String couponMessage;
 	private double price;
 	private String image;
+	private String customStartDate;
+	private String customeEndDate;
 	
 	
 	//empty CTOR of Coupon
@@ -131,7 +134,11 @@ public class Coupon {
 	//toString method of Coupon
 	@Override
 	public String toString() {
-		return "Coupon [couponId=" + this.getCouponId() + ", title=" + this.getTitle() + ", startDate=" + this.getStartDate() + ", endDate=" + this.getEndDate()
+		
+		customStartDate = this.startDate.format(this.formatter);
+		customeEndDate = this.endDate.format(this.formatter);
+		
+		return "Coupon [couponId=" + this.getCouponId() + ", title=" + this.getTitle() + ", startDate=" + this.customStartDate + ", endDate=" + this.customeEndDate
 				+ ", amount=" + this.getAmount() + ", type=" + this.getType() + ", couponMessage=" + this.getCouponMessage() + ", price=" + this.getPrice()
 				+ ", image=" + this.getImage() + "]";
 	}

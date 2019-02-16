@@ -243,4 +243,30 @@ public class DataBase {
 		}
 	}
 	
+	public static void BuildDB() throws Exception{
+		
+		try {
+			DataBase.createCompanyTable();
+			DataBase.createCustomerTable();
+			DataBase.createCouponTable();
+			DataBase.createCompany_CouponTable();
+			DataBase.createCustomer_CouponTable();
+		}catch (SQLException e) {
+			throw new Exception("unable to build all tables of DB");
+		}	
+	}
+	
+	public static void DropDB() throws Exception{
+		
+		try {
+			DataBase.dropCompanyTable();
+			DataBase.dropCustomerTable();
+			DataBase.dropCouponTable();
+			DataBase.dropCompany_CouponTable();
+			DataBase.dropCustomer_CouponTable();
+		}catch (SQLException e) {
+			throw new Exception("unable to drop all tables of DB");
+		}
+	}
+	
 }

@@ -27,6 +27,11 @@ public class Test {
 
 			Class.forName(DataBase.getDriverConnextion());
 			
+//			DataBase.DropDB();
+//			DataBase.BuildDB();
+			
+			
+			
 //			DataBase.dropCompanyTable();
 //			DataBase.dropCustomerTable();
 //			DataBase.dropCouponTable();
@@ -237,7 +242,7 @@ public class Test {
 //			Client moranYamin = new Client();
 //			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
 	
-			Client client = new Client();
+//			Client client = new Client();
 //			AdminUserFacade adminUserFacade = (AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN);
 //			adminUserFacade.insertCompany(new Company(5193, "Lenovo", "Lenovo5193", "israel@lenovo.com"));
 //			CompanyUserFacade companyUserFacade = (CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY);
@@ -245,7 +250,12 @@ public class Test {
 //			companyUserFacade.insertCoupon(new Coupon(963, "Swimming Lesson", "30/5/2019", 5, CouponType.SPORTS, "two hours to learn swimming", 75.3, "swim image"));
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo519", ClientType.COMPANY)).getAllCoupons();
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
-			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCustomer(3133);
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCompany(5193);
+//			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).insertCoupon(new Coupon(147, "Racing Trip", "19/5/2022", 5, CouponType.SPORTS, "weekend with sport car", 1550.75, "Racing car image"));
+//			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).removeCoupon(147);
+//			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).getAllCouponsByDate("31/12/2050");
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(3133, "Tal Yamin", "Tal3133"));
+//			((CustomerUserFacade) client.login("Tal Yamin", "Tal3133", ClientType.CUSTOMER)).purchaseCoupon(147);
 			
 			
 		} catch (Exception e) {
