@@ -46,6 +46,20 @@ public class CustomerUserFacade implements CouponClientFacade {
 	public void purchaseCoupon(long couponId) throws Exception {
 
 		try {
+			
+			//check if couponId exist
+			List<Coupon>coupons = couCustomer.getAllCoupons();
+			Iterator<Coupon>it = coupons.iterator();
+			int flag = 0;
+			while(it.hasNext()) {
+				Coupon current = it.next();
+				if (current.getCouponId() == couponId) {
+					flag = 1;
+				}
+			}
+			if (!it.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("couponId does not exist in system", this.customer.getCustomerId(), this.clientType);
+			}
 
 			List<Long> customers = cus_couCustomer.getCustomerId(couponId);
 
@@ -77,6 +91,8 @@ public class CustomerUserFacade implements CouponClientFacade {
 				System.out.println("Customer " + customer.getCustomerName() + " purchased successfully Coupon " + couponId);
 				}
 			}
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
 		}catch (SamePurchaseException e) {
 			System.out.println(e.getMessage());
 		}catch (OutOfStockException e) {

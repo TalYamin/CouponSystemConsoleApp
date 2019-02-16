@@ -73,6 +73,20 @@ public class AdminUserFacade implements CouponClientFacade {
 	public void removeCompany(long companyId) throws Exception {
 
 		try {
+			
+			//check if compnayId exist
+			List<Company>companies = compAdmin.getAllCompanies();
+			Iterator<Company>i = companies.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Company current = i.next();
+				if (current.getCompanyId() == companyId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("companyId does not exist in system", 0, this.clientType);
+			}
 
 			// get all coupons that belongs to company from Company_Coupon table
 			List<Long> coupons = com_couAdmin.getCouponId(companyId);
@@ -92,7 +106,9 @@ public class AdminUserFacade implements CouponClientFacade {
 			}
 			// remove company from Company table
 			compAdmin.removeCompany(compAdmin.getCompany(companyId));
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to remove company. companyId: " + companyId);
 		}
 
@@ -101,10 +117,27 @@ public class AdminUserFacade implements CouponClientFacade {
 	// update company - can't update companyId or compayName
 	public void updateCompany(long companyId, String newCompanyPassword, String newCompanyEmail) throws Exception {
 		try {
+			
+			//check if compnayId exist
+			List<Company>companies = compAdmin.getAllCompanies();
+			Iterator<Company>i = companies.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Company current = i.next();
+				if (current.getCompanyId() == companyId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("companyId does not exist in system", 0, this.clientType);
+			}
+			
 			Company company = compAdmin.getCompany(companyId);
 			company.setCompanyPassword(newCompanyPassword);
 			company.setCompanyEmail(newCompanyEmail);
 			compAdmin.updateCompany(company);
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Admin failed to update company. companyId: " +companyId);
 		}
@@ -125,8 +158,7 @@ public class AdminUserFacade implements CouponClientFacade {
 			return compAdmin.getAllCompanies();
 		}catch (NoDetailsFoundException e) {
 			System.out.println(e.getMessage());
-		} 
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to get all companies");
 		}
 		return null;
@@ -135,11 +167,29 @@ public class AdminUserFacade implements CouponClientFacade {
 	// get specific company by companyId
 	public Company getCompany(long companyId) throws Exception {
 		try {
+			
+			//check if compnayId exist
+			List<Company>companies = compAdmin.getAllCompanies();
+			Iterator<Company>i = companies.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Company current = i.next();
+				if (current.getCompanyId() == companyId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("companyId does not exist in system", 0, this.clientType);
+			}
+			
 			System.out.println(compAdmin.getCompany(companyId));
 			return compAdmin.getCompany(companyId);
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to get a company. companyId: " + companyId);
 		}
+		return null;
 	}
 
 	// insert customer to Customer table after check there is not duplicate name
@@ -173,11 +223,29 @@ public class AdminUserFacade implements CouponClientFacade {
 	public void removeCustomer(long customerId) throws Exception {
 		
 		try {
+			
+			
+			//check if customerId exist
+			List<Customer>customers = custAdmin.getAllCustomers();
+			Iterator<Customer>i = customers.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Customer current = i.next();
+				if (current.getCustomerId() == customerId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("customerId does not exist in system", 0, this.clientType);
+			}
+			
 			Customer customer = custAdmin.getCustomer(customerId); 
 			cus_couAdmin.removeCustomer_Coupon(customer);
 			custAdmin.removeCustomer(customer);
 
-		} catch (Exception e) {
+		} catch (CustomerExistsException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to remove customer.  customerId: " + customerId);
 		}
 
@@ -187,10 +255,28 @@ public class AdminUserFacade implements CouponClientFacade {
 	public void updateCustomer(long customerId, String newCustomerPassword) throws Exception {
 		
 		try {
+			
+			//check if customerId exist
+			List<Customer>customers = custAdmin.getAllCustomers();
+			Iterator<Customer>i = customers.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Customer current = i.next();
+				if (current.getCustomerId() == customerId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("customerId does not exist in system", 0, this.clientType);
+			}
+			
+			
 			Customer customer = custAdmin.getCustomer(customerId);
 			customer.setCustomerPassword(newCustomerPassword);
 			custAdmin.updateCustomer(customer);
-		} catch (Exception e) {
+		}catch (CustomerExistsException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to update customer. customerId: " + customerId);
 		}
 	}
@@ -219,11 +305,29 @@ public class AdminUserFacade implements CouponClientFacade {
 	// get specific customer by customerId
 	public Customer getCustomer(long customerId) throws Exception {
 		try {
+			
+			//check if customerId exist
+			List<Customer>customers = custAdmin.getAllCustomers();
+			Iterator<Customer>i = customers.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Customer current = i.next();
+				if (current.getCustomerId() == customerId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("customerId does not exist in system", 0, this.clientType);
+			}
+			
 			System.out.println(custAdmin.getCustomer(customerId));
 			return custAdmin.getCustomer(customerId);
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Admin failed to get a customer. customerId: " + customerId);
 		}
+		return null;
 	}
 
 	// override from interface - make it available to return facade for login method

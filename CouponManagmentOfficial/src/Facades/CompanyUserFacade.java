@@ -87,6 +87,21 @@ public class CompanyUserFacade implements CouponClientFacade {
 	public void removeCoupon(long couponId) throws Exception {
 
 		try {
+			
+			//check if couponId exist
+			List<Coupon>coupons = coupCompany.getAllCoupons();
+			Iterator<Coupon>i = coupons.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Coupon current = i.next();
+				if (current.getCouponId() == couponId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
+			}
+			
 			Coupon coupon = coupCompany.getCoupon(couponId);
 			cus_couCompany.removeCustomer_Coupon(coupon);
 			com_couCompany.removeCompany_Coupon(coupon);
@@ -97,8 +112,9 @@ public class CompanyUserFacade implements CouponClientFacade {
 				c.removeCoupon(coupon);
 			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Compnay failed to remove coupon. couponId: " + couponId);
 		}
 
@@ -107,6 +123,20 @@ public class CompanyUserFacade implements CouponClientFacade {
 	//update coupon by couponId - only can update end date & price
 	public void updateCoupon(long couponId, String newEndDate, double newPrice) throws Exception {
 		try {
+			
+			//check if couponId exist
+			List<Coupon>coupons = coupCompany.getAllCoupons();
+			Iterator<Coupon>i = coupons.iterator();
+			int flag = 0;
+			while(i.hasNext()) {
+				Coupon current = i.next();
+				if (current.getCouponId() == couponId) {
+					flag = 1;
+				}
+			}
+			if (!i.hasNext() && flag == 0) {
+				throw new NoDetailsFoundException("couponId does not exist in system", this.company.getCompanyId(), this.clientType);
+			}
 			
 			Coupon coupon = coupCompany.getCoupon(couponId);
 			LocalDate endLocalDate = LocalDate.parse(newEndDate, this.formatter);
@@ -118,7 +148,9 @@ public class CompanyUserFacade implements CouponClientFacade {
 			}
 			
 			coupCompany.updateCoupon(coupon);
-		} catch (EndDatePassedException e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (EndDatePassedException e) {
 			System.out.println(e.getMessage());
 		}catch (Exception e) {
 			throw new Exception("Company failed to update coupon. couponId: " + couponId);

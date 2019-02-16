@@ -254,13 +254,13 @@ public class Test {
 //			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).removeCoupon(147);
 //			((CompanyUserFacade) client.login("BMW", "Bmw98765", ClientType.COMPANY)).getAllCouponsByDate("31/12/2050");
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(3133, "Tal Yamin", "Tal3133"));
-//			((CustomerUserFacade) client.login("Tal Yamin", "Tal3133", ClientType.CUSTOMER)).getAllPurchases();
+			((CustomerUserFacade) client.login("Tal Yamin", "Tal3133", ClientType.CUSTOMER)).purchaseCoupon(111111);
 			
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCompany(5193);
+//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).getCustomer(139852);
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).getAllCustomers();
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCustomer(3133);
-//			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).getAllCoupons();
-			
+//			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).updateCoupon(11111, "1/1/2022",100);
+//			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
