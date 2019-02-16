@@ -15,6 +15,7 @@ import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
 import Exceptions.CouponExistsException;
 import Exceptions.EndDatePassedException;
+import Exceptions.NoDetailsFoundException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -28,7 +29,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 
 	// data members of CompanyUserFacade
 	private Company company;
-	private String clientType = "Company";
+	private ClientType clientType = ClientType.COMPANY;
 	private CompanyDBDAO compCompany = new CompanyDBDAO();
 	private CustomerDBDAO cusCompany = new CustomerDBDAO();
 	private CouponDBDAO coupCompany = new CouponDBDAO();
@@ -148,14 +149,22 @@ public class CompanyUserFacade implements CouponClientFacade {
 				// get all Coupons objects that belongs to company
 				couponsToGet.add(coupCompany.getCoupon(cId));
 			}
+			
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Company " + this.company.getCompanyId() +" failed to get all coupons - no details found", this.company.getCompanyId(), this.clientType);
+			}
+			
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Company failed to get coupons data. companyId: " + this.company.getCompanyId());
 		}
+		return null;
 
 	}
 
@@ -172,14 +181,22 @@ public class CompanyUserFacade implements CouponClientFacade {
 				couponsToGet.addAll(coupCompany.getAllCouponsByType(cId, typeName));
 
 			}
+			
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Company " + this.company.getCompanyId() +" failed to get all coupons by type - no details found", this.company.getCompanyId(), this.clientType);
+			}
+			
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Company failed to get coupons data by Type. companyId: " + this.company.getCompanyId() + " couponType: " + typeName);
 		}
+		return null;
 
 	}
 
@@ -195,14 +212,22 @@ public class CompanyUserFacade implements CouponClientFacade {
 				couponsToGet.addAll(coupCompany.getAllCouponsByPrice(cId, priceTop));
 
 			}
+			
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Company " + this.company.getCompanyId() +" failed to get all coupons by price - no details found", this.company.getCompanyId(), this.clientType);
+			}
+			
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Company failed to get coupons data by Price. companyId: " + this.company.getCompanyId() + " priceTop: " + priceTop);
 		}
+		return null;
 	}
 	
 	// get all coupons that belongs to company and with date limit
@@ -217,14 +242,22 @@ public class CompanyUserFacade implements CouponClientFacade {
 					couponsToGet.addAll(coupCompany.getAllCouponsByDate(cId, untilDate));
 
 				}
+				
+				if (couponsToGet.isEmpty()) {
+					throw new NoDetailsFoundException("Company " + this.company.getCompanyId() +" failed to get all coupons by date - no details found", this.company.getCompanyId(), this.clientType);
+				}
+				
 				List<Coupon>couponsToView = couponsToGet;
 				for(Coupon c: couponsToView) {
 					System.out.println(c);
 				}
 				return couponsToGet;
+			}catch (NoDetailsFoundException e) {
+				System.out.println(e.getMessage());
 			} catch (Exception e) {
 				throw new Exception("Company failed to get coupons data by Date. companyId: " + this.company.getCompanyId() + " untilDate: " + untilDate);
 			}
+			return null;
 		}
 
 		// override from interface - make it available to return facade for login method

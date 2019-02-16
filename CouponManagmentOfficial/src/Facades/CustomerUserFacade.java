@@ -11,6 +11,7 @@ import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
 import Exceptions.CouponExpiredException;
+import Exceptions.NoDetailsFoundException;
 import Exceptions.OutOfStockException;
 import Exceptions.SamePurchaseException;
 import JavaBeans.Coupon;
@@ -25,7 +26,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 	// data members of CustomerUserFacade
 	private Customer customer;
-	private String clientType = "Customer";
+	private ClientType clientType = ClientType.CUSTOMER;
 	private Customer_CouponDBDAO cus_couCustomer = new Customer_CouponDBDAO();
 	private Company_CouponDBDAO com_couCustomer = new Company_CouponDBDAO();
 	private CouponDBDAO couCustomer = new CouponDBDAO();
@@ -102,14 +103,22 @@ public class CustomerUserFacade implements CouponClientFacade {
 				// get all Coupons objects that belongs to customer
 				couponsToGet.add(couCustomer.getCoupon(cId));
 			}
+			
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Customer " + this.customer.getCustomerId() + " failed to get all purchase history - no details found", this.customer.getCustomerId(), this.clientType);
+			}
+			
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Custoemr failed to get all purchase history. customerId: " + this.customer.getCustomerId());
 		}
+		return null;
 	}
 
 	// get all coupons that belongs to customer and by specific type
@@ -124,14 +133,21 @@ public class CustomerUserFacade implements CouponClientFacade {
 				couponsToGet.addAll(couCustomer.getAllCouponsByType(cId, typeName));
 
 			}
+			
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Customer " + this.customer.getCustomerId() + " failed to get all coupons by type - no details found", this.customer.getCustomerId(), this.clientType);
+			}
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Type. customerId: " + this.customer.getCustomerId() + " couponType: " + typeName);
 		}
+		return null;
 
 	}
 	
@@ -147,14 +163,20 @@ public class CustomerUserFacade implements CouponClientFacade {
 				couponsToGet.addAll(couCustomer.getAllCouponsByPrice(cId, priceTop));
 
 			}
+			if (couponsToGet.isEmpty()) {
+				throw new NoDetailsFoundException("Customer " + this.customer.getCustomerId() + " failed to get all coupons by price - no details found", this.customer.getCustomerId(), this.clientType);
+			}
 			List<Coupon>couponsToView = couponsToGet;
 			for(Coupon c: couponsToView) {
 				System.out.println(c);
 			}
 			return couponsToGet;
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
 			throw new Exception("Customer failed to get coupons data by Price. customerId: " + this.customer.getCustomerId() + " priceTop: " + priceTop);
 		}
+		return null;
 	}
 
 	// override from interface - make it available to return facade for login method

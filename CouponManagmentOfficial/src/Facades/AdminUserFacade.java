@@ -11,6 +11,7 @@ import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
 import Exceptions.CompanyExistsException;
 import Exceptions.CustomerExistsException;
+import Exceptions.NoDetailsFoundException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -25,7 +26,7 @@ public class AdminUserFacade implements CouponClientFacade {
 	// data members of AdminUserFacade
 	private String userName = "admin";
 	private String password = "1234";
-	private String clientType = "Admin";
+	private ClientType clientType = ClientType.ADMIN;
 	private CompanyDBDAO compAdmin = new CompanyDBDAO();
 	private CustomerDBDAO custAdmin = new CustomerDBDAO();
 	private CouponDBDAO coupAdmin = new CouponDBDAO();
@@ -113,13 +114,22 @@ public class AdminUserFacade implements CouponClientFacade {
 	public List<Company> getAllCompanies() throws Exception {
 		try {
 			List<Company>companies = compAdmin.getAllCompanies();
+			
+			if (companies.isEmpty()) {
+				throw new NoDetailsFoundException("Admin failed to get all companies - no details found", 0, this.clientType);
+			}
+			
 			for(Company c: companies) {
 				System.out.println(c);
 			}
 			return compAdmin.getAllCompanies();
-		} catch (Exception e) {
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
+		} 
+		catch (Exception e) {
 			throw new Exception("Admin failed to get all companies");
 		}
+		return null;
 	}
 
 	// get specific company by companyId
@@ -189,13 +199,21 @@ public class AdminUserFacade implements CouponClientFacade {
 	public List<Customer> getAllCustomers() throws Exception {
 		try {
 			List<Customer>customers = custAdmin.getAllCustomers();
+			
+			if (customers.isEmpty()) {
+				throw new NoDetailsFoundException("Admin failed to get all customers - no details found", 0, this.clientType);
+			}
+			
 			for(Customer c: customers) {
 				System.out.println(c);
 			}
 			return custAdmin.getAllCustomers();
+		}catch (NoDetailsFoundException e) {
+			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all customers");
 		}
+		return null;
 	}
 	
 	// get specific customer by customerId
