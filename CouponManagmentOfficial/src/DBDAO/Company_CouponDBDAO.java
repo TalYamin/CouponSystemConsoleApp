@@ -21,10 +21,20 @@ import JavaBeans.Coupon;
 
 public class Company_CouponDBDAO implements Company_CouponDAO{
 
-	//static connection to driver
+	/* Static connection to driver */
 	private static Connection connection;
 	
-	//insert query to Company_Coupon table
+	
+	/*
+	 * Insert to Company_Coupon table override method:
+	 * This method receive 2 parameters: company and coupon.
+	 * According to parameters, the SQL query is defined with 
+	 * the company ID and coupon ID. Both values defined as unified primary key.  
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for insert to table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void insertCompany_Coupon(Company company, Coupon coupon) throws Exception {
 		
@@ -40,7 +50,9 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			preparedStatement.executeUpdate();
 
 			System.out.println("Company_Coupon added. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
-		} catch (Exception e) {
+		}catch (SQLException e) {
+			throw new Exception("DB error - Company_Coupon addition failed. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
+		}catch (Exception e) {
 			throw new Exception("Company_Coupon addition failed. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
@@ -48,7 +60,16 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		
 	}
 
-	//remove query by company&coupon to Company_Coupon table
+	/*
+	 * Remove from Company_Coupon table override method:
+	 * This method receive 2 parameters: company and coupon.
+	 * According to parameters, the SQL query is defined with 
+	 * the company ID and coupon ID.   
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void removeCompany_Coupon(Company company, Coupon coupon) throws Exception {
 		
@@ -69,7 +90,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			try {
 				connection.rollback();
 			} catch (SQLException e2) {
-				throw new Exception("DataBase error");
+				throw new Exception("DB error - failed to remove Company_Coupon. companyId "+ company.getCompanyId() + " couponId: " + coupon.getCouponId());
 			}
 			throw new Exception("failed to remove Company_Coupon. companyId "+ company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
@@ -78,7 +99,15 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		
 	}
 
-	//remove query by company only to Company_Coupon table
+	/*
+	 * Remove from Company_Coupon table override method:
+	 * This method receive 1 parameters: company.
+	 * According to parameter, the SQL query is defined with the company ID.    
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void removeCompany_Coupon(Company company) throws Exception {
 		
@@ -98,7 +127,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			try {
 				connection.rollback();
 			} catch (SQLException e2) {
-				throw new Exception("DataBase error");
+				throw new Exception("DB error - failed to remove Company_Coupon. comapnyId: "+ company.getCompanyId());
 			}
 			throw new Exception("failed to remove Company_Coupon. comapnyId: "+ company.getCompanyId());
 		} finally {
@@ -107,7 +136,15 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		
 	}
 
-	//remove query by coupon only to Company_Coupon table
+	/*
+	 * Remove from Company_Coupon table override method:
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void removeCompany_Coupon(Coupon coupon) throws Exception {
 		
@@ -127,7 +164,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			try {
 				connection.rollback();
 			} catch (SQLException e2) {
-				throw new Exception("DataBase error");
+				throw new Exception("DB error - failed to remove Company_Coupon. couponId: " + coupon.getCouponId());
 			}
 			throw new Exception("failed to remove Company_Coupon. couponId: " + coupon.getCouponId());
 		} finally {
@@ -136,7 +173,18 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		
 	}
 
-	//getCompanies query by coupon only to Company_Coupon table
+	/*
+	 * Get companies ID list from Company_Coupon table override method:
+	 * This method receive 1 parameters: couponId. only records with this ID are relevant.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Long> getCompanyId(long couponId) throws Exception {
 		
@@ -150,15 +198,27 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 				companiesId.add(companyId);
 			}
 		} catch (SQLException e) {
+			throw new Exception("DB error - unable to get Company_Coupon data. couponId: " + couponId);
+		} catch(Exception e) {
 			throw new Exception("unable to get Company_Coupon data. couponId: " + couponId);
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return companiesId;
 	}
 
-	//getCompanies query to Company_Coupon table
-	//pay attention - there are duplicate values
+	/*
+	 * Get all companies ID list from Company_Coupon table override method:
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 * Pay Attention - this method return duplicate values.
+	 */
 	@Override
 	public List<Long> getAllCompaniesId() throws Exception {
 		
@@ -172,14 +232,28 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 
 			}
 		} catch (SQLException e) {
+			throw new Exception("DB error - unable to get Company_Coupon data");
+		}catch (Exception e) {
 			throw new Exception("unable to get Company_Coupon data");
-		} finally {
+		} 
+		finally {
 			connection.close();
 		}
 		return companiesId;
 	}
 
-	//getCoupons query by company only to Company_Coupon table
+	/*
+	 * Get coupons ID list from Company_Coupon table override method:
+	 * This method receive 1 parameters: companyId. only records with this ID are relevant.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the company ID.    
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Long> getCouponId(long companyId) throws Exception {
 		
@@ -193,15 +267,28 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 				couponsId.add(couponId);
 			}
 		} catch (SQLException e) {
+			throw new Exception("DB error - unable to get Company_Coupon data. companyId: " + companyId);
+		}catch (Exception e) {
 			throw new Exception("unable to get Company_Coupon data. companyId: " + companyId);
-		} finally {
+		} 
+		finally {
 			connection.close();
 		}
 		return couponsId;
 	}
 
-	//getCoupons query to Company_Coupon table
-	//pay attention - there are duplicate values
+	/*
+	 * Get all coupons ID list from Company_Coupon table override method:
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 * Pay Attention - this method return duplicate values.
+	 */
 	@Override
 	public List<Long> getAllCouponsId() throws Exception {
 		
@@ -215,8 +302,11 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 
 			}
 		} catch (SQLException e) {
+			throw new Exception("DB error - unable to get Company_Coupon data");
+		}catch (Exception e) {
 			throw new Exception("unable to get Company_Coupon data");
-		} finally {
+		} 
+		finally {
 			connection.close();
 		}
 		return couponsId;

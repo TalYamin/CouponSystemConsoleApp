@@ -11,8 +11,11 @@ import JavaBeans.Customer;
  */
 
 public interface Customer_CouponDAO {
-
-	//interface - queries from Customer_Coupon table
+	
+	/*
+	 * Interface - queries for Customer_Coupon table.
+	 * Methods which will be overridden in Customer_Coupon DBDAO class.
+	 */
 	
 	void insertCustomer_Coupon(Customer customer, Coupon coupon) throws Exception;
 

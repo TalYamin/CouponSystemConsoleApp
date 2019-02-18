@@ -6,7 +6,7 @@ package Client;
  */
 
 
-//Enum which define three kinds of client type
+/*Enum which defines three kinds of client type*/
 
 public enum ClientType {
 	

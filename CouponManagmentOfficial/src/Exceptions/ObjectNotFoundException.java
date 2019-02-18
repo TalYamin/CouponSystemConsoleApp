@@ -2,6 +2,11 @@ package Exceptions;
 
 import Client.ClientType;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public class ObjectNotFoundException extends Exception {
 
 	private long clientId;

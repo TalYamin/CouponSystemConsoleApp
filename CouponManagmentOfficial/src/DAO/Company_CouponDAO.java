@@ -14,7 +14,10 @@ import JavaBeans.Coupon;
 
 public interface Company_CouponDAO {
 	
-	//interface - queries from Company_Coupon table
+	/*
+	 * Interface - queries for Company_Coupon table. 
+	 * Methods which will be overridden in Company_Coupon DBDAO class.
+	 */
 
 	void insertCompany_Coupon(Company company, Coupon coupon) throws Exception;
 

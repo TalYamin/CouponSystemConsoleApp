@@ -23,10 +23,19 @@ import JavaBeans.CouponType;
 
 public class CouponDBDAO implements CouponDAO {
 
-	//static connection to driver
+	/* Static connection to driver */
 	private static Connection connection;
 
-	//insert query to Coupon table
+	/*
+	 * Insert to Coupon table override method:
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with 
+	 * the coupon ID, title, startDate, endDate, amount, type, message, price and image.
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for insert to table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void insertCoupon(Coupon coupon) throws Exception {
 
@@ -49,8 +58,10 @@ public class CouponDBDAO implements CouponDAO {
 			preparedStatement.executeUpdate();
 
 			System.out.println("Coupon created: " + coupon.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
+		}catch (SQLException e) {
+			throw new Exception("DB error - Coupon creation failed. couponId: " + coupon.getCouponId());
+		} 
+		catch (Exception e) {
 			throw new Exception("Coupon creation failed. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
@@ -58,7 +69,15 @@ public class CouponDBDAO implements CouponDAO {
 
 	}
 
-	//remove query to Coupon table
+	/*
+	 * Remove from Coupon table override method:
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public void removeCoupon(Coupon coupon) throws Exception {
 
@@ -78,7 +97,7 @@ public class CouponDBDAO implements CouponDAO {
 			try {
 				connection.rollback();
 			} catch (SQLException e2) {
-				throw new Exception("DataBase error");
+				throw new Exception("DB error - failed to remove Coupon. couponId: " +coupon.getCouponId());
 			}
 			throw new Exception("failed to remove Coupon. couponId: " +coupon.getCouponId());
 		} finally {
@@ -86,7 +105,18 @@ public class CouponDBDAO implements CouponDAO {
 		}
 
 	}
-
+	
+	/*
+	 * Update Coupon table override method:
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with 
+	 * the coupon ID, title, startDate, endDate, amount, type, message, price and image.
+	 * The updates only available for coupon title, startDate, endDate, amount, type, message, price and image. where the relevant ID. 
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for update table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	//update query to Coupon table
 	@Override
 	public void updateCoupon(Coupon coupon) throws Exception {
@@ -106,14 +136,28 @@ public class CouponDBDAO implements CouponDAO {
 
 			System.out.println("update Coupon succeeded. id which updated: " + coupon.getCouponId());
 		} catch (SQLException e) {
+			throw new Exception("DB error - update Coupon failed. couponId: " + coupon.getCouponId());
+		}catch (Exception e) {
 			throw new Exception("update Coupon failed. couponId: " + coupon.getCouponId());
-		} finally {
+		} 
+		finally {
 			connection.close();
 		}
 
 	}
-
-	//get query to Coupon table
+	/*
+	 * Get coupon from Coupon table override method:
+	 * This method receive 1 parameters: couponId. 
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public Coupon getCoupon(long couponId) throws Exception {
 
@@ -149,15 +193,30 @@ public class CouponDBDAO implements CouponDAO {
 			coupon.setImage(resultSet.getString(9));
 
 		} catch (SQLException e) {
+			throw new Exception("DB error - unable to get Coupon data. couponId: " +couponId);
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data. couponId: " +couponId);
-		} finally {
+		}
+		finally {
 			connection.close();
 		}
 		return coupon;
 
 	}
-
-	//getAll query to Coupon table
+	/*
+	 * Get all coupons list from Coupon table override method:
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Coupon> getAllCoupons() throws Exception {
 
@@ -197,16 +256,31 @@ public class CouponDBDAO implements CouponDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println(e);
+			throw new Exception("DB error - unable to get Coupon data");
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data");
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return list;
 
 	}
-
-	//getAll query by id to Coupon table
+	
+	/*
+	 * Get coupons list from Coupon table override method:
+	 * This method receive 1 parameters: couponId. 
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * the SQL query is defined with the coupon ID.   
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Coupon> getAllCoupons(long couponId) throws Exception {
 
@@ -247,14 +321,30 @@ public class CouponDBDAO implements CouponDAO {
 
 		} catch (SQLException e) {
 			System.out.println(e);
+			throw new Exception("DB error - unable to get Coupon data. couponId: " + couponId);
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId);
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return list;
 	}
 
-	//getAll by id and type query to Coupon table
+	/*
+	 * Get coupons list from Coupon table override method:
+	 * This method receive 2 parameters: couponId and typeName. 
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * the SQL query is defined with the coupon ID and typeName.  
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Coupon> getAllCouponsByType(long couponId, String typeName) throws Exception {
 
@@ -296,14 +386,30 @@ public class CouponDBDAO implements CouponDAO {
 
 		} catch (SQLException e) {
 			System.out.println(e);
+			throw new Exception("DB error - unable to get Coupon data. couponId: " + couponId + " couponType: "+ typeName);
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " couponType: "+ typeName);
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return list;
 	}
 
-	//getAll by id and price query to Coupon table
+	/*
+	 * Get coupons list from Coupon table override method:
+	 * This method receive 2 parameters: couponId and priceTop. 
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * the SQL query is defined with the coupon ID and priceTop.  
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Coupon> getAllCouponsByPrice(long couponId, double priceTop) throws Exception {
 		
@@ -343,15 +449,31 @@ public class CouponDBDAO implements CouponDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println(e);
-			e.printStackTrace();
+			throw new Exception("DB error - unable to get Coupon data. couponId: " + couponId + " priceTop: " +priceTop);
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " priceTop: " +priceTop);
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return list;
 	}
 
+	/*
+	 * Get coupons list from Coupon table override method:
+	 * This method receive 2 parameters: couponId and untilDate. 
+	 * There is Data Time Formatter which enable parsing date string to Local Date.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * There is generation of Coupon object which need to receive the data from table.
+	 * the SQL query is defined with the coupon ID and untilDate.  
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
+	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
+	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	@Override
 	public List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception {
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -392,10 +514,10 @@ public class CouponDBDAO implements CouponDAO {
 			}
 
 		} catch (SQLException e) {
-			System.out.println(e);
-			e.printStackTrace();
+			throw new Exception("DB error - unable to get Coupon data. couponId: " + couponId + " untilDate: " + untilDate);
+		}catch (Exception e) {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " untilDate: " + untilDate);
-		} finally {
+		}finally {
 			connection.close();
 		}
 		return list;

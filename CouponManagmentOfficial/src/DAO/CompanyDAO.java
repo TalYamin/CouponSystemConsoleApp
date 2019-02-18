@@ -11,7 +11,10 @@ import JavaBeans.Company;
 
 public interface CompanyDAO {
 	
-	//interface - queries from Company table
+	/*
+	 * Interface - queries for Company table.
+	 * Methods which will be overridden in Company DBDAO class.
+	 */
 	
 	void insertCompany(Company company) throws Exception;
 

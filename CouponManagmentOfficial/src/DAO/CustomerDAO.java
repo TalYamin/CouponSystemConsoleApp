@@ -11,7 +11,10 @@ import JavaBeans.Customer;
 
 public interface CustomerDAO {
 	
-	//interface - queries from Customer table
+	/*
+	 * Interface - queries for Customer table.
+	 * Methods which will be overridden in Customer DBDAO class.
+	 */
 
 	void insertCustomer(Customer customer) throws Exception;
 

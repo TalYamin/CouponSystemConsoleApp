@@ -2,6 +2,11 @@ package Exceptions;
 
 import Client.ClientType;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
 public class LoginCouponSystemException extends Exception {
 	
 	private String userName;

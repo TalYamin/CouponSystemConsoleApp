@@ -13,24 +13,32 @@ import java.sql.Statement;
 
 public class DataBase {
 
-	// DB connection port
+	/* DB connection port */
 	private static String connectionString = "jdbc:derby://localhost:3301/CouponManagment;create=true";
-	// DB derby driver
+	/* DB derby driver */
 	private static String DriverConnection = "org.apache.derby.jdbc.ClientDriver";
-	// static connection - should be in connection pool
+	/* Static connection - should be in connection pool */
 	private static Connection connection;
 
-	// get method for DB connection port
+	/* Get method for DB connection port */
 	public static String getConnectionString() {
 		return connectionString;
 	}
 
-	// get method for DB derby driver
+	/* Get method for DB derby driver */
 	public static String getDriverConnextion() {
 		return DriverConnection;
 	}
 
-	// create Company table
+	
+	
+	/*
+	 * Create Company table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for create Company table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void createCompanyTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -52,7 +60,14 @@ public class DataBase {
 
 	}
 
-	// create Customer table
+	
+	/*
+	 * Create Customer table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for create Customer table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void createCustomerTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -74,7 +89,13 @@ public class DataBase {
 
 	}
 
-	// create Coupon table
+	/*
+	 * Create Coupon table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for create Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void createCouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -98,7 +119,14 @@ public class DataBase {
 
 	}
 
-	// create Customer_Coupon table
+	/*
+	 * Create Customer_Coupon table method:
+	 * This table is Join table which combines two columns as unified primary key.  
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for create Customer_Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void createCustomer_CouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -120,7 +148,14 @@ public class DataBase {
 
 	}
 
-	// create Company_Coupon table
+	/*
+	 * Create Company_Coupon table method:
+	 * This table is Join table which combines two columns as unified primary key.  
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for create Company_Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void createCompany_CouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -142,7 +177,13 @@ public class DataBase {
 
 	}
 
-	// drop Company table
+	/*
+	 * Drop Company table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for drop Company table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void dropCompanyTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -162,7 +203,13 @@ public class DataBase {
 		}
 	}
 
-	// drop Customer table
+	/*
+	 * Drop Customer table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for drop Customer table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void dropCustomerTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -182,7 +229,13 @@ public class DataBase {
 		}
 	}
 
-	// drop Coupon table
+	/*
+	 * Drop Coupon table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for drop Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void dropCouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -202,7 +255,13 @@ public class DataBase {
 		}
 	}
 
-	// drop Customer_Coupon table
+	/*
+	 * Drop Customer_Coupon table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for drop Customer_Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void dropCustomer_CouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -222,7 +281,13 @@ public class DataBase {
 		}
 	}
 
-	// drop Company_Coupon table
+	/*
+	 * Drop Company_Coupon table method:
+	 * This method receive connection to DB and create statement.
+	 * Then SQL query for drop Company_Coupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void dropCompany_CouponTable() throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -242,6 +307,14 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * Build DB method:
+	 * This method include all the methods which create tables in DB.
+	 * Any method receive connection to DB and create statement.
+	 * Then SQL query for any table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void BuildDB() throws Exception {
 
 		try {
@@ -255,6 +328,14 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * Drop DB method:
+	 * This method include all the methods which drop tables from DB.
+	 * Any method receive connection to DB and create statement.
+	 * Then SQL query for any table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void DropDB() throws Exception {
 
 		try {
@@ -268,6 +349,16 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * Alter table for adding column method:
+	 * This method receive 3 parameters: table, columnName and dataType. 
+	 * According to parameters, the SQL query is defined with 
+	 * the relevant table, and with details for new column.
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for alter table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void alterTableAdditon(String table, String columnName, String dataType) throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
@@ -287,6 +378,16 @@ public class DataBase {
 		}
 	}
 
+	/*
+	 * Alter table for dropping column method:
+	 * This method receive 2 parameters: table and columnName. 
+	 * According to parameters, the SQL query is defined with 
+	 * the relevant table and with the relevant column.
+	 * This method receive connection to DB and create prepareStatement.
+	 * Then SQL query for alter table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed.
+	 */
 	public static void alterTableDropping(String table, String columnName) throws Exception {
 
 		connection = DriverManager.getConnection(DataBase.getConnectionString());

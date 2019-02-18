@@ -10,8 +10,11 @@ import JavaBeans.Coupon;
  */
 
 public interface CouponDAO {
-	
-	//interface - queries from Coupon table
+
+	/*
+	 * Interface - queries for Coupon table. Methods which will be overridden in
+	 * Coupon DBDAO class.
+	 */
 
 	void insertCoupon(Coupon coupon) throws Exception;
 
@@ -22,12 +25,12 @@ public interface CouponDAO {
 	Coupon getCoupon(long couponId) throws Exception;
 
 	List<Coupon> getAllCoupons() throws Exception;
-	
+
 	List<Coupon> getAllCoupons(long couponId) throws Exception;
 
 	List<Coupon> getAllCouponsByType(long couponId, String typeName) throws Exception;
-	
+
 	List<Coupon> getAllCouponsByPrice(long couponId, double priceTop) throws Exception;
-	
+
 	List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception;
 }
