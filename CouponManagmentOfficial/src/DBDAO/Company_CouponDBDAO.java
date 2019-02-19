@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import Connections.ConnectionPool;
 import DAO.Company_CouponDAO;
 import DB.DataBase;
 import JavaBeans.Company;
@@ -39,7 +40,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	public void insertCompany_Coupon(Company company, Coupon coupon) throws Exception {
 		
 		connection = DriverManager.getConnection(DataBase.getConnectionString());
-
+		
 		String sql = "insert into Company_Coupon (Company_ID, Coupon_ID) values (?,?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

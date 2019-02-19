@@ -20,6 +20,8 @@ import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import JavaBeans.Customer;
+import System.CouponSystem;
+import Thread.DailyCouponExpirationTask;
 
 public class Test {
 
@@ -267,7 +269,7 @@ public class Test {
 //			********************************************login test**********************************************************************
 //			DataBase.DropDB();
 //			DataBase.BuildDB();
-			
+		
 			Client client = new Client();
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
 //			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
@@ -282,6 +284,17 @@ public class Test {
 //			DataBase.alterTableAdditon("Company_Coupon", "test", "bigint");
 			
 //			DataBase.alterTableDropping("Customer", "test");
+			
+//			
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "18/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "Shay", "15/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			DailyCouponExpirationTask d1 = new DailyCouponExpirationTask();
+//			d1.start();
+//			d1.stopTask();
+//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(3, "Tal", "15/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			d1.start();
+			
+//			CouponSystem couponSystem = CouponSystem.getInstance();
 			
 			
 		} catch (Exception e) {
