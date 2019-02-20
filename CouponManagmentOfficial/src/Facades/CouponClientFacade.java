@@ -1,11 +1,6 @@
 package Facades;
 
-/**
- * @author Tal Yamin
- *
- */
-
-import Client.ClientType;
+import SystemUtils.ClientType;
 
 //interface which include login method
 

@@ -1,28 +1,49 @@
-package Client;
+package SystemUtils;
 
 import java.util.Iterator;
 import java.util.List;
 
 import DBDAO.CompanyDBDAO;
 import DBDAO.CustomerDBDAO;
+import Exceptions.DailyTaskException;
+import Exceptions.LoginCouponSystemException;
 import Facades.AdminUserFacade;
 import Facades.CompanyUserFacade;
 import Facades.CouponClientFacade;
 import Facades.CustomerUserFacade;
 import JavaBeans.Company;
 import JavaBeans.Customer;
-import Exceptions.LoginCouponSystemException;
+import SystemUtils.DailyCouponExpirationTask;
 
 /**
- * @author Tal Yamin
+ * @author Shay Ben Haroush and Tal Yamin
  *
  */
 
-public class Client {
+public class CouponSystem {
 
-	/* DAO objects which enable option to run queries to DB */
-	private CompanyDBDAO comClientDAO = new CompanyDBDAO();
-	private CustomerDBDAO cusClientDAO = new CustomerDBDAO();
+	private static CouponSystem instance = new CouponSystem();
+	private CompanyDBDAO companySystemDAO = new CompanyDBDAO();
+	private CustomerDBDAO customerSystemDAO = new CustomerDBDAO();
+	private static DailyCouponExpirationTask dailyCouponExpirationTask;
+
+	private CouponSystem() {
+		
+	}
+
+	public static CouponSystem getInstance() throws Exception {
+		try {
+			dailyCouponExpirationTask = new DailyCouponExpirationTask();
+			dailyCouponExpirationTask.startTask();
+			return instance;
+		} catch (DailyTaskException e) {
+			System.out.println(e.getMessage());
+		}catch (Exception e) {
+			throw new Exception("DailyCouponExpirationTask failed to start");
+		}
+		return instance;
+
+	}
 
 	/*
 	 * Login to system method: This method receive 3 parameters: userName, password
@@ -38,7 +59,7 @@ public class Client {
 
 			case ADMIN:
 
-				//check the validity of the parameters values
+				// check the validity of the parameters values
 				if (userName.equals("admin") && password.equals("1234")) {
 					AdminUserFacade adminF = new AdminUserFacade();
 					System.out.println("Admin logged in to system");
@@ -51,7 +72,7 @@ public class Client {
 			case COMPANY:
 
 				// take the list of companies from DB
-				List<Company> companies = comClientDAO.getAllCompanies();
+				List<Company> companies = companySystemDAO.getAllCompanies();
 				Iterator<Company> i = companies.iterator();
 
 				// for any company in DB check the validity of the parameters values
@@ -70,7 +91,7 @@ public class Client {
 			case CUSTOMER:
 
 				// take the list of customers from DB
-				List<Customer> customers = cusClientDAO.getAllCustomers();
+				List<Customer> customers = customerSystemDAO.getAllCustomers();
 				Iterator<Customer> it = customers.iterator();
 
 				// for any customer in DB check the validity of the parameters values
@@ -93,6 +114,15 @@ public class Client {
 			throw new Exception("Login failed");
 		}
 		return null;
-
 	}
+
+	public void shutdown() {
+		try {
+			// if - connection pool close so
+			dailyCouponExpirationTask.stopTask();
+		} catch (Exception e) {
+			System.out.println("DailyCouponExpirationTask failed to stop");
+		}
+	}
+
 }

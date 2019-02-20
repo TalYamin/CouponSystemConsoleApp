@@ -1,6 +1,6 @@
 package Exceptions;
 
-import Client.ClientType;
+import SystemUtils.ClientType;
 
 /**
  * @author Shay Ben Haroush

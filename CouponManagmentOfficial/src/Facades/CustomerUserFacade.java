@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import Client.ClientType;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
@@ -16,6 +15,7 @@ import Exceptions.OutOfStockException;
 import Exceptions.SamePurchaseException;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
+import SystemUtils.ClientType;
 
 /**
  * @author Tal Yamin

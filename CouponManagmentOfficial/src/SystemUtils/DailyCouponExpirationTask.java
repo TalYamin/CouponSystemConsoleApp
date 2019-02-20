@@ -1,4 +1,4 @@
-package Thread;
+package SystemUtils;
 
 import java.time.LocalDate;
 import java.util.Iterator;
@@ -7,6 +7,7 @@ import java.util.List;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import Exceptions.DailyTaskException;
 import JavaBeans.Coupon;
 
 /**
@@ -16,22 +17,24 @@ import JavaBeans.Coupon;
 
 public class DailyCouponExpirationTask implements Runnable {
 
-	private CouponDBDAO couTask = new CouponDBDAO();
-	private Company_CouponDBDAO com_couTask = new Company_CouponDBDAO();
-	private Customer_CouponDBDAO cus_couTask = new Customer_CouponDBDAO();
+	
+	private CouponDBDAO couTaskDAO = new CouponDBDAO();
+	private Company_CouponDBDAO com_couTaskDAO = new Company_CouponDBDAO();
+	private Customer_CouponDBDAO cus_couTaskDAO = new Customer_CouponDBDAO();
 	private Thread taskThread;
 
 	public DailyCouponExpirationTask() {
 
 	}
 
-	public void start() throws Exception {
+	public void startTask() throws Exception {
 		try {
-			this.taskThread = new Thread(this);
-			this.taskThread.start();
+
+			taskThread = new Thread(this);
+			taskThread.start();
 			System.out.println("Daily Coupon Expiration Task starting now");
 		} catch (Exception e) {
-			throw new Exception("Daily Coupon Expiration Task failed starting");
+			throw new DailyTaskException("Daily Coupon Expiration Task failed starting");
 		}
 	}
 
@@ -40,14 +43,16 @@ public class DailyCouponExpirationTask implements Runnable {
 
 		try {
 			System.out.println("Daily Coupon Expiration Task running now");
-			List<Coupon> coupons = couTask.getAllCoupons();
+
+			List<Coupon> coupons = couTaskDAO.getAllCoupons();
 			Iterator<Coupon> i = coupons.iterator();
 			while (i.hasNext()) {
 				Coupon current = i.next();
 				if (current.getEndDate().isBefore(LocalDate.now())) {
-					couTask.removeCoupon(current);
-					com_couTask.removeCompany_Coupon(current);
-					cus_couTask.removeCustomer_Coupon(current);
+					couTaskDAO.removeCoupon(current);
+					com_couTaskDAO.removeCompany_Coupon(current);
+					cus_couTaskDAO.removeCustomer_Coupon(current);
+
 				}
 
 			}
@@ -59,9 +64,10 @@ public class DailyCouponExpirationTask implements Runnable {
 
 	public void stopTask() throws Exception {
 		try {
-			this.taskThread.interrupt();
+			taskThread.interrupt();
+			System.out.println("Daily Coupon Expiration Task stopped");
 		} catch (Exception e) {
-			throw new Exception("Daily Coupon Expiration Task failed stoping");
+			throw new DailyTaskException("Daily Coupon Expiration Task failed stoping");
 		}
 	}
 

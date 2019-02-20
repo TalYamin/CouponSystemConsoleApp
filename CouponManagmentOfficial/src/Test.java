@@ -5,8 +5,7 @@ import java.sql.SQLException;
 
 import javax.xml.crypto.Data;
 
-import Client.Client;
-import Client.ClientType;
+
 import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
@@ -20,6 +19,9 @@ import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import JavaBeans.Customer;
+import SystemUtils.ClientType;
+import SystemUtils.CouponSystem;
+import SystemUtils.DailyCouponExpirationTask;
 
 public class Test {
 
@@ -268,21 +270,25 @@ public class Test {
 //			DataBase.DropDB();
 //			DataBase.BuildDB();
 			
-			Client client = new Client();
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
-//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "31/12/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
-//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(1);
-//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "Spa", "31/3/2019", 10, CouponType.HEALTH, "spa for couple", 78.8, "spa image"));
-//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(2);
-//			((CompanyUserFacade) client.login("Dell", "Dell1234", ClientType.COMPANY)).removeCoupon(1);
-//			((CustomerUserFacade) client.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).getAllPurchases();
-//			((AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN)).removeCompany(1234);
+//			CouponSystem couponSystem = CouponSystem.getInstance();
+//			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
+//			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "31/12/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CustomerUserFacade) couponSystem.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(1);
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "Spa", "31/3/2019", 10, CouponType.HEALTH, "spa for couple", 78.8, "spa image"));
+//			((CustomerUserFacade) couponSystem.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(2);
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).removeCoupon(1);
+//			((CustomerUserFacade) couponSystem.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).getAllPurchases();
+//			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).removeCompany(1234);
+//			couponSystem.shutdown();
+//			couponSystem.getInstance();
+
 			
 //			DataBase.alterTableAdditon("Company_Coupon", "test", "bigint");
 			
 //			DataBase.alterTableDropping("Customer", "test");
 			
+//			couponSystem.shutdown();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
