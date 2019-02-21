@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import SystemUtils.ConnectionPool;
+
 /**
  * @author Tal Yamin
  *
@@ -18,8 +20,10 @@ public class DataBase {
 	/* DB derby driver */
 	private static String DriverConnection = "org.apache.derby.jdbc.ClientDriver";
 	/* Static connection - should be in connection pool */
-	private static Connection connection;
 
+	private static ConnectionPool connectionPool;
+
+	
 	/* Get method for DB connection port */
 	public static String getConnectionString() {
 		return connectionString;
@@ -41,8 +45,9 @@ public class DataBase {
 	 */
 	public static void createCompanyTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
-
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+		
 		String sql = "create table Company (" + "ID bigint not null primary key, " + "COMP_NAME varchar(50) not null, "
 				+ "PASSWORD varchar(50) not null, " + "EMAIL varchar(50) not null)";
 
@@ -56,6 +61,7 @@ public class DataBase {
 			throw new Exception("unable to create Company table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -70,8 +76,12 @@ public class DataBase {
 	 */
 	public static void createCustomerTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
-
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+		
+		connectionPool = ConnectionPool.getInstance();
+		connectionPool.getConnection();
+		
 		String sql = "create table Customer (" + "ID bigint not null primary key, " + "CUST_NAME varchar(50) not null, "
 				+ "PASSWORD varchar(50) not null)";
 
@@ -85,6 +95,7 @@ public class DataBase {
 			throw new Exception("unable to create Customer table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -98,8 +109,12 @@ public class DataBase {
 	 */
 	public static void createCouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
+		connectionPool = ConnectionPool.getInstance();
+		connectionPool.getConnection();
+		
 		String sql = "create table Coupon (" + "ID bigint not null primary key, " + "TITLE varchar(50) not null, "
 				+ "START_DATE date not null, " + "END_DATE date not null, " + "AMOUNT integer not null, "
 				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
@@ -115,6 +130,7 @@ public class DataBase {
 			throw new Exception("unable to create Coupon table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -129,7 +145,8 @@ public class DataBase {
 	 */
 	public static void createCustomer_CouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "create table Customer_Coupon (" + "Customer_ID bigint, " + "Coupon_ID bigint, "
 				+ "primary key (Customer_ID, Coupon_ID))";
@@ -144,6 +161,7 @@ public class DataBase {
 			throw new Exception("unable to create Customer_Coupon table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -158,7 +176,8 @@ public class DataBase {
 	 */
 	public static void createCompany_CouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "create table Company_Coupon (" + "Company_ID bigint, " + "Coupon_ID bigint, "
 				+ "primary key (Company_ID, Coupon_ID))";
@@ -173,6 +192,7 @@ public class DataBase {
 			throw new Exception("unable to create Company_Coupon table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -186,7 +206,8 @@ public class DataBase {
 	 */
 	public static void dropCompanyTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "drop table Company";
 
@@ -200,6 +221,7 @@ public class DataBase {
 			throw new Exception("unable to drop Company Table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
@@ -212,7 +234,8 @@ public class DataBase {
 	 */
 	public static void dropCustomerTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "drop table Customer";
 
@@ -226,6 +249,7 @@ public class DataBase {
 			throw new Exception("unable to drop Customer Table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
@@ -238,7 +262,8 @@ public class DataBase {
 	 */
 	public static void dropCouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "drop table Coupon";
 
@@ -252,6 +277,7 @@ public class DataBase {
 			throw new Exception("unable to drop Coupon Table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
@@ -264,7 +290,8 @@ public class DataBase {
 	 */
 	public static void dropCustomer_CouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "drop table Customer_Coupon";
 
@@ -278,6 +305,7 @@ public class DataBase {
 			throw new Exception("unable to drop Customer_Coupon Table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
@@ -290,7 +318,8 @@ public class DataBase {
 	 */
 	public static void dropCompany_CouponTable() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "drop table Company_Coupon";
 
@@ -304,12 +333,14 @@ public class DataBase {
 			throw new Exception("unable to drop Company_Coupon Table");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
 	/*
 	 * Build DB method:
 	 * This method include all the methods which create tables in DB.
+	 * This method receive 1 parameter: connection.
 	 * Any method receive connection to DB and create statement.
 	 * Then SQL query for any table is executed. 
 	 * If there is DB issue, SQLException is activated.
@@ -331,6 +362,7 @@ public class DataBase {
 	/*
 	 * Drop DB method:
 	 * This method include all the methods which drop tables from DB.
+	 * This method receive 1 parameter: connection.
 	 * Any method receive connection to DB and create statement.
 	 * Then SQL query for any table is executed. 
 	 * If there is DB issue, SQLException is activated.
@@ -361,7 +393,8 @@ public class DataBase {
 	 */
 	public static void alterTableAdditon(String table, String columnName, String dataType) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = String.format("alter table %s add %s %s", table, columnName, dataType);
 
@@ -375,6 +408,7 @@ public class DataBase {
 			throw new Exception("alter Company table failed.");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 
@@ -390,7 +424,8 @@ public class DataBase {
 	 */
 	public static void alterTableDropping(String table, String columnName) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = String.format("alter table %s drop column %s", table, columnName);
 
@@ -404,6 +439,7 @@ public class DataBase {
 			throw new Exception("alter Company table failed.");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 	}
 

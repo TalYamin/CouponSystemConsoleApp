@@ -25,6 +25,7 @@ public class CouponSystem {
 	private static CouponSystem instance = new CouponSystem();
 	private CompanyDBDAO companySystemDAO = new CompanyDBDAO();
 	private CustomerDBDAO customerSystemDAO = new CustomerDBDAO();
+	private ConnectionPool connectionPool;
 	private static DailyCouponExpirationTask dailyCouponExpirationTask;
 
 	private CouponSystem() {
@@ -118,7 +119,8 @@ public class CouponSystem {
 
 	public void shutdown() {
 		try {
-			// if - connection pool close so
+			connectionPool = ConnectionPool.getInstance();
+			connectionPool.closeAllConnections();
 			dailyCouponExpirationTask.stopTask();
 		} catch (Exception e) {
 			System.out.println("DailyCouponExpirationTask failed to stop");

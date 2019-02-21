@@ -12,6 +12,7 @@ import java.util.List;
 import DAO.CustomerDAO;
 import DB.DataBase;
 import JavaBeans.Customer;
+import SystemUtils.ConnectionPool;
 
 /**
  * @author Tal Yamin
@@ -20,14 +21,15 @@ import JavaBeans.Customer;
 
 public class CustomerDBDAO implements CustomerDAO {
 
-	//static connection to driver
-	private static Connection connection;
+	
+	private static ConnectionPool connectionPool;
 
 	//insert query to Customer table
 	@Override
 	public void insertCustomer(Customer customer) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "insert into Customer(ID, CUST_NAME, PASSWORD) values (?,?,?)";
 
@@ -44,6 +46,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw new Exception("Customer creation failed. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -52,7 +55,8 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public void removeCustomer(Customer customer) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Customer where ID = ?";
 
@@ -73,6 +77,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw new Exception("failed to remove Customer. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -81,7 +86,8 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public void updateCustomer(Customer customer) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = String.format("update Customer set CUST_NAME= '%s',PASSWORD = '%s'  where ID = %d",
 				customer.getCustomerName(), customer.getCustomerPassword(), customer.getCustomerId());
@@ -95,6 +101,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw new Exception("update Customer failed. customerId: " + customer.getCustomerId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -103,7 +110,8 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public Customer getCustomer(long customerId) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		Customer customer = new Customer();
 		try (Statement statement = connection.createStatement()) {
 			String sql = "SELECT * FROM Customer WHERE ID=" + customerId;
@@ -117,6 +125,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw new Exception("unable to get Customer data. customerId: " + customerId);
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return customer;
 
@@ -126,7 +135,8 @@ public class CustomerDBDAO implements CustomerDAO {
 	@Override
 	public synchronized List<Customer> getAllCustomers() throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Customer> list = new ArrayList<>();
 		String sql = "select * from Customer";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -144,6 +154,7 @@ public class CustomerDBDAO implements CustomerDAO {
 			throw new Exception("unable to get Customer data");
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 

@@ -20,6 +20,7 @@ import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import JavaBeans.Customer;
 import SystemUtils.ClientType;
+import SystemUtils.ConnectionPool;
 import SystemUtils.CouponSystem;
 import SystemUtils.DailyCouponExpirationTask;
 
@@ -269,6 +270,9 @@ public class Test {
 //			********************************************login test**********************************************************************
 //			DataBase.DropDB();
 //			DataBase.BuildDB();
+//			ConnectionPool connectionPool = ConnectionPool.getInstance();
+			
+			
 			
 //			CouponSystem couponSystem = CouponSystem.getInstance();
 //			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
@@ -289,6 +293,11 @@ public class Test {
 //			DataBase.alterTableDropping("Customer", "test");
 			
 //			couponSystem.shutdown();
+			
+//			DataBase.createCouponTable();
+//			DataBase.dropCouponTable();
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();

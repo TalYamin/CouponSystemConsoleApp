@@ -15,6 +15,7 @@ import DAO.CouponDAO;
 import DB.DataBase;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
+import SystemUtils.ConnectionPool;
 
 /**
  * @author Tal Yamin
@@ -23,8 +24,7 @@ import JavaBeans.CouponType;
 
 public class CouponDBDAO implements CouponDAO {
 
-	/* Static connection to driver */
-	private static Connection connection;
+	private static ConnectionPool connectionPool;
 
 	/*
 	 * Insert to Coupon table override method:
@@ -39,7 +39,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public void insertCoupon(Coupon coupon) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "insert into Coupon(ID, TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE) values (?,?,?,?,?,?,?,?,?)";
 
@@ -65,6 +66,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("Coupon creation failed. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -81,7 +83,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public void removeCoupon(Coupon coupon) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Coupon where ID = ?";
 
@@ -102,6 +105,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("failed to remove Coupon. couponId: " +coupon.getCouponId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -121,7 +125,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public void updateCoupon(Coupon coupon) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = String.format(
 				"update Coupon set TITLE = '%s',START_DATE = '" + coupon.getStartDate().toString() + "', END_DATE = '"
@@ -142,6 +147,7 @@ public class CouponDBDAO implements CouponDAO {
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -161,7 +167,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public Coupon getCoupon(long couponId) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		Coupon coupon = new Coupon();
 		try (Statement statement = connection.createStatement()) {
 			String sql = "SELECT * FROM Coupon WHERE ID=" + couponId;
@@ -199,6 +206,7 @@ public class CouponDBDAO implements CouponDAO {
 		}
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return coupon;
 
@@ -220,7 +228,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public List<Coupon> getAllCoupons() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -261,6 +270,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("unable to get Coupon data");
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 
@@ -284,7 +294,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public List<Coupon> getAllCoupons(long couponId) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon where ID = " + couponId;
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -326,6 +337,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId);
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 	}
@@ -348,7 +360,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public List<Coupon> getAllCouponsByType(long couponId, String typeName) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = String.format("select * from Coupon where ID = %d and TYPE = '%s'", couponId, typeName);
 
@@ -391,6 +404,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " couponType: "+ typeName);
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 	}
@@ -413,7 +427,8 @@ public class CouponDBDAO implements CouponDAO {
 	@Override
 	public List<Coupon> getAllCouponsByPrice(long couponId, double priceTop) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon where ID = " + couponId + " and PRICE <= " + priceTop;
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -454,6 +469,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " priceTop: " +priceTop);
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 	}
@@ -476,7 +492,8 @@ public class CouponDBDAO implements CouponDAO {
 	 */
 	@Override
 	public List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception {
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 		List<Coupon> list = new ArrayList<>();
 		LocalDate untilLocalDate = LocalDate.parse(untilDate, formatter);
@@ -519,6 +536,7 @@ public class CouponDBDAO implements CouponDAO {
 			throw new Exception("unable to get Coupon data. couponId: " + couponId + " untilDate: " + untilDate);
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 	}

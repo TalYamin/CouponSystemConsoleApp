@@ -12,6 +12,7 @@ import java.util.List;
 import DAO.CompanyDAO;
 import DB.DataBase;
 import JavaBeans.Company;
+import SystemUtils.ConnectionPool;
 
 /**
  * @author Tal Yamin
@@ -20,8 +21,7 @@ import JavaBeans.Company;
 
 public class CompanyDBDAO implements CompanyDAO {
 
-	/* Static connection to driver */
-	private static Connection connection;
+	private static ConnectionPool connectionPool;
 
 	/*
 	 * Insert to Company table override method:
@@ -36,7 +36,8 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void insertCompany(Company company) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "insert into Company(ID, COMP_NAME, PASSWORD, EMAIL) values (?,?,?,?)";
 
@@ -57,6 +58,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -73,7 +75,8 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void removeCompany(Company company) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Company where ID = ?";
 
@@ -94,6 +97,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw new Exception("failed to remove Company. companyId: " + company.getCompanyId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		} 
 
 	}
@@ -112,7 +116,8 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public void updateCompany(Company company) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = String.format("update Company set COMP_NAME= '%s',PASSWORD = '%s', EMAIL= '%s' where ID = %d",
 				company.getCompanyName(), company.getCompanyPassword(), company.getCompanyEmail(),
@@ -127,6 +132,7 @@ public class CompanyDBDAO implements CompanyDAO {
 			throw new Exception("update Compnay failed. companyId: "+ company.getCompanyId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 
 	}
@@ -146,7 +152,8 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public Company getCompany(long companyId) throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		Company company = new Company();
 		try (Statement statement = connection.createStatement()) {
 			String sql = "SELECT * FROM Company WHERE ID=" + companyId;
@@ -164,6 +171,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return company;
 	}
@@ -182,7 +190,8 @@ public class CompanyDBDAO implements CompanyDAO {
 	@Override
 	public synchronized List<Company> getAllCompanies() throws Exception {
 
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Company> list = new ArrayList<>();
 		String sql = "select * from Company";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -204,6 +213,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return list;
 

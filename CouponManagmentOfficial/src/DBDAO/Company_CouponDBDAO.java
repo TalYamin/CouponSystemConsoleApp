@@ -13,6 +13,7 @@ import DAO.Company_CouponDAO;
 import DB.DataBase;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
+import SystemUtils.ConnectionPool;
 
 /**
  * @author Tal Yamin
@@ -21,8 +22,7 @@ import JavaBeans.Coupon;
 
 public class Company_CouponDBDAO implements Company_CouponDAO{
 
-	/* Static connection to driver */
-	private static Connection connection;
+	private static ConnectionPool connectionPool;
 	
 	
 	/*
@@ -38,7 +38,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public void insertCompany_Coupon(Company company, Coupon coupon) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "insert into Company_Coupon (Company_ID, Coupon_ID) values (?,?)";
 
@@ -56,6 +57,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			throw new Exception("Company_Coupon addition failed. companyId: " + company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		
 	}
@@ -73,7 +75,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public void removeCompany_Coupon(Company company, Coupon coupon) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Company_Coupon where Company_ID = ? AND Coupon_ID = ?";
 
@@ -95,6 +98,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			throw new Exception("failed to remove Company_Coupon. companyId "+ company.getCompanyId() + " couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		
 	}
@@ -111,7 +115,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public void removeCompany_Coupon(Company company) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Company_Coupon where Company_ID = ?";
 
@@ -132,6 +137,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			throw new Exception("failed to remove Company_Coupon. comapnyId: "+ company.getCompanyId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		
 	}
@@ -148,7 +154,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public void removeCompany_Coupon(Coupon coupon) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 
 		String sql = "delete from Company_Coupon where Coupon_ID = ?";
 
@@ -169,6 +176,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			throw new Exception("failed to remove Company_Coupon. couponId: " + coupon.getCouponId());
 		} finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		
 	}
@@ -188,7 +196,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public List<Long> getCompanyId(long couponId) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Long> companiesId = new ArrayList<>();
 		String sql = "select * from Company_Coupon where Coupon_ID = " + couponId;
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -203,6 +212,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 			throw new Exception("unable to get Company_Coupon data. couponId: " + couponId);
 		}finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return companiesId;
 	}
@@ -222,7 +232,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public List<Long> getAllCompaniesId() throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Long> companiesId = new ArrayList<>();
 		String sql = "select * from Company_Coupon";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -238,6 +249,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return companiesId;
 	}
@@ -257,7 +269,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public List<Long> getCouponId(long companyId) throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Long> couponsId = new ArrayList<>();
 		String sql = "select * from Company_Coupon where Company_ID = " + companyId;
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -273,6 +286,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return couponsId;
 	}
@@ -292,7 +306,8 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 	@Override
 	public List<Long> getAllCouponsId() throws Exception {
 		
-		connection = DriverManager.getConnection(DataBase.getConnectionString());
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
 		List<Long> couponsId = new ArrayList<>();
 		String sql = "select * from Company_Coupon";
 		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
@@ -308,6 +323,7 @@ public class Company_CouponDBDAO implements Company_CouponDAO{
 		} 
 		finally {
 			connection.close();
+			connectionPool.returnConnection(connection);
 		}
 		return couponsId;
 	}
