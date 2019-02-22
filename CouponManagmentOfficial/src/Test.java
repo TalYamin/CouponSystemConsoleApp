@@ -277,7 +277,11 @@ public class Test {
 //			CouponSystem couponSystem = CouponSystem.getInstance();
 //			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
 //			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
-//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "31/12/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "a", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			System.out.println("check");
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(3, "b", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(3, "b", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
 //			((CustomerUserFacade) couponSystem.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(1);
 //			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "Spa", "31/3/2019", 10, CouponType.HEALTH, "spa for couple", 78.8, "spa image"));
 //			((CustomerUserFacade) couponSystem.login("Tal Yamin", "Tal313", ClientType.CUSTOMER)).purchaseCoupon(2);
@@ -297,11 +301,15 @@ public class Test {
 //			DataBase.createCouponTable();
 //			DataBase.dropCouponTable();
 			
+//			ConnectionPool connectionPool = ConnectionPool.getInstance();
+			
+			
+//			CompanyUserFacade companyUserFacade = new CompanyUserFacade(new Company(companyId, companyName, companyPassword, companyEmail))
+			
 			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			
 		}
 	}
 }

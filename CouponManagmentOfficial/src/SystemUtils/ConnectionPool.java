@@ -34,15 +34,6 @@ public class ConnectionPool {
 		}
 		
 		Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
-//		DatabaseMetaData  metas;
-//		ResultSet tables;
-//		Statement stat;
-//		metas = con1.getMetaData();
-//		stat = con1.createStatement();
-//		tables = metas.getTables(con1.getCatalog(), null, "Company", null);
-//		if (!tables.next()) {
-//			DataBase.BuildDB();
-//		}
 		con1.close();
 		while(conQ.size() < MAX_CON_NUM) {
 			con1 = DriverManager.getConnection(DataBase.getConnectionString());

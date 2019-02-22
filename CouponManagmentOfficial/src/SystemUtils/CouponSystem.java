@@ -1,8 +1,10 @@
 package SystemUtils;
 
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.CustomerDBDAO;
 import Exceptions.DailyTaskException;
@@ -29,6 +31,11 @@ public class CouponSystem {
 	private static DailyCouponExpirationTask dailyCouponExpirationTask;
 
 	private CouponSystem() {
+		try {
+			DataBase.BuildDB();
+		} catch (Exception e) {
+			System.out.println("DB already exists");
+		}
 		
 	}
 

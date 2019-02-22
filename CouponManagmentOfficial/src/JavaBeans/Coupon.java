@@ -68,11 +68,6 @@ public class Coupon {
 	public LocalDate getStartDate() {
 		return this.startDate;
 	}
-	
-//	public java.sql.Date getStartDate() {
-//		java.sql.Date sqlDate = new java.sql.Date(this.startDate.getTime()); 
-//		return sqlDate;
-//	}
 
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
@@ -81,11 +76,6 @@ public class Coupon {
 	public LocalDate getEndDate() {
 		return this.endDate;
 	}
-	
-//	public java.sql.Date getEndDate() {
-//		java.sql.Date sqlDate = new java.sql.Date(this.endDate.getTime()); 
-//		return sqlDate;
-//	}
 
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;

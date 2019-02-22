@@ -1,5 +1,6 @@
 package SystemUtils;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +18,7 @@ import JavaBeans.Coupon;
 
 public class DailyCouponExpirationTask implements Runnable {
 
-	
+	private boolean b = true;
 	private CouponDBDAO couTaskDAO = new CouponDBDAO();
 	private Company_CouponDBDAO com_couTaskDAO = new Company_CouponDBDAO();
 	private Customer_CouponDBDAO cus_couTaskDAO = new Customer_CouponDBDAO();
@@ -43,19 +44,23 @@ public class DailyCouponExpirationTask implements Runnable {
 
 		try {
 			System.out.println("Daily Coupon Expiration Task running now");
-
-			List<Coupon> coupons = couTaskDAO.getAllCoupons();
-			Iterator<Coupon> i = coupons.iterator();
-			while (i.hasNext()) {
-				Coupon current = i.next();
-				if (current.getEndDate().isBefore(LocalDate.now())) {
-					couTaskDAO.removeCoupon(current);
-					com_couTaskDAO.removeCompany_Coupon(current);
-					cus_couTaskDAO.removeCustomer_Coupon(current);
-
+			
+			while (b) {
+				List<Coupon> coupons = couTaskDAO.getAllCoupons();
+				Iterator<Coupon> i = coupons.iterator();
+				while (i.hasNext()) {
+					Coupon current = i.next();
+					if (current.getEndDate().isBefore(LocalDate.now())) {
+						couTaskDAO.removeCoupon(current);
+						com_couTaskDAO.removeCompany_Coupon(current);
+						cus_couTaskDAO.removeCustomer_Coupon(current);
+						
+					}
+					
 				}
-
+				taskThread.sleep(2000);
 			}
+
 		} catch (Exception e) {
 			System.out.println("Daily Coupon Expiration Task failed running"); // there is no option to throw exception
 		}
@@ -64,6 +69,7 @@ public class DailyCouponExpirationTask implements Runnable {
 
 	public void stopTask() throws Exception {
 		try {
+			b=false;
 			taskThread.interrupt();
 			System.out.println("Daily Coupon Expiration Task stopped");
 		} catch (Exception e) {
