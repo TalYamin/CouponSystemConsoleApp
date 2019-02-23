@@ -98,7 +98,7 @@ public class ConnectionPool {
 			}
 		}
 		
-		System.out.println("All connections have been close in ConnectionPool");
+		System.out.println("All connections have been closed in ConnectionPool");
 	}
 	
 	//return the number of the available connections

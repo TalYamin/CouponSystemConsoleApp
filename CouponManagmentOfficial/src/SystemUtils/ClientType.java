@@ -21,7 +21,7 @@ public enum ClientType {
 	{
 		@Override
 	    public String toString() {
-	      return "Compnay";
+	      return "Company";
 		}
 	},
 	CUSTOMER

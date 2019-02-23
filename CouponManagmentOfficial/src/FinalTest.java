@@ -26,12 +26,11 @@ public class FinalTest {
 		CouponClientFacade client;
 		ClientType clientType = ClientType.ADMIN;
 		List<Company> companies;
-		List<Customer>customers;
+		List<Customer> customers;
 		Company testCompany;
 		Customer testCustomer;
 		AdminUserFacade admin;
-		
-		
+		CompanyUserFacade companyUser;
 
 		Company abc = new Company();
 		abc.setCompanyName("abc");
@@ -73,8 +72,6 @@ public class FinalTest {
 			System.out.println(e.getMessage());
 		}
 
-		
-		
 		// *****************************Admin Test**************************//
 		System.out.println("*************************************");
 		System.out.println("// **Admin Test**//");
@@ -92,10 +89,9 @@ public class FinalTest {
 			System.out.println(e.getMessage());
 		}
 
+		// (2) get admin facade
 		name = "admin";
 		password = "1234";
-
-		// (2) get admin facade
 		System.out.println("*************************************");
 		System.out.println("(2) Checking valid login as admin: ");
 
@@ -108,8 +104,8 @@ public class FinalTest {
 			System.out.println("(3) add companies test:");
 			admin.insertCompany(new Company(9876, "Dell", "98Dell76", "israel_office@dell.com"));
 			admin.insertCompany(new Company(4321, "Elbit", "Elbit4321", "israel@elbit.com"));
-			admin.insertCompany(new Company(5791, "Discount", "Discount5791", "israel@discount.com"));	
-			
+			admin.insertCompany(new Company(5791, "Discount", "Discount5791", "israel@discount.com"));
+
 			// (4) print all companies
 			System.out.println("*************************************");
 			System.out.println("(4) Print all companies test: ");
@@ -124,7 +120,7 @@ public class FinalTest {
 			// (6) remove company
 			System.out.println("*************************************");
 			System.out.println("(6) Remove Company test: ");
-			admin.removeCompany(4321); 
+			admin.removeCompany(4321);
 			System.out.println("List of companies after removeing company: ");
 			companies = admin.getAllCompanies();
 
@@ -142,7 +138,7 @@ public class FinalTest {
 			admin.insertCustomer(new Customer(203, "Shay Ben Haroush", "Shay203"));
 			admin.insertCustomer(new Customer(963, "Kobi Shasha", "Kobi963"));
 			admin.insertCustomer(new Customer(741, "Mosh Ben Ari", "Mosh741"));
-			
+
 			// (9) print all customers
 			System.out.println("*************************************");
 			System.out.println("(9) Print all customers test: ");
@@ -154,54 +150,125 @@ public class FinalTest {
 			System.out.println("(9) Print a customer test:");
 			testCustomer = admin.getCustomer(313);
 
-			
 			// (11) remove customer
 			System.out.println("*************************************");
 			System.out.println("(11) Remove Customer test: ");
 			admin.removeCustomer(741);
 			System.out.println("List of customers after removeing customer: ");
 			admin.getAllCustomers();
-			
+
 			// (12) update customer
 			System.out.println("*************************************");
 			System.out.println("(12) Update Customer test: ");
 			admin.updateCustomer(313, "313Tal313");
 			System.out.println("Customer after update:");
 			admin.getCustomer(313);
-			
-			
+
 			// (13) try to add company with name which already exists
 			System.out.println("*************************************");
 			System.out.println("(13) try to add company with name which already exists: ");
 			admin.insertCompany(new Company(1111, "Dell", "Dell1111", "Dell@dell.com"));
-			
+
 			// (14) try to add customer with name which already exists
 			System.out.println("*************************************");
 			System.out.println("(14) try to add customer with name which already exists");
 			admin.insertCustomer(new Customer(912, "Shay Ben Haroush", "Shay912"));
-			
-		
-			
-			
 
-			// *****************************Company Test**************************//
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		// *****************************Company Test**************************//
+		System.out.println("*************************************");
+		System.out.println("// **Company Test**//");
+
+		// (1) bad login//
+		System.out.println("*************************************");
+		System.out.println("(1) Checking bad login as Company: ");
+
+		name = "Dell";
+		password = "Dell2019";
+		clientType = ClientType.COMPANY;
+
+		try {
+			client = couponSystem.login(name, password, clientType);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		// (2) get Company facade
+		name = "Dell";
+		password = "Dell9876";
+		System.out.println("*************************************");
+		System.out.println("(2) Checking valid login as company: ");
+
+		try {
+			client = couponSystem.login(name, password, clientType);
+			companyUser = (CompanyUserFacade) client;
+			
+			// (3) print company
 			System.out.println("*************************************");
-			System.out.println("// **Company Test**//");
+			System.out.println("(3) Print Company test:");
+			companyUser.getCompany();
 			
-			
-			// (1) bad login//
+			// (4) add coupon
 			System.out.println("*************************************");
-			System.out.println("(1) Checking bad login as Company: ");
+			System.out.println("(4) Add coupon test:");
+			companyUser.insertCoupon(new Coupon(11, "Ski", "31/12/2019", 10, CouponType.SPORTS, "Ski vacation, 5 stars hotel", 500.5, "https://www.snowmagazine.com/media/reviews/photos/original/59/e6/5f/Alpe-dhuez-istock-1-40-1450092356.jpg"));
+			companyUser.insertCoupon(new Coupon(12, "BBB", "31/5/2019", 5, CouponType.RESTURANTS, "dinner for couple", 70.3, "https://images1.calcalist.co.il/PicServer2/20122005/522772/YE1218528_l.jpg"));
+			companyUser.insertCoupon(new Coupon(13, "Spa", "31/7/2019", 15, CouponType.HEALTH, "free entrance for spa facilities", 249.9, "https://img.grouponcdn.com/iam/NG2PuHCH332Ax1sL19w4GDDyvyE/NG-1500x900/v1/c700x420.jpg"));
+			companyUser.insertCoupon(new Coupon(14, "Goons Pizza", "31/12/2019", 5, CouponType.RESTURANTS, "family pizza", 60.7, "https://lh3.googleusercontent.com/p/AF1QipMHRbrkD5FglAreY6ZtKzZYBeee-t4OsmupQNKn=s1600-w1280-h1280"));
 			
-			name = "Dell";
-			password = "Dell2019";
-			clientType = ClientType.COMPANY;
+			// (5) print all coupons
+			System.out.println("*************************************");
+			System.out.println("(5) Print all coupons test: ");
+			System.out.println("List of coupons: ");
+			companyUser.getAllCoupons();
 			
-			try {
-			CompanyUserFacade companyUserFacade = (CompanyUserFacade) couponSystem.login("Discount", "Discount5794", ClientType.COMPANY);
-			}catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+			// (6) print all coupons by type
+			System.out.println("*************************************");
+			System.out.println("(6) Print all coupons by type test: ");
+			System.out.println("List of coupons by type RESTURANTS: ");
+			companyUser.getAllCouponsByType("Resturants");
+			
+			// (7) print all coupons by price limit
+			System.out.println("*************************************");
+			System.out.println("(7) Print all coupons by price limit test: ");
+			System.out.println("List of coupons by price limit 100: ");
+			companyUser.getAllCouponsByPrice(100);
+			
+			// (8) print all coupons until specific date
+			System.out.println("*************************************");
+			System.out.println("(8) Print all coupons until specific date test: ");
+			System.out.println("List of coupons until specific date 1/8/2019: ");
+			companyUser.getAllCouponsByDate("1/8/2019");
+			
+			// (9) remove coupon
+			System.out.println("*************************************");
+			System.out.println("(9) Remove coupon test: ");
+			companyUser.removeCoupon(13);
+			System.out.println("List of coupons after removing coupon:");
+			companyUser.getAllCoupons();
+			
+			// (10) update coupon
+			System.out.println("*************************************");
+			System.out.println("(10) Update coupon test: ");
+			companyUser.updateCoupon(12, "31/12/2019", 60.2);
+			System.out.println("Coupon after updating:");
+			companyUser.getCoupon(12);
+			
+			name = "admin";
+			password = "1234";
+			clientType = ClientType.ADMIN;
+			System.out.println("*************************************");
+			System.out.println("(2) Checking valid login as admin: ");
+
+			
+		    client = couponSystem.login(name, password, clientType);
+		    admin = (AdminUserFacade) client;
+			admin.removeCompany(9876);
+			
+			// (11) try to remove coupon of another company
 			
 			// **Shutdown Test**//
 			System.out.println("*************************************");
@@ -214,9 +281,8 @@ public class FinalTest {
 			// }
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
-
 	}
 
 }

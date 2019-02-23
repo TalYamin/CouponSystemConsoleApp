@@ -48,7 +48,8 @@ public class AdminUserFacade implements CouponClientFacade {
 			while (i.hasNext()) {
 				Company current = i.next();
 				if (company.getCompanyName().equals(current.getCompanyName())) {
-					throw new CompanyExistsException("Admin failed to add company - this company already exists: ", company.getCompanyName());
+					throw new CompanyExistsException("Admin failed to add company - this company already exists: ",
+							company.getCompanyName());
 
 				}
 			}
@@ -58,9 +59,9 @@ public class AdminUserFacade implements CouponClientFacade {
 
 			}
 
-		}catch (CompanyExistsException e) {
+		} catch (CompanyExistsException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to add company. companyId: " + company.getCompanyId());
 
 		}
@@ -72,12 +73,12 @@ public class AdminUserFacade implements CouponClientFacade {
 	public void removeCompany(long companyId) throws Exception {
 
 		try {
-			
-			//check if compnayId exist
-			List<Company>companies = compAdminDAO.getAllCompanies();
-			Iterator<Company>i = companies.iterator();
+
+			// check if compnayId exist
+			List<Company> companies = compAdminDAO.getAllCompanies();
+			Iterator<Company> i = companies.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Company current = i.next();
 				if (current.getCompanyId() == companyId) {
 					flag = 1;
@@ -86,7 +87,7 @@ public class AdminUserFacade implements CouponClientFacade {
 			if (!i.hasNext() && flag == 0) {
 				throw new ObjectNotFoundException("companyId does not exist in system", 0, this.clientType, companyId);
 			}
-			
+
 			// get all coupons that belongs to company from Company_Coupon table
 			List<Long> coupons = com_couAdminDAO.getCouponId(companyId);
 
@@ -98,16 +99,23 @@ public class AdminUserFacade implements CouponClientFacade {
 				List<Coupon> couponsToRemove = coupAdminDAO.getAllCoupons(cId);
 				for (Coupon c : couponsToRemove) {
 					coupAdminDAO.removeCoupon(c);
-					cus_couAdminDAO.removeCustomer_Coupon(c);
-					com_couAdminDAO.removeCompany_Coupon(c);
+					List<Long> customersId = cus_couAdminDAO.getAllCustomersId();
+					List<Long> companiesId = com_couAdminDAO.getAllCompaniesId();
+					if (!customersId.isEmpty()) {
+						cus_couAdminDAO.removeCustomer_Coupon(c);
+					}
+					if (!companiesId.isEmpty()) {
+						com_couAdminDAO.removeCompany_Coupon(c);
+
+					}
 				}
 
 			}
 			// remove company from Company table
 			compAdminDAO.removeCompany(compAdminDAO.getCompany(companyId));
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to remove company. companyId: " + companyId);
 		}
 
@@ -116,46 +124,48 @@ public class AdminUserFacade implements CouponClientFacade {
 	// update company - can't update companyId or compayName
 	public void updateCompany(long companyId, String newCompanyPassword, String newCompanyEmail) throws Exception {
 		try {
-			
-			//check if compnayId exist
-			List<Company>companies = compAdminDAO.getAllCompanies();
-			Iterator<Company>i = companies.iterator();
+
+			// check if compnayId exist
+			List<Company> companies = compAdminDAO.getAllCompanies();
+			Iterator<Company> i = companies.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Company current = i.next();
 				if (current.getCompanyId() == companyId) {
 					flag = 1;
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new ObjectNotFoundException("companyId does not exist in system. ", 0, this.clientType, companyId);
+				throw new ObjectNotFoundException("companyId does not exist in system. ", 0, this.clientType,
+						companyId);
 			}
-			
+
 			Company company = compAdminDAO.getCompany(companyId);
 			company.setCompanyPassword(newCompanyPassword);
 			company.setCompanyEmail(newCompanyEmail);
 			compAdminDAO.updateCompany(company);
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
-			throw new Exception("Admin failed to update company. companyId: " +companyId);
+			throw new Exception("Admin failed to update company. companyId: " + companyId);
 		}
 	}
 
 	// get all companies
 	public List<Company> getAllCompanies() throws Exception {
 		try {
-			List<Company>companies = compAdminDAO.getAllCompanies();
-			
+			List<Company> companies = compAdminDAO.getAllCompanies();
+
 			if (companies.isEmpty()) {
-				throw new NoDetailsFoundException("Admin failed to get all companies - no details found", 0, this.clientType);
+				throw new NoDetailsFoundException("Admin failed to get all companies - no details found", 0,
+						this.clientType);
 			}
-			
-			for(Company c: companies) {
+
+			for (Company c : companies) {
 				System.out.println(c);
 			}
 			return compAdminDAO.getAllCompanies();
-		}catch (NoDetailsFoundException e) {
+		} catch (NoDetailsFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all companies");
@@ -166,26 +176,27 @@ public class AdminUserFacade implements CouponClientFacade {
 	// get specific company by companyId
 	public Company getCompany(long companyId) throws Exception {
 		try {
-			
-			//check if compnayId exist
-			List<Company>companies = compAdminDAO.getAllCompanies();
-			Iterator<Company>i = companies.iterator();
+
+			// check if compnayId exist
+			List<Company> companies = compAdminDAO.getAllCompanies();
+			Iterator<Company> i = companies.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Company current = i.next();
 				if (current.getCompanyId() == companyId) {
 					flag = 1;
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new ObjectNotFoundException("companyId does not exist in system. ", 0, this.clientType, companyId);
+				throw new ObjectNotFoundException("companyId does not exist in system. ", 0, this.clientType,
+						companyId);
 			}
-			
+
 			System.out.println(compAdminDAO.getCompany(companyId));
 			return compAdminDAO.getCompany(companyId);
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to get a company. companyId: " + companyId);
 		}
 		return null;
@@ -201,17 +212,18 @@ public class AdminUserFacade implements CouponClientFacade {
 			while (i.hasNext()) {
 				Customer current = i.next();
 				if (customer.getCustomerName().equals(current.getCustomerName())) {
-					throw new CustomerExistsException("Admin failed to add customer - this customer already exists: ", customer.getCustomerName());
+					throw new CustomerExistsException("Admin failed to add customer - this customer already exists: ",
+							customer.getCustomerName());
 				}
 			}
-			
+
 			if (!i.hasNext()) {
 				custAdminDAO.insertCustomer(customer);
 				System.out.println("Admin added new custoemr: " + customer.getCustomerId());
 			}
 		} catch (CustomerExistsException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to add customer. customerId: " + customer.getCustomerId());
 		}
 
@@ -220,31 +232,35 @@ public class AdminUserFacade implements CouponClientFacade {
 	// remove customer - include: remove all coupons that belong to customer from
 	// Customer_Coupon table and customer from Customer table
 	public void removeCustomer(long customerId) throws Exception {
-		
+
 		try {
-			
-			
-			//check if customerId exist
-			List<Customer>customers = custAdminDAO.getAllCustomers();
-			Iterator<Customer>i = customers.iterator();
+
+			// check if customerId exist
+			List<Customer> customers = custAdminDAO.getAllCustomers();
+			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Customer current = i.next();
 				if (current.getCustomerId() == customerId) {
 					flag = 1;
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType, customerId);
+				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType,
+						customerId);
 			}
-			
-			Customer customer = custAdminDAO.getCustomer(customerId); 
-			cus_couAdminDAO.removeCustomer_Coupon(customer);
+
+			Customer customer = custAdminDAO.getCustomer(customerId);
+			List<Long>couponsId = cus_couAdminDAO.getCouponId(customer.getCustomerId());
+			if (!couponsId.isEmpty()) {
+				cus_couAdminDAO.removeCustomer_Coupon(customer);	
+				custAdminDAO.removeCustomer(customer);
+			}
 			custAdminDAO.removeCustomer(customer);
 
 		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to remove customer.  customerId: " + customerId);
 		}
 
@@ -252,30 +268,30 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	// update customer - can't update customerId or customerName
 	public void updateCustomer(long customerId, String newCustomerPassword) throws Exception {
-		
+
 		try {
-			
-			//check if customerId exist
-			List<Customer>customers = custAdminDAO.getAllCustomers();
-			Iterator<Customer>i = customers.iterator();
+
+			// check if customerId exist
+			List<Customer> customers = custAdminDAO.getAllCustomers();
+			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Customer current = i.next();
 				if (current.getCustomerId() == customerId) {
 					flag = 1;
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType, customerId);
+				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType,
+						customerId);
 			}
-			
-			
+
 			Customer customer = custAdminDAO.getCustomer(customerId);
 			customer.setCustomerPassword(newCustomerPassword);
 			custAdminDAO.updateCustomer(customer);
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to update customer. customerId: " + customerId);
 		}
 	}
@@ -283,47 +299,49 @@ public class AdminUserFacade implements CouponClientFacade {
 	// get all customers
 	public List<Customer> getAllCustomers() throws Exception {
 		try {
-			List<Customer>customers = custAdminDAO.getAllCustomers();
-			
+			List<Customer> customers = custAdminDAO.getAllCustomers();
+
 			if (customers.isEmpty()) {
-				throw new NoDetailsFoundException("Admin failed to get all customers - no details found", 0, this.clientType);
+				throw new NoDetailsFoundException("Admin failed to get all customers - no details found", 0,
+						this.clientType);
 			}
-			
-			for(Customer c: customers) {
+
+			for (Customer c : customers) {
 				System.out.println(c);
 			}
 			return custAdminDAO.getAllCustomers();
-		}catch (NoDetailsFoundException e) {
+		} catch (NoDetailsFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
 			throw new Exception("Admin failed to get all customers");
 		}
 		return null;
 	}
-	
+
 	// get specific customer by customerId
 	public Customer getCustomer(long customerId) throws Exception {
 		try {
-			
-			//check if customerId exist
-			List<Customer>customers = custAdminDAO.getAllCustomers();
-			Iterator<Customer>i = customers.iterator();
+
+			// check if customerId exist
+			List<Customer> customers = custAdminDAO.getAllCustomers();
+			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
-			while(i.hasNext()) {
+			while (i.hasNext()) {
 				Customer current = i.next();
 				if (current.getCustomerId() == customerId) {
 					flag = 1;
 				}
 			}
 			if (!i.hasNext() && flag == 0) {
-				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType, customerId);
+				throw new ObjectNotFoundException("customerId does not exist in system. ", 0, this.clientType,
+						customerId);
 			}
-			
+
 			System.out.println(custAdminDAO.getCustomer(customerId));
 			return custAdminDAO.getCustomer(customerId);
-		}catch (ObjectNotFoundException e) {
+		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("Admin failed to get a customer. customerId: " + customerId);
 		}
 		return null;
@@ -332,8 +350,7 @@ public class AdminUserFacade implements CouponClientFacade {
 	// override from interface - make it available to return facade for login method
 	@Override
 	public void login(String name, String password, ClientType clientType) throws Exception {
-		
-		
+
 	}
 
 }

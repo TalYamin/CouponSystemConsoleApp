@@ -326,11 +326,15 @@ public class Test {
 //			adminUserFacade.insertCompany(new Company(123, "Dell", "Dell123", "check"));
 //			adminUserFacade.insertCompany(new Company(456, "Elbit", "Elbit456", "check2"));
 //			CompanyUserFacade companyUserFacade = (CompanyUserFacade) couponSystem.login("Elbit", "Elbit456", ClientType.COMPANY);
-			
-			
+//			CompanyUserFacade companyUserFacade2 = (CompanyUserFacade)couponSystem.login("Dell", "Dell123", ClientType.COMPANY);
+//			companyUserFacade.insertCoupon(new Coupon(1, "Racing", "31/7/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			companyUserFacade2.insertCoupon(new Coupon(2, "Spa", "31/3/2019", 10, CouponType.HEALTH, "spa for couple", 78.8, "spa image"));
+//			companyUserFacade.removeCoupon(2);
+//			companyUserFacade.updateCoupon(2, "31/1/2019", 100);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 	}
 }
