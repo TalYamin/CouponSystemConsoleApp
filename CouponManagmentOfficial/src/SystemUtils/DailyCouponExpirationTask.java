@@ -62,6 +62,7 @@ public class DailyCouponExpirationTask implements Runnable {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Daily Coupon Expiration Task failed running"); // there is no option to throw exception
 		}
 
@@ -70,7 +71,9 @@ public class DailyCouponExpirationTask implements Runnable {
 	public void stopTask() throws Exception {
 		try {
 			b=false;
-			taskThread.interrupt();
+			if (!taskThread.isAlive()) {
+				taskThread.interrupt();
+			}
 			System.out.println("Daily Coupon Expiration Task stopped");
 		} catch (Exception e) {
 			throw new DailyTaskException("Daily Coupon Expiration Task failed stoping");

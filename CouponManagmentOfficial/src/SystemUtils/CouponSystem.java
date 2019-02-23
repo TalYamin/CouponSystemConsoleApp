@@ -31,6 +31,7 @@ public class CouponSystem {
 	private static DailyCouponExpirationTask dailyCouponExpirationTask;
 
 	private CouponSystem() {
+		System.out.println("Welcome to Coupon System");
 		try {
 			DataBase.BuildDB();
 		} catch (Exception e) {
@@ -41,6 +42,7 @@ public class CouponSystem {
 
 	public static CouponSystem getInstance() throws Exception {
 		try {
+			ConnectionPool connectionPool = ConnectionPool.getInstance();
 			dailyCouponExpirationTask = new DailyCouponExpirationTask();
 			dailyCouponExpirationTask.startTask();
 			return instance;
@@ -78,13 +80,13 @@ public class CouponSystem {
 				}
 
 			case COMPANY:
-
+				
 				// take the list of companies from DB
 				List<Company> companies = companySystemDAO.getAllCompanies();
 				Iterator<Company> i = companies.iterator();
 
 				// for any company in DB check the validity of the parameters values
-				if (i.hasNext()) {
+				while (i.hasNext()) {
 					Company current = i.next();
 					if (current.getCompanyName().equals(userName) && current.getCompanyPassword().equals(password)) {
 						CompanyUserFacade companyF = new CompanyUserFacade(current);
@@ -103,7 +105,7 @@ public class CouponSystem {
 				Iterator<Customer> it = customers.iterator();
 
 				// for any customer in DB check the validity of the parameters values
-				if (it.hasNext()) {
+				while (it.hasNext()) {
 					Customer current = it.next();
 					if (current.getCustomerName().equals(userName) && current.getCustomerPassword().equals(password)) {
 						CustomerUserFacade customerF = new CustomerUserFacade(current);
@@ -129,6 +131,7 @@ public class CouponSystem {
 			connectionPool = ConnectionPool.getInstance();
 			connectionPool.closeAllConnections();
 			dailyCouponExpirationTask.stopTask();
+			System.out.println("Shutdown...");
 		} catch (Exception e) {
 			System.out.println("DailyCouponExpirationTask failed to stop");
 		}

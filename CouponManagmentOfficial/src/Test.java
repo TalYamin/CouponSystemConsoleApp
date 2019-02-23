@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.xml.crypto.Data;
 
 
+
 import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
@@ -14,6 +15,7 @@ import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
 import Facades.AdminUserFacade;
 import Facades.CompanyUserFacade;
+import Facades.CouponClientFacade;
 import Facades.CustomerUserFacade;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
@@ -248,9 +250,10 @@ public class Test {
 //			CustomerUserFacade customerUserFacade = (CustomerUserFacade) moranYamin.login("Moran Yamin", "Moran2023", ClientType.CUSTOMER);
 	
 //			Client client = new Client();
-//			AdminUserFacade adminUserFacade = (AdminUserFacade) client.login("admin", "1234", ClientType.ADMIN);
+//			CouponSystem couponSystem = CouponSystem.getInstance();
+//			AdminUserFacade adminUserFacade = (AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN);
 //			adminUserFacade.insertCompany(new Company(5193, "Lenovo", "Lenovo5193", "israel@lenovo.com"));
-//			CompanyUserFacade companyUserFacade = (CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY);
+//			CompanyUserFacade companyUserFacade = (CompanyUserFacade) couponSystem.login("Lenovo", "Lenovo519", ClientType.COMPANY);
 //			companyUserFacade.getCompany();
 //			companyUserFacade.insertCoupon(new Coupon(963, "Swimming Lesson", "30/5/2019", 5, CouponType.SPORTS, "two hours to learn swimming", 75.3, "swim image"));
 //			((CompanyUserFacade) client.login("Lenovo", "Lenovo5193", ClientType.COMPANY)).removeCoupon(963);
@@ -277,7 +280,7 @@ public class Test {
 //			CouponSystem couponSystem = CouponSystem.getInstance();
 //			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCompany(new Company(1234, "Dell", "Dell1234", "israel@dell.com"));
 //			((AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN)).insertCustomer(new Customer(313, "Tal Yamin", "Tal313"));
-//			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
+//			((CompanyUserFacade) couponSystem.login("Dell", "Dell123", ClientType.COMPANY)).insertCoupon(new Coupon(1, "Racing", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
 //			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(2, "a", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
 //			System.out.println("check");
 //			((CompanyUserFacade) couponSystem.login("Dell", "Dell1234", ClientType.COMPANY)).insertCoupon(new Coupon(3, "b", "10/2/2019", 5, CouponType.SPORTS, "racing weekend", 1500, "race image"));
@@ -305,6 +308,24 @@ public class Test {
 			
 			
 //			CompanyUserFacade companyUserFacade = new CompanyUserFacade(new Company(companyId, companyName, companyPassword, companyEmail))
+			
+//			ConnectionPool connectionPool = ConnectionPool.getInstance();
+//			connectionPool.availableConnections();
+//			connectionPool.closeAllConnections();
+//			connectionPool.availableConnections();
+//			ConnectionPool connectionPool2 = ConnectionPool.getInstance();
+//			connectionPool.availableConnections();
+			
+			
+			
+//			DataBase.DropDB();
+//			DataBase.BuildDB();
+//			CouponSystem couponSystem = CouponSystem.getInstance();
+//			Client client = new Client();
+//			AdminUserFacade adminUserFacade = (AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN);
+//			adminUserFacade.insertCompany(new Company(123, "Dell", "Dell123", "check"));
+//			adminUserFacade.insertCompany(new Company(456, "Elbit", "Elbit456", "check2"));
+//			CompanyUserFacade companyUserFacade = (CompanyUserFacade) couponSystem.login("Elbit", "Elbit456", ClientType.COMPANY);
 			
 			
 			

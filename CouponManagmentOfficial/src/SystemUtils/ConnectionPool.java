@@ -21,7 +21,7 @@ public class ConnectionPool {
 	
 	private static ConnectionPool instance;
 	private final int MAX_CON_NUM = 10;
-	private BlockingQueue<Connection> conQ = new LinkedBlockingQueue<>(MAX_CON_NUM);
+	private BlockingQueue<Connection> conQ  = new LinkedBlockingQueue<>();
 
 	
 	//Private CTOR 
@@ -32,13 +32,13 @@ public class ConnectionPool {
 		}catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		
 		Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
 		con1.close();
-		while(conQ.size() < MAX_CON_NUM) {
+		while(this.conQ.size() < MAX_CON_NUM) {
 			con1 = DriverManager.getConnection(DataBase.getConnectionString());
-			conQ.offer(con1);
+			this.conQ.offer(con1);
 		}	
+		
 	}
 	
 	//call the instance of connectionPool
@@ -88,15 +88,17 @@ public class ConnectionPool {
 	public void closeAllConnections() throws Exception {
 		
 		Connection c;
-		while(conQ.peek()!=null) {
-			c=conQ.poll();
+		while(this.conQ.peek()!=null) {
+			c= this.conQ.poll();
 			try {
 				c.close();
+				instance = null;
 			}catch (Exception e) {
 				throw new ConnectionException("Unable to close all connections. ", this.conQ.size());
 			}
 		}
 		
+		System.out.println("All connections have been close in ConnectionPool");
 	}
 	
 	//return the number of the available connections

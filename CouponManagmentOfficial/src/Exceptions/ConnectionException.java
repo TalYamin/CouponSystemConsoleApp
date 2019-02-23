@@ -5,7 +5,7 @@ public class ConnectionException extends Exception {
 	private int availableConnections;
 	
 	public ConnectionException(String message, int availableConnections) {
-		super(String.format(message + "available Connections: d%", availableConnections));
+		super(String.format(message + "available Connections: %d", availableConnections));
 		this.availableConnections = availableConnections;
 	}
 

@@ -86,7 +86,7 @@ public class AdminUserFacade implements CouponClientFacade {
 			if (!i.hasNext() && flag == 0) {
 				throw new ObjectNotFoundException("companyId does not exist in system", 0, this.clientType, companyId);
 			}
-
+			
 			// get all coupons that belongs to company from Company_Coupon table
 			List<Long> coupons = com_couAdminDAO.getCouponId(companyId);
 
