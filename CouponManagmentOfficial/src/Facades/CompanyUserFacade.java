@@ -17,6 +17,7 @@ import Exceptions.EndDatePassedException;
 import Exceptions.NoDetailsFoundException;
 import Exceptions.NotBelongsException;
 import Exceptions.ObjectNotFoundException;
+import Exceptions.OutOfStockException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import JavaBeans.Customer;
@@ -54,10 +55,14 @@ public class CompanyUserFacade implements CouponClientFacade {
 	// Company_Coupon tables
 	public void insertCoupon(Coupon coupon) throws Exception {
 		try {
+			
+			if (coupon.getAmount() < 1) {
+				throw new Exception("Company failed to add coupon - wrong amount: 0, couponId: " + coupon.getCouponId());
+			}
 
 			if (coupon.getEndDate().isBefore(LocalDate.now())) {
 				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ",
-						coupon.getEndDate().toString(), coupon.getCouponId(), this.company.getCompanyId());
+						coupon.getEndDate().format(formatter), coupon.getCouponId(), this.company.getCompanyId());
 			}
 
 			List<Coupon> coupons = coupCompanyDAO.getAllCoupons();
@@ -83,6 +88,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 		} catch (CouponExistsException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new Exception("Company failed to add coupon. couponId: " + coupon.getCouponId());
 		}
 	}
@@ -125,7 +131,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 					com_couCompany.removeCompany_Coupon(coupon);
 					coupCompanyDAO.removeCoupon(coupon);
 				} else if (!it.hasNext()) {
-					throw new NotBelongsException("This coupon not belongs to this company. ",
+					throw new NotBelongsException("Company failed to remove coupon - this coupon not belongs to this company. ",
 							this.company.getCompanyId(), this.clientType.toString(), couponId);
 				}
 			}
@@ -177,7 +183,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 					}
 					coupCompanyDAO.updateCoupon(coupon);
 				} else if (!it.hasNext()) {
-					throw new NotBelongsException("This coupon not belongs to this company. ",
+					throw new NotBelongsException("Company failed to update coupon - this coupon not belongs to this company. ",
 							this.company.getCompanyId(), this.clientType.toString(), couponId);
 				}
 			}
@@ -218,7 +224,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 					System.out.println(coupCompanyDAO.getCoupon(couponId));
 					return coupCompanyDAO.getCoupon(couponId);
 				} else if (!it.hasNext()) {
-					throw new NotBelongsException("This coupon not belongs to this company. ",
+					throw new NotBelongsException("Company failed to get coupon - this coupon not belongs to this company. ",
 							this.company.getCompanyId(), this.clientType.toString(), couponId);
 				}
 			}
