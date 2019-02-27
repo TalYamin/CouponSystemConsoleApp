@@ -1,0 +1,76 @@
+package ActiveCoupn;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import JavaBeans.Company;
+import JavaBeans.Coupon;
+import SystemUtils.ConnectionPool;
+
+public class ActiveCoupn {
+	private static ConnectionPool connectionPool;
+	
+	
+	// create couponTable and put in the Expired Coupon 
+	//create the table
+	public static void createExpiredCoupon() throws Exception {
+
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+
+		connectionPool = ConnectionPool.getInstance();
+		connectionPool.getConnection();
+		
+		String sql = "create table Expired Coupon (" + "ID bigint not null primary key, " + "TITLE varchar(50) not null, "
+				+ "START_DATE date not null, " + "END_DATE date not null, " + "AMOUNT integer not null, "
+				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
+				+ "IMAGE varchar(200) not null)";
+
+		try (Statement statement = connection.createStatement()) {
+
+			statement.executeUpdate(sql);
+
+			System.out.println("Coupon table has been created");
+
+		} catch (SQLException e) {
+			throw new Exception("unable to create Coupon table");
+		} finally {
+			connection.close();
+			connectionPool.returnConnection(connection);
+		}
+
+	}
+	
+	// Come from Thread
+	
+	
+	
+//	Archive the Coupon DBDAO
+	public void ArchiveCompany(Company company) throws Exception {
+
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+
+		String sql = String.format("archive Company set COMP_NAME= '%s',PASSWORD = '%s', EMAIL= '%s' where ID = %d",
+				company.getCompanyName(), company.getCompanyPassword(), company.getCompanyEmail(),
+				company.getCompanyId());
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			preparedStatement.executeUpdate();
+
+			System.out.println("update Company succeeded. id which updated: " + company.getCompanyId());
+		} catch (SQLException e) {
+			throw new Exception("update Compnay failed. companyId: "+ company.getCompanyId());
+		} finally {
+			connection.close();
+			connectionPool.returnConnection(connection);
+		}
+
+	}
+	
+	
+	
+}
