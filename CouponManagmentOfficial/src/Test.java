@@ -5,14 +5,14 @@ import java.sql.SQLException;
 
 import javax.xml.crypto.Data;
 
-
-
+import DAO.ExpiredCouponDAO;
 import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import DBDAO.ExpriedCouponDBDAO;
 import Facades.AdminUserFacade;
 import Facades.CompanyUserFacade;
 import Facades.CouponClientFacade;
@@ -332,6 +332,25 @@ public class Test {
 //			companyUserFacade.removeCoupon(2);
 //			companyUserFacade.updateCoupon(2, "31/1/2019", 100);
 			
+//			DataBase.createCouponTable();
+			
+			
+//			CouponSystem couponSystem = CouponSystem.getInstance();
+//			AdminUserFacade adminUserFacade = (AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN);
+//			adminUserFacade.insertCompany(new Company(123, "Dell", "Dell123", "check"));
+//			Coupon coupon = new Coupon(123, "test", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
+//			Coupon coupon2 = new Coupon(124, "test2", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
+//			Coupon coupon3 = new Coupon(125, "test3", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
+//			Coupon coupon4 = new Coupon(126, "test4", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
+//			CompanyUserFacade companyUserFacade2 = (CompanyUserFacade)couponSystem.login("Dell", "Dell123", ClientType.COMPANY);
+//			companyUserFacade2.insertCoupon(coupon);
+//			companyUserFacade2.insertCoupon(coupon2);
+//			companyUserFacade2.insertCoupon(coupon3);
+//			companyUserFacade2.insertCoupon(coupon4);
+
+
+//			DataBase.createExpiredCouponTable();
+//			DataBase.dropExpiredCouponTable();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

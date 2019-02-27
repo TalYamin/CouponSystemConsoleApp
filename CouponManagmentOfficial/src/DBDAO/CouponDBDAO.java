@@ -42,7 +42,7 @@ public class CouponDBDAO implements CouponDAO {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 
-		String sql = "insert into Coupon(ID, TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE) values (?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into Coupon(ID, TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE, ACTIVE) values (?,?,?,?,?,?,?,?,?,?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
@@ -55,6 +55,7 @@ public class CouponDBDAO implements CouponDAO {
 			preparedStatement.setString(7, coupon.getCouponMessage());
 			preparedStatement.setDouble(8, coupon.getPrice());
 			preparedStatement.setString(9, coupon.getImage());
+			preparedStatement.setBoolean(10, coupon.isActive());
 
 			preparedStatement.executeUpdate();
 
@@ -151,6 +152,39 @@ public class CouponDBDAO implements CouponDAO {
 		}
 
 	}
+	
+	
+	@Override
+	public void updateNoActiveCoupon(Coupon coupon) throws Exception {
+
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+
+		String sql = String.format(
+				"update Coupon set ACTIVE = false where ID = %d", coupon.getCouponId());
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+			preparedStatement.executeUpdate();
+
+			System.out.println("update to Not Active Coupon succeeded. id which updated: " + coupon.getCouponId());
+		} catch (SQLException e) {
+			throw new Exception("DB error - update activity Coupon failed. couponId: " + coupon.getCouponId());
+		}catch (Exception e) {
+			throw new Exception("update activity Coupon failed. couponId: " + coupon.getCouponId());
+		} 
+		finally {
+			connection.close();
+			connectionPool.returnConnection(connection);
+		}
+
+	}
+	
+	
+	
+	
+	
+	
 	/*
 	 * Get coupon from Coupon table override method:
 	 * This method receive 1 parameters: couponId. 

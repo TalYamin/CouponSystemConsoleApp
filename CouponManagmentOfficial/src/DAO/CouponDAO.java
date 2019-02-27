@@ -22,6 +22,8 @@ public interface CouponDAO {
 
 	void updateCoupon(Coupon coupon) throws Exception;
 
+	void updateNoActiveCoupon(Coupon coupon) throws Exception;
+	
 	Coupon getCoupon(long couponId) throws Exception;
 
 	List<Coupon> getAllCoupons() throws Exception;

@@ -5,9 +5,11 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
+import DAO.ExpiredCouponDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
+import DBDAO.ExpriedCouponDBDAO;
 import Exceptions.DailyTaskException;
 import JavaBeans.Coupon;
 
@@ -22,6 +24,7 @@ public class DailyCouponExpirationTask implements Runnable {
 	private CouponDBDAO couTaskDAO = new CouponDBDAO();
 	private Company_CouponDBDAO com_couTaskDAO = new Company_CouponDBDAO();
 	private Customer_CouponDBDAO cus_couTaskDAO = new Customer_CouponDBDAO();
+	private ExpriedCouponDBDAO exp_couTaskDAO = new ExpriedCouponDBDAO();
 	private Thread taskThread;
 
 	public DailyCouponExpirationTask() {
@@ -44,20 +47,30 @@ public class DailyCouponExpirationTask implements Runnable {
 
 		try {
 			System.out.println("Daily Coupon Expiration Task running now");
-			
+
 			while (b) {
 				List<Coupon> coupons = couTaskDAO.getAllCoupons();
 				Iterator<Coupon> i = coupons.iterator();
 				while (i.hasNext()) {
 					Coupon current = i.next();
-					if (current.getEndDate().isBefore(LocalDate.now())) {
-						couTaskDAO.removeCoupon(current);
-						com_couTaskDAO.removeCompany_Coupon(current);
-						cus_couTaskDAO.removeCustomer_Coupon(current);
-						
-					}
-					
+//					if (current.getEndDate().isBefore(LocalDate.now())) {
+//						couTaskDAO.updateNoActiveCoupon(current);
+//					}
 				}
+				List<Coupon> couponsUpdated = couTaskDAO.getAllCoupons();
+				System.out.println(couponsUpdated);
+				Iterator<Coupon> it = couponsUpdated.iterator();
+				while (it.hasNext()) {
+					Coupon currentUpdated = it.next();
+					if (currentUpdated.isActive() == false) {
+						exp_couTaskDAO.insertCoupon(currentUpdated);
+						couTaskDAO.removeCoupon(currentUpdated);
+						com_couTaskDAO.removeCompany_Coupon(currentUpdated);
+						cus_couTaskDAO.removeCustomer_Coupon(currentUpdated);
+					}
+
+				}
+
 				taskThread.sleep(2000);
 			}
 
@@ -70,7 +83,7 @@ public class DailyCouponExpirationTask implements Runnable {
 
 	public void stopTask() throws Exception {
 		try {
-			b=false;
+			b = false;
 			if (!taskThread.isAlive()) {
 				taskThread.interrupt();
 			}

@@ -24,6 +24,7 @@ public class Coupon {
 	private String image;
 	private String customStartDate;
 	private String customeEndDate;
+	private boolean active;
 	
 	
 	//empty CTOR of Coupon
@@ -45,6 +46,7 @@ public class Coupon {
 		this.couponMessage = couponMessage;
 		this.price = price;
 		this.image = image;
+		this.active = true;
 	}
 
 	
@@ -120,6 +122,15 @@ public class Coupon {
 	public void setImage(String image) {
 		this.image = image;
 	}
+	
+	public boolean isActive() {
+		return active;
+	}
+
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	//toString method of Coupon
 	@Override
@@ -130,8 +141,11 @@ public class Coupon {
 		
 		return "Coupon [couponId=" + this.getCouponId() + ", title=" + this.getTitle() + ", startDate=" + this.customStartDate + ", endDate=" + this.customeEndDate
 				+ ", amount=" + this.getAmount() + ", type=" + this.getType() + ", couponMessage=" + this.getCouponMessage() + ", price=" + this.getPrice()
-				+ ", image=" + this.getImage() + "]";
+				+ ", image=" + this.getImage() + ", active=" + this.isActive()+ "]";
 	}
+
+
+	
 	
 	
 	

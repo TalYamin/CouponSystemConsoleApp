@@ -60,10 +60,10 @@ public class CompanyUserFacade implements CouponClientFacade {
 				throw new Exception("Company failed to add coupon - wrong amount: 0, couponId: " + coupon.getCouponId());
 			}
 
-			if (coupon.getEndDate().isBefore(LocalDate.now())) {
-				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ",
-						coupon.getEndDate().format(formatter), coupon.getCouponId(), this.company.getCompanyId());
-			}
+//			if (coupon.getEndDate().isBefore(LocalDate.now())) {
+//				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ",
+//						coupon.getEndDate().format(formatter), coupon.getCouponId(), this.company.getCompanyId());
+//			}
 
 			List<Coupon> coupons = coupCompanyDAO.getAllCoupons();
 

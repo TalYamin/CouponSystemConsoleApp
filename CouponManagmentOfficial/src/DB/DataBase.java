@@ -79,8 +79,6 @@ public class DataBase {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 		
-		connectionPool = ConnectionPool.getInstance();
-		connectionPool.getConnection();
 		
 		String sql = "create table Customer (" + "ID bigint not null primary key, " + "CUST_NAME varchar(50) not null, "
 				+ "PASSWORD varchar(50) not null)";
@@ -112,13 +110,12 @@ public class DataBase {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 
-		connectionPool = ConnectionPool.getInstance();
-		connectionPool.getConnection();
+		
 		
 		String sql = "create table Coupon (" + "ID bigint not null primary key, " + "TITLE varchar(50) not null, "
 				+ "START_DATE date not null, " + "END_DATE date not null, " + "AMOUNT integer not null, "
 				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
-				+ "IMAGE varchar(200) not null)";
+				+ "IMAGE varchar(200) not null," + "Active boolean not null)";
 
 		try (Statement statement = connection.createStatement()) {
 
@@ -196,6 +193,37 @@ public class DataBase {
 		}
 
 	}
+	
+	
+	public static void createExpiredCouponTable() throws Exception {
+
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+		
+		String sql = "create table Expired_Coupon (" + "ID bigint not null primary key, " + "TITLE varchar(50) not null, "
+				+ "START_DATE date not null, " + "END_DATE date not null, " + "AMOUNT integer not null, "
+				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
+				+ "IMAGE varchar(200) not null," + "Active boolean not null)";
+
+		try (Statement statement = connection.createStatement()) {
+
+			statement.executeUpdate(sql);
+
+			System.out.println("ExpiredCoupon table has been created");
+
+		} catch (SQLException e) {
+			throw new Exception("unable to create ExpiredCoupon table");
+		} finally {
+			connection.close();
+			connectionPool.returnConnection(connection);
+		}
+
+	}
+	
+	
+	
+	
+	
 
 	/*
 	 * Drop Company table method:
@@ -336,6 +364,31 @@ public class DataBase {
 			connectionPool.returnConnection(connection);
 		}
 	}
+	
+	
+	
+	public static void dropExpiredCouponTable() throws Exception {
+
+		connectionPool = ConnectionPool.getInstance();
+		Connection connection = connectionPool.getConnection();
+
+		String sql = "drop table Expired_Coupon";
+
+		try (Statement statement = connection.createStatement()) {
+
+			statement.executeUpdate(sql);
+
+			System.out.println("ExpiredCoupon Table dropped successfully");
+
+		} catch (SQLException e) {
+			throw new Exception("unable to drop ExpiredCoupon Table");
+		} finally {
+			connection.close();
+			connectionPool.returnConnection(connection);
+		}
+	}
+	
+	
 
 	/*
 	 * Build DB method:
@@ -354,6 +407,7 @@ public class DataBase {
 			DataBase.createCouponTable();
 			DataBase.createCompany_CouponTable();
 			DataBase.createCustomer_CouponTable();
+			DataBase.createExpiredCouponTable();
 		} catch (SQLException e) {
 			throw new Exception("unable to build all tables of DB");
 		}
@@ -376,6 +430,7 @@ public class DataBase {
 			DataBase.dropCouponTable();
 			DataBase.dropCompany_CouponTable();
 			DataBase.dropCustomer_CouponTable();
+			DataBase.dropExpiredCouponTable();
 		} catch (SQLException e) {
 			throw new Exception("unable to drop all tables of DB");
 		}
