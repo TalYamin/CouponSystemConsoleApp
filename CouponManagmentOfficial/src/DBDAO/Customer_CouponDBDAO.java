@@ -20,11 +20,31 @@ import SystemUtils.ConnectionPool;
  *
  */
 
+/*
+ * DBDAO classes implements the DAO interface. 
+ * these classes allow data transitions in DB. 
+ * Methods in these classes based on following pattern: 
+ * (1) Receiving connection from connection pool. 
+ * (2) Executing SQL queries using statements or prepared statements. 
+ * (3) Closing the connection and returning back to connection pool.
+*/
+
 public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
-	//insert query to Customer_Coupon table
+	/*
+	 * Insert to Customer_Coupon table override method:
+	 * This method used to add record of relation between customer and coupon.
+	 * This method receive 2 parameters: customer and coupon.
+	 * According to parameters, the SQL query is defined with 
+	 * the customer ID and coupon ID. Both values defined as unified primary key.  
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for insert to table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void insertCustomer_Coupon(Customer customer, Coupon coupon) throws Exception {
 
@@ -50,7 +70,17 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//remove query by customer&coupon to Customer_Coupon table
+	/*
+	 * Remove from Customer_Coupon table override method:
+	 * This method used to remove record of relation between customer and coupon.
+	 * This method receive 2 parameters: customer and coupon.
+	 * According to parameters, the SQL query is defined with 
+	 * the customer ID and coupon ID.   
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void removeCustomer_Coupon(Customer customer, Coupon coupon) throws Exception {
 
@@ -61,7 +91,7 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false);
 			preparedStatement.setLong(1, customer.getCustomerId());
 			preparedStatement.setLong(2, coupon.getCouponId());
 			preparedStatement.executeUpdate();
@@ -82,7 +112,16 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//remove query by customer only to Customer_Coupon table
+	/*
+	 * Remove from Customer_Coupon table override method:
+	 * This method used to remove record of relation between customer and coupon.
+	 * This method receive 1 parameters: customer.
+	 * According to parameter, the SQL query is defined with the customer ID.    
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void removeCustomer_Coupon(Customer customer) throws Exception {
 
@@ -93,7 +132,7 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false); 
 			preparedStatement.setLong(1, customer.getCustomerId());
 			preparedStatement.executeUpdate();
 			connection.commit();
@@ -113,7 +152,16 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//remove query by coupon only to Customer_Coupon table
+	/*
+	 * Remove from Customer_Coupon table override method:
+	 * This method used to remove record of relation between customer and coupon.
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void removeCustomer_Coupon(Coupon coupon) throws Exception {
 
@@ -124,7 +172,7 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false);
 			preparedStatement.setLong(1, coupon.getCouponId());
 			preparedStatement.executeUpdate();
 			connection.commit();
@@ -144,7 +192,19 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//getCustomers query by coupon to Customer_Coupon table
+	/*
+	 * Get companies ID list from Customer_Coupon table override method:
+	 * This method used to get list of customersId by specific couponId.
+	 * This method receive 1 parameters: couponId. only records with this ID are relevant.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the coupon ID.    
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public List<Long> getCustomerId(long couponId) throws Exception {
 
@@ -168,8 +228,19 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//getCustomers query Customer_Coupon table
-	//pay attention - there are duplicate values
+	/*
+	 * Get all companies ID list from Customer_Coupon table override method:
+	 * This method used to get list of all customersId in this table.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 * Pay Attention - this method return duplicate values.
+	 */
 	@Override
 	public List<Long> getAllCustomersId() throws Exception {
 
@@ -193,7 +264,19 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//getCoupons query by customer to Customer_Coupon table
+	/*
+	 * Get coupons ID list from Customer_Coupon table override method:
+	 * This method used to get list of couponsId by specific customerId.
+	 * This method receive 1 parameters: customerId. only records with this ID are relevant.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the customer ID.    
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public List<Long> getCouponId(long customerId) throws Exception {
 
@@ -217,8 +300,19 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 
 	}
 
-	//getCoupons query to Customer_Coupon table
-	//pay attention - there are duplicate values
+	/*
+	 * Get all coupons ID list from Customer_Coupon table override method:
+	 * This method used to get list of all couponsId in this table.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 * Pay Attention - this method return duplicate values.
+	 */
 	@Override
 	public List<Long> getAllCouponsId() throws Exception {
 

@@ -22,19 +22,30 @@ import SystemUtils.ConnectionPool;
  *
  */
 
+/*
+ * DBDAO classes implements the DAO interface. 
+ * these classes allow data transitions in DB. 
+ * Methods in these classes based on following pattern: 
+ * (1) Receiving connection from connection pool. 
+ * (2) Executing SQL queries using statements or prepared statements. 
+ * (3) Closing the connection and returning back to connection pool.
+*/
+
 public class CouponDBDAO implements CouponDAO {
 
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
 	/*
 	 * Insert to Coupon table override method:
+	 * This method used to add record of coupon object.
 	 * This method receive 1 parameters: coupon.
 	 * According to parameter, the SQL query is defined with 
-	 * the coupon ID, title, startDate, endDate, amount, type, message, price and image.
-	 * This method receive connection to DB and create prepareStatement.
+	 * the coupon ID, title, startDate, endDate, amount, type, message, price, image and active.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for insert to table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public void insertCoupon(Coupon coupon) throws Exception {
@@ -74,12 +85,13 @@ public class CouponDBDAO implements CouponDAO {
 
 	/*
 	 * Remove from Coupon table override method:
+	 * This method used to remove record of coupon object.
 	 * This method receive 1 parameters: coupon.
 	 * According to parameter, the SQL query is defined with the coupon ID.    
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for remove from table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public void removeCoupon(Coupon coupon) throws Exception {
@@ -91,7 +103,7 @@ public class CouponDBDAO implements CouponDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false);
 			preparedStatement.setLong(1, coupon.getCouponId());
 			preparedStatement.executeUpdate();
 			connection.commit();
@@ -113,16 +125,16 @@ public class CouponDBDAO implements CouponDAO {
 	
 	/*
 	 * Update Coupon table override method:
+	 * This method used to update record of coupon object.
 	 * This method receive 1 parameters: coupon.
 	 * According to parameter, the SQL query is defined with 
-	 * the coupon ID, title, startDate, endDate, amount, type, message, price and image.
-	 * The updates only available for coupon title, startDate, endDate, amount, type, message, price and image. where the relevant ID. 
-	 * This method receive connection to DB and create prepareStatement.
+	 * the coupon ID, title, startDate, endDate, amount, type, message, price, image and active.
+	 * The updates only available for coupon title, startDate, endDate, amount, type, message, price, image and active. where the relevant ID. 
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for update table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
-	//update query to Coupon table
 	@Override
 	public void updateCoupon(Coupon coupon) throws Exception {
 
@@ -153,7 +165,18 @@ public class CouponDBDAO implements CouponDAO {
 
 	}
 	
-	
+	/*
+	 * updateNoActive Coupon table override method:
+	 * This method used to update record of coupon object - only activation.
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with 
+	 * the coupon ID and active.
+	 * The updates only available for active where the relevant ID. 
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for update table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void updateNoActiveCoupon(Coupon coupon) throws Exception {
 
@@ -180,23 +203,19 @@ public class CouponDBDAO implements CouponDAO {
 
 	}
 	
-	
-	
-	
-	
-	
 	/*
 	 * Get coupon from Coupon table override method:
+	 * This method used to get specific record of coupon object.
 	 * This method receive 1 parameters: couponId. 
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * According to parameter, the SQL query is defined with the coupon ID.    
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There is setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public Coupon getCoupon(long couponId) throws Exception {
@@ -248,17 +267,18 @@ public class CouponDBDAO implements CouponDAO {
 	}
 	/*
 	 * Get all coupons list from Coupon table override method:
+	 * This method used to get all coupons records.
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * the SQL query is defined for all data in table.   
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public List<Coupon> getAllCoupons() throws Exception {
@@ -314,18 +334,19 @@ public class CouponDBDAO implements CouponDAO {
 	
 	/*
 	 * Get coupons list from Coupon table override method:
+	 * This method used to get all coupons by couponId.
 	 * This method receive 1 parameters: couponId. 
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * the SQL query is defined with the coupon ID.   
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public List<Coupon> getAllCoupons(long couponId) throws Exception {
@@ -381,18 +402,19 @@ public class CouponDBDAO implements CouponDAO {
 
 	/*
 	 * Get coupons list from Coupon table override method:
+	 * This method used to get all coupons by couponId and typeName.
 	 * This method receive 2 parameters: couponId and typeName. 
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * the SQL query is defined with the coupon ID and typeName.  
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public List<Coupon> getAllCouponsByType(long couponId, String typeName) throws Exception {
@@ -449,18 +471,19 @@ public class CouponDBDAO implements CouponDAO {
 
 	/*
 	 * Get coupons list from Coupon table override method:
+	 * This method used to get all coupons by couponId and price limit.
 	 * This method receive 2 parameters: couponId and priceTop. 
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * the SQL query is defined with the coupon ID and priceTop.  
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public List<Coupon> getAllCouponsByPrice(long couponId, double priceTop) throws Exception {
@@ -515,19 +538,20 @@ public class CouponDBDAO implements CouponDAO {
 
 	/*
 	 * Get coupons list from Coupon table override method:
+	 * This method used to get all coupons by couponId and date limit.
 	 * This method receive 2 parameters: couponId and untilDate. 
 	 * There is Data Time Formatter which enable parsing date string to Local Date.
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * There is generation of Coupon object which need to receive the data from table.
 	 * the SQL query is defined with the coupon ID and untilDate.  
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Coupon object which used in order to keep the results and to return the object. 
 	 * There is function add of ArrayList which used in order to add the Coupon objects and return the list. 
 	 * Switch case: by the string of Type that received in resultSet - there is setter of Enum couponType.
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public List<Coupon> getAllCouponsByDate(long couponId, String untilDate) throws Exception {

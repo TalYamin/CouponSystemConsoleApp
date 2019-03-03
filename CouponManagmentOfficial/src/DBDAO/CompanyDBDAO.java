@@ -19,19 +19,30 @@ import SystemUtils.ConnectionPool;
  *
  */
 
+/*
+ * DBDAO classes implements the DAO interface. 
+ * these classes allow data transitions in DB. 
+ * Methods in these classes based on following pattern: 
+ * (1) Receiving connection from connection pool. 
+ * (2) Executing SQL queries using statements or prepared statements. 
+ * (3) Closing the connection and returning back to connection pool.
+*/
+
 public class CompanyDBDAO implements CompanyDAO {
 
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
 	/*
 	 * Insert to Company table override method:
+	 * This method used to add record of company object.
 	 * This method receive 1 parameters: company.
 	 * According to parameter, the SQL query is defined with 
 	 * the company ID, name, password and email.
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for insert to table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public void insertCompany(Company company) throws Exception {
@@ -65,12 +76,13 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	/*
 	 * Remove from Company table override method:
+	 * This method used to remove record of company object.
 	 * This method receive 1 parameters: company.
 	 * According to parameter, the SQL query is defined with the company ID.    
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for remove from table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public void removeCompany(Company company) throws Exception {
@@ -82,7 +94,7 @@ public class CompanyDBDAO implements CompanyDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false);
 			preparedStatement.setLong(1, company.getCompanyId());
 			preparedStatement.executeUpdate();
 			connection.commit();
@@ -104,14 +116,15 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	/*
 	 * Update Company table override method:
+	 * This method used to update record of company object.
 	 * This method receive 1 parameters: company.
 	 * According to parameter, the SQL query is defined with 
 	 * the company ID, name, password and email.
 	 * The updates only available for company name, password and email where the relevant ID. 
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for update table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public void updateCompany(Company company) throws Exception {
@@ -139,15 +152,16 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	/*
 	 * Get company from Company table override method:
+	 * This method used to get specific record of company object.
 	 * This method receive 1 parameters: companyId. 
 	 * There is generation of Company object which need to receive the data from table.
 	 * According to parameter, the SQL query is defined with the company ID.    
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There are setters methods of Company object which used in order to keep the results and to return the object. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public Company getCompany(long companyId) throws Exception {
@@ -178,14 +192,15 @@ public class CompanyDBDAO implements CompanyDAO {
 
 	/*
 	 * Get all companies list from Company table override method:
+	 * This method used to get all companies records.
 	 * There is generation of ArrayList which need to receive the data from table.
 	 * the SQL query is defined for all data in table.   
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for get from table is executed. 
 	 * There is resultSet which generated so it will be available to receive results from DB.
 	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	@Override
 	public synchronized List<Company> getAllCompanies() throws Exception {

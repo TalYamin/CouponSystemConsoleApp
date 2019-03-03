@@ -8,10 +8,36 @@ import DAO.ExpiredCouponDAO;
 import JavaBeans.Coupon;
 import SystemUtils.ConnectionPool;
 
+/**
+ * @author Shay Ben Haroush
+ *
+ */
+
+/*
+ * DBDAO classes implements the DAO interface. 
+ * these classes allow data transitions in DB. 
+ * Methods in these classes based on following pattern: 
+ * (1) Receiving connection from connection pool. 
+ * (2) Executing SQL queries using statements or prepared statements. 
+ * (3) Closing the connection and returning back to connection pool.
+*/
+
 public class ExpriedCouponDBDAO implements ExpiredCouponDAO {
 
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
+	/*
+	 * Insert to ExpiredCoupon table override method:
+	 * This method used to add record of coupon object which expired.
+	 * This method receive 1 parameters: coupon.
+	 * According to parameter, the SQL query is defined with 
+	 * the coupon ID, title, startDate, endDate, amount, type, message, price, image and active.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for insert to table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void insertCoupon(Coupon coupon) throws Exception {
 

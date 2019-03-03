@@ -13,14 +13,18 @@ import SystemUtils.ConnectionPool;
  *
  */
 
+/*
+ * this is a utility class that creates the initial database tables. 
+ */
+
 public class DataBase {
 
 	/* DB connection port */
 	private static String connectionString = "jdbc:derby://localhost:3301/CouponManagment;create=true";
 	/* DB derby driver */
 	private static String DriverConnection = "org.apache.derby.jdbc.ClientDriver";
-	/* Static connection - should be in connection pool */
-
+	
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
 	
@@ -38,10 +42,11 @@ public class DataBase {
 	
 	/*
 	 * Create Company table method:
-	 * This method receive connection to DB and create statement.
+	 * This table holds the data of companies objects.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for create Company table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void createCompanyTable() throws Exception {
 
@@ -69,10 +74,11 @@ public class DataBase {
 	
 	/*
 	 * Create Customer table method:
-	 * This method receive connection to DB and create statement.
+	 * This table holds the data of customers objects.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for create Customer table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void createCustomerTable() throws Exception {
 
@@ -100,10 +106,11 @@ public class DataBase {
 
 	/*
 	 * Create Coupon table method:
-	 * This method receive connection to DB and create statement.
+	 * This table holds the data of coupons objects.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for create Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void createCouponTable() throws Exception {
 
@@ -135,10 +142,10 @@ public class DataBase {
 	/*
 	 * Create Customer_Coupon table method:
 	 * This table is Join table which combines two columns as unified primary key.  
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for create Customer_Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void createCustomer_CouponTable() throws Exception {
 
@@ -166,10 +173,10 @@ public class DataBase {
 	/*
 	 * Create Company_Coupon table method:
 	 * This table is Join table which combines two columns as unified primary key.  
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for create Company_Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void createCompany_CouponTable() throws Exception {
 
@@ -194,7 +201,14 @@ public class DataBase {
 
 	}
 	
-	
+	/*
+	 * Create ExpiredCoupon table method:
+	 * This table holds the data of coupons objects which expired.
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for create ExpiredCoupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	public static void createExpiredCouponTable() throws Exception {
 
 		connectionPool = ConnectionPool.getInstance();
@@ -220,17 +234,13 @@ public class DataBase {
 
 	}
 	
-	
-	
-	
-	
 
 	/*
 	 * Drop Company table method:
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for drop Company table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void dropCompanyTable() throws Exception {
 
@@ -255,10 +265,10 @@ public class DataBase {
 
 	/*
 	 * Drop Customer table method:
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for drop Customer table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void dropCustomerTable() throws Exception {
 
@@ -283,10 +293,10 @@ public class DataBase {
 
 	/*
 	 * Drop Coupon table method:
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for drop Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void dropCouponTable() throws Exception {
 
@@ -311,10 +321,10 @@ public class DataBase {
 
 	/*
 	 * Drop Customer_Coupon table method:
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB and from connectionPool create statement.
 	 * Then SQL query for drop Customer_Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void dropCustomer_CouponTable() throws Exception {
 
@@ -339,10 +349,10 @@ public class DataBase {
 
 	/*
 	 * Drop Company_Coupon table method:
-	 * This method receive connection to DB and create statement.
+	 * This method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for drop Company_Coupon table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void dropCompany_CouponTable() throws Exception {
 
@@ -366,7 +376,13 @@ public class DataBase {
 	}
 	
 	
-	
+	/*
+	 * Drop ExpiredCoupon table method:
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for drop ExpiredCoupon table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	public static void dropExpiredCouponTable() throws Exception {
 
 		connectionPool = ConnectionPool.getInstance();
@@ -393,11 +409,10 @@ public class DataBase {
 	/*
 	 * Build DB method:
 	 * This method include all the methods which create tables in DB.
-	 * This method receive 1 parameter: connection.
-	 * Any method receive connection to DB and create statement.
+	 * Any method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for any table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void BuildDB() throws Exception {
 
@@ -416,11 +431,10 @@ public class DataBase {
 	/*
 	 * Drop DB method:
 	 * This method include all the methods which drop tables from DB.
-	 * This method receive 1 parameter: connection.
-	 * Any method receive connection to DB and create statement.
+	 * Any method receive connection to DB from connectionPool and create statement.
 	 * Then SQL query for any table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void DropDB() throws Exception {
 
@@ -438,13 +452,14 @@ public class DataBase {
 
 	/*
 	 * Alter table for adding column method:
+	 * This method used to add column to existing table.
 	 * This method receive 3 parameters: table, columnName and dataType. 
 	 * According to parameters, the SQL query is defined with 
 	 * the relevant table, and with details for new column.
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for alter table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void alterTableAdditon(String table, String columnName, String dataType) throws Exception {
 
@@ -469,13 +484,14 @@ public class DataBase {
 
 	/*
 	 * Alter table for dropping column method:
+	 * This method used to drop column of existing table.
 	 * This method receive 2 parameters: table and columnName. 
 	 * According to parameters, the SQL query is defined with 
 	 * the relevant table and with the relevant column.
-	 * This method receive connection to DB and create prepareStatement.
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
 	 * Then SQL query for alter table is executed. 
 	 * If there is DB issue, SQLException is activated.
-	 * Finally connection closed.
+	 * Finally connection closed and return to pool.
 	 */
 	public static void alterTableDropping(String table, String columnName) throws Exception {
 

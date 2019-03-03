@@ -19,12 +19,31 @@ import SystemUtils.ConnectionPool;
  *
  */
 
+/*
+ * DBDAO classes implements the DAO interface. 
+ * these classes allow data transitions in DB. 
+ * Methods in these classes based on following pattern: 
+ * (1) Receiving connection from connection pool. 
+ * (2) Executing SQL queries using statements or prepared statements. 
+ * (3) Closing the connection and returning back to connection pool.
+*/
+
 public class CustomerDBDAO implements CustomerDAO {
 
-	
+	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;
 
-	//insert query to Customer table
+	/*
+	 * Insert to Customer table override method:
+	 * This method used to add record of customer object.
+	 * This method receive 1 parameters: customer.
+	 * According to parameter, the SQL query is defined with 
+	 * the company ID, name and password. 
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for insert to table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void insertCustomer(Customer customer) throws Exception {
 
@@ -51,7 +70,16 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	}
 
-	//remove query to Customer table
+	/*
+	 * Remove from Customer table override method:
+	 * This method used to remove record of customer object.
+	 * This method receive 1 parameters: customer.
+	 * According to parameter, the SQL query is defined with the customer ID.    
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for remove from table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void removeCustomer(Customer customer) throws Exception {
 
@@ -62,7 +90,7 @@ public class CustomerDBDAO implements CustomerDAO {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			connection.setAutoCommit(false); // what is it ?
+			connection.setAutoCommit(false);
 			preparedStatement.setLong(1, customer.getCustomerId());
 			preparedStatement.executeUpdate();
 			connection.commit();
@@ -82,7 +110,18 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	}
 
-	//update query to Customer table
+	/*
+	 * Update Customer table override method:
+	 * This method used to update record of customer object.
+	 * This method receive 1 parameters: customer.
+	 * According to parameter, the SQL query is defined with 
+	 * the customer ID, name and password.
+	 * The updates only available for customer name and password where the relevant ID. 
+	 * This method receive connection to DB from connectionPool and create prepareStatement.
+	 * Then SQL query for update table is executed. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public void updateCustomer(Customer customer) throws Exception {
 
@@ -106,7 +145,19 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	}
 
-	//get query to Customer table
+	/*
+	 * Get customer from Customer table override method:
+	 * This method used to get specific record of customer object.
+	 * This method receive 1 parameters: customerId. 
+	 * There is generation of Customer object which need to receive the data from table.
+	 * According to parameter, the SQL query is defined with the customer ID.    
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There are setters methods of Customer object which used in order to keep the results and to return the object. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public Customer getCustomer(long customerId) throws Exception {
 		
@@ -131,7 +182,18 @@ public class CustomerDBDAO implements CustomerDAO {
 
 	}
 
-	//getAll query to Customer table
+	/*
+	 * Get all customers list from Customer table override method:
+	 * This method used to get all customers records.
+	 * There is generation of ArrayList which need to receive the data from table.
+	 * the SQL query is defined for all data in table.   
+	 * This method receive connection to DB from connectionPool and create statement.
+	 * Then SQL query for get from table is executed. 
+	 * There is resultSet which generated so it will be available to receive results from DB.
+	 * There is function add of ArrayList which used in order to keep the results and to return the list. 
+	 * If there is DB issue, SQLException is activated.
+	 * Finally connection closed and return to pool.
+	 */
 	@Override
 	public synchronized List<Customer> getAllCustomers() throws Exception {
 		
