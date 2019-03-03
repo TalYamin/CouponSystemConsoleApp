@@ -372,7 +372,6 @@ public class FinalTest {
 			 CouponSystem couponSystem2 = null;	
 			 couponSystem2 = CouponSystem.getInstance();
 			 couponSystem2.shutdown();
-		//	 DataBase.DropDB();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

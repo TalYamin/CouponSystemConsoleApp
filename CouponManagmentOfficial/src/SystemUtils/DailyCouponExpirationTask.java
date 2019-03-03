@@ -53,12 +53,11 @@ public class DailyCouponExpirationTask implements Runnable {
 				Iterator<Coupon> i = coupons.iterator();
 				while (i.hasNext()) {
 					Coupon current = i.next();
-//					if (current.getEndDate().isBefore(LocalDate.now())) {
-//						couTaskDAO.updateNoActiveCoupon(current);
-//					}
+					if (current.getEndDate().isBefore(LocalDate.now())) {
+						couTaskDAO.updateNoActiveCoupon(current);
+					}
 				}
 				List<Coupon> couponsUpdated = couTaskDAO.getAllCoupons();
-				System.out.println(couponsUpdated);
 				Iterator<Coupon> it = couponsUpdated.iterator();
 				while (it.hasNext()) {
 					Coupon currentUpdated = it.next();

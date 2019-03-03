@@ -132,7 +132,7 @@ public class CouponDBDAO implements CouponDAO {
 		String sql = String.format(
 				"update Coupon set TITLE = '%s',START_DATE = '" + coupon.getStartDate().toString() + "', END_DATE = '"
 						+ coupon.getEndDate().toString()
-						+ "', AMOUNT = %d, TYPE = '%s', MESSAGE = '%s', PRICE = %f, IMAGE = '%s' where ID = %d",
+						+ "', AMOUNT = %d, TYPE = '%s', MESSAGE = '%s', PRICE = %f, IMAGE = '%s', ACTIVE = " + coupon.isActive() + " where ID = %d",
 				coupon.getTitle(), coupon.getAmount(), coupon.getType().toString(), coupon.getCouponMessage(), coupon.getPrice(),
 				coupon.getImage(), coupon.getCouponId());
 
@@ -232,7 +232,8 @@ public class CouponDBDAO implements CouponDAO {
 			coupon.setCouponMessage(resultSet.getString(7));
 			coupon.setPrice(resultSet.getDouble(8));
 			coupon.setImage(resultSet.getString(9));
-
+			coupon.setActive(resultSet.getBoolean(10));
+			
 		} catch (SQLException e) {
 			throw new Exception("DB error - unable to get Coupon data. couponId: " +couponId);
 		}catch (Exception e) {
@@ -294,7 +295,8 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setCouponMessage(resultSet.getString(7));
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
-
+				coupon.setActive(resultSet.getBoolean(10));
+				
 				list.add(coupon);
 			}
 
@@ -360,6 +362,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setCouponMessage(resultSet.getString(7));
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
+				coupon.setActive(resultSet.getBoolean(10));
 
 				list.add(coupon);
 			}
@@ -427,6 +430,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setCouponMessage(resultSet.getString(7));
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
+				coupon.setActive(resultSet.getBoolean(10));
 
 				list.add(coupon);
 			}
@@ -493,6 +497,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setCouponMessage(resultSet.getString(7));
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
+				coupon.setActive(resultSet.getBoolean(10));
 
 				list.add(coupon);
 			}
@@ -560,6 +565,7 @@ public class CouponDBDAO implements CouponDAO {
 				coupon.setCouponMessage(resultSet.getString(7));
 				coupon.setPrice(resultSet.getDouble(8));
 				coupon.setImage(resultSet.getString(9));
+				coupon.setActive(resultSet.getBoolean(10));
 
 				list.add(coupon);
 			}
