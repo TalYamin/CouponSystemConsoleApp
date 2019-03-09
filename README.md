@@ -63,7 +63,7 @@ password: 1234
 
 DB derby > bin > CouponManagment
 
-4. Essential Perspectives in Eclpise:
+4. Essential Perspectives in Eclipse:
 
 Data Source Explorer 
 
