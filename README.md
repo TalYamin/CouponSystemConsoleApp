@@ -49,3 +49,10 @@ https://www.youtube.com/watch?v=rhT_XXAaRYE
 (4) The connection string and the properties of the database should be correlated
 Local host, Port : 3301, Database: Test
 
+
+2. Users and Passwords:
+
+ADMIN:
+userName: admin
+password: 1234
+
