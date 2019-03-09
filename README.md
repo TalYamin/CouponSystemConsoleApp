@@ -26,16 +26,16 @@ Test requirements:
 1. Configuration of Derby Drivers
 
 Download Derby DB:
-Download the database from https://db.apache.org/derby/derby_downloads.html
-Make sure you are downloading: For Java 8 and Higher
-Open cmd
-Run: Cd “C:\Users\user\Desktop\db-derby-10.14.2.0-bin\bin”
-Run startNetworkServer -p 3301
-When succeed you should get: “Started & Ready”
+(1) Download the database from https://db.apache.org/derby/derby_downloads.html
+(2) Make sure you are downloading: For Java 8 and Higher
+(3) Open cmd
+(4) Run: Cd “C:\Users\user\Desktop\db-derby-10.14.2.0-bin\bin”
+(5) Run startNetworkServer -p 3301
+(6) When succeed you should get: “Started & Ready”
 
 2 - Add JAR to our Project
-Add new lib folder to our Project.
-Improte into this lib new folder:
-General->File System->Browse -> Under the Derby folder ->lib->add derbyclient.jar
-Project -> Build Path ->Configure build path - add derby.jar and derbyclient.jar
+(1) Add new lib folder to our Project.
+(2) Improte into this lib new folder:
+(3) General->File System->Browse -> Under the Derby folder ->lib->add derbyclient.jar
+(4) Project -> Build Path ->Configure build path - add derby.jar and derbyclient.jar
 
