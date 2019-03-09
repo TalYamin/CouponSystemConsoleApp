@@ -47,7 +47,7 @@ Derby_core_plugin_10.3.1  and Derby_ui_plugin_1.1.1
 (3) Follow the attached tutorial to install the plugin: 
 https://www.youtube.com/watch?v=rhT_XXAaRYE  
 (4) The connection string and the properties of the database should be correlated
-Local host, Port : 3301, Database: Test
+Local host, Port : 3301, Database: CouponManagment
 
 
 2. Users and Passwords:
@@ -62,4 +62,10 @@ password: 1234
 3. DataBase folder:
 
 DB derby > bin > CouponManagment
+
+4. Essential Perspectives in Eclpise:
+
+Data Source Explorer 
+
+SQL Results 
 
