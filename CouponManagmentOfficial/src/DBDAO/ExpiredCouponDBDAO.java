@@ -22,7 +22,7 @@ import SystemUtils.ConnectionPool;
  * (3) Closing the connection and returning back to connection pool.
 */
 
-public class ExpriedCouponDBDAO implements ExpiredCouponDAO {
+public class ExpiredCouponDBDAO implements ExpiredCouponDAO {
 
 	/* Static connectionPool Object */
 	private static ConnectionPool connectionPool;

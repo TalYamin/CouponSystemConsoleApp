@@ -12,7 +12,7 @@ import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
-import DBDAO.ExpriedCouponDBDAO;
+import DBDAO.ExpiredCouponDBDAO;
 import Facades.AdminUserFacade;
 import Facades.CompanyUserFacade;
 import Facades.CouponClientFacade;

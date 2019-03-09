@@ -5,11 +5,14 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 
+import DAO.Company_CouponDAO;
+import DAO.CouponDAO;
+import DAO.Customer_CouponDAO;
 import DAO.ExpiredCouponDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.Customer_CouponDBDAO;
-import DBDAO.ExpriedCouponDBDAO;
+import DBDAO.ExpiredCouponDBDAO;
 import Exceptions.DailyTaskException;
 import JavaBeans.Coupon;
 
@@ -18,19 +21,36 @@ import JavaBeans.Coupon;
  *
  */
 
+/*
+ * DailyCouponExperationTask extends Thread class (implements runnable). The
+ * thread is implemented by the CouponSystem. It's purpose is to set the coupon
+ * system daily thread operation. The Task is to remove from DB any coupon which
+ * is end date passed, coupons which expired.
+ */
+
 public class DailyCouponExpirationTask implements Runnable {
 
+	/* boolean value for Thread running activation */
 	private boolean b = true;
-	private CouponDBDAO couTaskDAO = new CouponDBDAO();
-	private Company_CouponDBDAO com_couTaskDAO = new Company_CouponDBDAO();
-	private Customer_CouponDBDAO cus_couTaskDAO = new Customer_CouponDBDAO();
-	private ExpriedCouponDBDAO exp_couTaskDAO = new ExpriedCouponDBDAO();
+
+	/* DAO objects in order to proceed the task of removing coupons */
+	private CouponDAO couTaskDAO = new CouponDBDAO();
+	private Company_CouponDAO com_couTaskDAO = new Company_CouponDBDAO();
+	private Customer_CouponDAO cus_couTaskDAO = new Customer_CouponDBDAO();
+	private ExpiredCouponDAO exp_couTaskDAO = new ExpiredCouponDBDAO();
+
+	/* Thread object for this task */
 	private Thread taskThread;
 
+	/* Empty CTOR for DailyCouponExpirationTask */
 	public DailyCouponExpirationTask() {
 
 	}
 
+	/*
+	 * Start Task method: Receive new Thread object with "this" runnable. start() to
+	 * thread is activated.
+	 */
 	public void startTask() throws Exception {
 		try {
 
@@ -42,6 +62,17 @@ public class DailyCouponExpirationTask implements Runnable {
 		}
 	}
 
+	/*
+	 * Defines the DailyCouponExperationTask activity and puts the Thread to sleep
+	 * for 24 hours. Sets the DailyCouponExperationTask thread mechanism. The
+	 * DailyCouponExperationTask will check the Coupon table in DB and change to not
+	 * active any expired coupon based on its end date. Once it finishes the
+	 * activations, it will get list of coupons which not active. any coupon in this
+	 * list, will be transfer to Expired_Coupon table and will be removed from
+	 * Company_Coupon, Customer_Coupon and Coupon. In addition, it throws an
+	 * DailyTaskException in case not all expired coupons were removed successfully
+	 * or in case it was unable to complete it's task.
+	 */
 	@Override
 	public void run() {
 
@@ -51,12 +82,18 @@ public class DailyCouponExpirationTask implements Runnable {
 			while (b) {
 				List<Coupon> coupons = couTaskDAO.getAllCoupons();
 				Iterator<Coupon> i = coupons.iterator();
+
+				/* Change expired coupon to not active */
 				while (i.hasNext()) {
 					Coupon current = i.next();
 					if (current.getEndDate().isBefore(LocalDate.now())) {
 						couTaskDAO.updateNoActiveCoupon(current);
 					}
 				}
+				/*
+				 * Transfer any expired coupon to Expired_Coupon table and Remove from
+				 * Company_Coupon, Customer_Coupon and Coupon.
+				 */
 				List<Coupon> couponsUpdated = couTaskDAO.getAllCoupons();
 				Iterator<Coupon> it = couponsUpdated.iterator();
 				while (it.hasNext()) {
@@ -69,7 +106,10 @@ public class DailyCouponExpirationTask implements Runnable {
 					}
 
 				}
-
+				/*
+				 * should be 60*60*24*1000 = 24 hrs in milliseconds. But for test only i've used
+				 * 2000 milliseconds in order to demonstrate it works.
+				 */
 				taskThread.sleep(2000);
 			}
 
@@ -80,6 +120,12 @@ public class DailyCouponExpirationTask implements Runnable {
 
 	}
 
+	/*
+	 * Stop Task - used to stop DailyCouponExperationTask.
+	 * This method used in Shutdown method in CouponSystem. 
+	 * The boolean changed in order to stop thread running.
+	 * The thread is interrupted when he finish his running.
+	 */
 	public void stopTask() throws Exception {
 		try {
 			b = false;

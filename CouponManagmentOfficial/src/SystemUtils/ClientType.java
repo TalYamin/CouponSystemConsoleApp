@@ -5,30 +5,30 @@ package SystemUtils;
  *
  */
 
-
-/*Enum which defines three kinds of client type*/
+/*
+ * The following Enum sets a new type called "ClientType" and contains the
+ * system client types : Administrator, Company and Customer. When used, each
+ * type will return a different facade.
+ */
 
 public enum ClientType {
-	
-	ADMIN
-	{
+
+	ADMIN {
 		@Override
-	    public String toString() {
-	      return "Admin";
+		public String toString() {
+			return "Admin";
 		}
 	},
-	COMPANY
-	{
+	COMPANY {
 		@Override
-	    public String toString() {
-	      return "Company";
+		public String toString() {
+			return "Company";
 		}
 	},
-	CUSTOMER
-	{
+	CUSTOMER {
 		@Override
-	    public String toString() {
-	      return "Customer";
+		public String toString() {
+			return "Customer";
 		}
 	};
 

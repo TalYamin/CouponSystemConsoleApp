@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import DBDAO.Company_CouponDBDAO;
+import DAO.CouponDAO;
+import DAO.CustomerDAO;
+import DAO.Customer_CouponDAO;
 import DBDAO.CouponDBDAO;
 import DBDAO.CustomerDBDAO;
 import DBDAO.Customer_CouponDBDAO;
@@ -23,43 +25,71 @@ import SystemUtils.ClientType;
  *
  */
 
+/*
+ * This class sets the business logic and actions for the Customer client.
+ * Methods in this class based on following pattern: (1) Using Iterators in
+ * order to go through and check all the list objects. (2) Checking relevant
+ * restrictions by business logic. (3) Throwing relevant Exception when it
+ * activated.
+ */
+
 public class CustomerUserFacade implements CouponClientFacade {
 
-	// data members of CustomerUserFacade
+	/* Data members which hold customer object, client type and Access to DAO */
 	private Customer customer;
-	private ClientType clientType = ClientType.CUSTOMER;
-	private CustomerDBDAO cusCustomerDAO = new CustomerDBDAO();
-	private Customer_CouponDBDAO cus_couCustomerDAO = new Customer_CouponDBDAO();
-	private Company_CouponDBDAO com_couCustomerDAO = new Company_CouponDBDAO();
-	private CouponDBDAO couCustomerDAO = new CouponDBDAO();
+	private ClientType clientType;
+	private CustomerDAO cusCustomerDAO;
+	private Customer_CouponDAO cus_couCustomerDAO;
+	private CouponDAO couCustomerDAO;
 
-	// empty CTOR of CustomerUserFacade
+	/* empty CTOR of CustomerUserFacade */
 	public CustomerUserFacade() {
 
 	}
 
-	// CTOR of CustomerUserFacade
+	/*
+	 * Full CTOR: Receive 1 parameter: customer object. Sets specific customer which
+	 * received, client type and DAO to DBDAO.
+	 */
 	public CustomerUserFacade(Customer customer) {
 		this.customer = customer;
+		this.clientType = ClientType.CUSTOMER;
+		this.cusCustomerDAO = new CustomerDBDAO();
+		this.cus_couCustomerDAO = new Customer_CouponDBDAO();
+		this.couCustomerDAO = new CouponDBDAO();
 	}
 
-	// get customer details
+	/*
+	 * Retrieves a specific customer using its ID.
+	 */
 	public Customer getCustomer() throws Exception {
 		try {
 			System.out.println(cusCustomerDAO.getCustomer(this.customer.getCustomerId()));
 			return cusCustomerDAO.getCustomer(this.customer.getCustomerId());
 		} catch (Exception e) {
-			throw new Exception("Cusstomer failed to get customer details. customerId: " + this.customer.getCustomerId());
+			throw new Exception(
+					"Cusstomer failed to get customer details. customerId: " + this.customer.getCustomerId());
 		}
 	}
 
-	// purchase coupon by customer - check if: customer already purchased same
-	// coupon, coupon is out of stock, coupon has expired
+	/*
+	 * Purchase coupon by customer. This method receive 1 parameter: coupon ID.
+	 * Inserts a new coupon in the Customer_Coupon table under the following
+	 * restrictions: 1. Can't purchase coupon which not exist in DB. 2. Can't
+	 * purchase coupon with same id of coupon which already purchased. 3. Can't
+	 * purchase coupon which its amount 0, out of stock. 4. Can't purchase coupon
+	 * which its end date already passed, expired coupon. If one of the restrictions
+	 * is exceeded, the relevant exceptions activated: ObjectNotFoundException,
+	 * SamePurchaseException, OutOfStockException, CouponExpiredException. If the
+	 * purchase succeeds - there is updating of amount in Coupon table. There are
+	 * Lists which hold all the relevant objects from DB, Using Iterator in order to
+	 * go through and check all the list objects.
+	 */
 	public void purchaseCoupon(long couponId) throws Exception {
 
 		try {
 
-			// check if couponId exist
+			/* Check if couponId exists */
 			List<Coupon> coupons = couCustomerDAO.getAllCoupons();
 			Iterator<Coupon> it = coupons.iterator();
 			int flag = 0;
@@ -74,6 +104,7 @@ public class CustomerUserFacade implements CouponClientFacade {
 						this.clientType, couponId);
 			}
 
+			/* Check if couponId similar to another coupon id */
 			List<Long> customers = cus_couCustomerDAO.getCustomerId(couponId);
 
 			Iterator<Long> i = customers.iterator();
@@ -87,17 +118,20 @@ public class CustomerUserFacade implements CouponClientFacade {
 			}
 			if (!i.hasNext()) {
 
+				/* Check if coupon is out of stock */
 				Coupon c = couCustomerDAO.getCoupon(couponId);
 				if (c.getAmount() <= 0) {
 					throw new OutOfStockException("Customer unable to purchase - this coupon is out of stock. ",
 							c.getAmount(), couponId, this.customer.getCustomerId());
 
 				}
+				/* Check if coupon already expired */
 				if (c.getEndDate().isBefore(LocalDate.now())) {
 					throw new CouponExpiredException("Customer unable to purchase - this coupon has expired. ",
 							c.getEndDate().toString(), couponId, this.customer.getCustomerId());
 				} else {
 
+					/* update amount of coupon in Coupon table and insert record to Customer_Coupon table */
 					Coupon newCoupon = couCustomerDAO.getCoupon(couponId);
 					newCoupon.setAmount(newCoupon.getAmount() - 1);
 					couCustomerDAO.updateCoupon(newCoupon);
@@ -121,19 +155,25 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 	}
 
-	// get all coupons which customer purchased
+	/*
+	 * Retrieves a all purchases which belong to this customer in DB. Get only coupons
+	 * which related in Join table to this customer ID. If there are no records in
+	 * DB, NoDetailsFoundException is activated. There are Lists which hold relevant
+	 * objects.
+	 */
 	public List<Coupon> getAllPurchases() throws Exception {
 
 		try {
-			// get all coupons that belongs to customer from Customer_Coupon table
+			/* Get all coupons that belongs to customer from Customer_Coupon table */
 			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
-			// run on ID of coupons in loop
+			/* Run on ID of coupons in loop */
 			for (Long cId : coupons) {
 				// get all Coupons objects that belongs to customer
 				couponsToGet.add(couCustomerDAO.getCoupon(cId));
 			}
-
+			
+			/* Check if there are no records in DB */
 			if (couponsToGet.isEmpty()) {
 				throw new NoDetailsFoundException(
 						"Customer " + this.customer.getCustomerId()
@@ -155,19 +195,26 @@ public class CustomerUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// get all coupons that belongs to customer and by specific type
+	/*
+	 * This method receive 1 parameter: type name. Retrieves a all coupons
+	 * which belong to this customer and with specific type in DB. Get only coupons
+	 * which related in Join table to this customer ID. If there are no records in
+	 * DB, NoDetailsFoundException is activated. There are Lists which hold relevant
+	 * objects.
+	 */
 	public List<Coupon> getAllCouponsByType(String typeName) throws Exception {
 
 		try {
-			// get all coupons that belongs to customer from Customer_Coupon table
+			/* Get all coupons that belongs to customer from Customer_Coupon table */
 			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
-				// get all Coupons objects that belongs to customer and has relevant type
+				/* Get all Coupons objects that belongs to customer and has relevant type */
 				couponsToGet.addAll(couCustomerDAO.getAllCouponsByType(cId, typeName));
 
 			}
-
+			
+			/* Check if there are no records in DB */
 			if (couponsToGet.isEmpty()) {
 				throw new NoDetailsFoundException(
 						"Customer " + this.customer.getCustomerId()
@@ -189,18 +236,26 @@ public class CustomerUserFacade implements CouponClientFacade {
 
 	}
 
-	// get all coupons that belongs to customer and with price limit
+	/*
+	 * This method receive 1 parameter: price top. Retrieves a all coupons
+	 * which belong to this customer and with specific price top in DB. Get only coupons
+	 * which related in Join table to this customer ID. If there are no records in
+	 * DB, NoDetailsFoundException is activated. There are Lists which hold relevant
+	 * objects.
+	 */
 	public List<Coupon> getAllCouponsByPrice(double priceTop) throws Exception {
 
 		try {
-			// get all coupons that belongs to customer from Customer_Coupon table
+			/* get all coupons that belongs to customer from Customer_Coupon table */
 			List<Long> coupons = cus_couCustomerDAO.getCouponId(this.customer.getCustomerId());
 			List<Coupon> couponsToGet = new ArrayList<>();
 			for (Long cId : coupons) {
-				// get all Coupons objects that belongs to customer and has relevant price
+				/* get all Coupons objects that belongs to customer and has relevant price */
 				couponsToGet.addAll(couCustomerDAO.getAllCouponsByPrice(cId, priceTop));
 
 			}
+			
+			/* Check if there are no records in DB */
 			if (couponsToGet.isEmpty()) {
 				throw new NoDetailsFoundException(
 						"Customer " + this.customer.getCustomerId()
@@ -221,7 +276,11 @@ public class CustomerUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// override from interface - make it available to return facade for login method
+	/*
+	 * NOT IN USE - login process performed in the CouponSystem class. Override from
+	 * CouponClientFacade interface - make it available to return facade for login
+	 * method.
+	 */
 	@Override
 	public void login(String name, String password, ClientType clientType) throws Exception {
 

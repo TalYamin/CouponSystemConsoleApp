@@ -1,11 +1,8 @@
 package SystemUtils;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,96 +14,135 @@ import Exceptions.ConnectionException;
  *
  */
 
-public class ConnectionPool {
-	
-	private static ConnectionPool instance;
-	private final int MAX_CON_NUM = 10;
-	private BlockingQueue<Connection> conQ  = new LinkedBlockingQueue<>();
+/*
+ * The ConnectionPool Class is a singleton class which manage the connections
+ * allowed simultaneously. it has 2 synchronized methods: getConnection() and
+ * returnConnection() that manages the connection requests from the threads
+ * using wait() and notiftyAll() Object class methods. Once the connections have
+ * reached the Max simultaneously connection allowed, any additional thread that
+ * will request a connection via getConnection method will have to "wait()"
+ * until the returnConnection() method will "notifyAll()" that there are
+ * available connections in the ConnectionPool.
+ */
 
-	
-	//Private CTOR 
-	private ConnectionPool() throws SQLException, Exception{
-		
+public class ConnectionPool {
+
+	/* the ConnectionPool one instance */
+	private static ConnectionPool instance;
+
+	/* Maximum connections that can be active simultaneously */
+	private final int MAX_CON_NUM = 10;
+
+	/*
+	 * BlockingQueue of connections, its size is limited by Maximum connections
+	 * allowed
+	 */
+	private BlockingQueue<Connection> conQ = new LinkedBlockingQueue<>();
+
+	/*
+	 * Private CTOR (SingelTone design pattern). only one Instance can be created,
+	 * and only within the ConnectionPool Class. other classes can interact with
+	 * this instance via getInstance() Method.
+	 */
+	private ConnectionPool() throws SQLException, Exception {
+
+		/* Derby Driver Connection */
 		try {
 			Class.forName(DataBase.getDriverConnextion());
-		}catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+		/* DB connection port */
 		Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
 		con1.close();
-		while(this.conQ.size() < MAX_CON_NUM) {
+		while (this.conQ.size() < MAX_CON_NUM) {
 			con1 = DriverManager.getConnection(DataBase.getConnectionString());
 			this.conQ.offer(con1);
-		}	
-		
+		}
+
 	}
-	
-	//call the instance of connectionPool
-	
-	public static ConnectionPool getInstance() throws Exception{
+
+	/*
+	 * allows to get the single instance variable that was created in the singleton
+	 * class.
+	 */
+	public static ConnectionPool getInstance() throws Exception {
 		if (instance == null) {
 			try {
 				instance = new ConnectionPool();
-			}catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 				throw new Exception("unable to get instance of connectioPool");
 			}
 		}
-		
+
 		return instance;
 	}
-	
-	//send a connection to the requester from conQ. this method is synchronized so only one can get to the connection pool at a time.
-    //before sending a connection it set the auto commit to true.
-	
+
+	/*
+	 * Send a connection if available and forces threads to wait if the connections
+	 * have reach the Maximum connections allowed simultaneously.
+	 */
 	public synchronized Connection getConnection() throws Exception {
-		
+
 		try {
-			
+
+			/* Check if BlockingQueue is empty, and if it is empty - wait() activated */
+			while (conQ.isEmpty()) {
+				wait();
+				System.out.println("ALERT: connection pool is empty, please wait...");
+			}
+
+			/* If BlockingQueue is not empty, so connection is removed from BlockingQueue */
 			Connection c = conQ.poll();
 			c.setAutoCommit(true);
 			return c;
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new ConnectionException("failed to get connection. ", this.conQ.size());
 		}
 	}
-	
-	 //return a connection to conQ. 
-	 //this method is synchronized so only one can get to the connection pool at a time
 
-	public synchronized void returnConnection(Connection c)throws Exception{
+	/*
+	 * Returns the connection once it has been released and notifying all that there
+	 * is an available connection within the connection pool.
+	 */
+	public synchronized void returnConnection(Connection c) throws Exception {
 		try {
-		Connection c1 = DriverManager.getConnection(DataBase.getConnectionString());
-		conQ.offer(c1);
-		}catch (Exception e) {
+			Connection c1 = DriverManager.getConnection(DataBase.getConnectionString());
+			conQ.offer(c1);
+			notifyAll();
+		} catch (Exception e) {
 			throw new ConnectionException("failed to return connection. ", this.conQ.size());
 		}
 	}
-	
-	// close all the connection available in conQ
-	
+
+	/*
+	 * closeAllConnection: check if there is connection available in BlockingQueue,
+	 * remove all the connections and close them. Using this method for shutdown of
+	 * system.
+	 */
+
 	public void closeAllConnections() throws Exception {
-		
+
 		Connection c;
-		while(this.conQ.peek()!=null) {
-			c= this.conQ.poll();
+		while (this.conQ.peek() != null) {
+			c = this.conQ.poll();
 			try {
 				c.close();
 				instance = null;
-			}catch (Exception e) {
+			} catch (Exception e) {
 				throw new ConnectionException("Unable to close all connections. ", this.conQ.size());
 			}
 		}
-		
+
 		System.out.println("All connections have been closed in ConnectionPool");
 	}
-	
-	//return the number of the available connections
-	
+
+	/* Return the number of the available connections in BlockingQueue */
+
 	public int availableConnections() {
 		System.out.println("The num of available connections: " + this.conQ.size());
 		return this.conQ.size();
 	}
-	
-	
+
 }

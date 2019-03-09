@@ -3,6 +3,11 @@ package Facades;
 import java.util.Iterator;
 import java.util.List;
 
+import DAO.CompanyDAO;
+import DAO.Company_CouponDAO;
+import DAO.CouponDAO;
+import DAO.CustomerDAO;
+import DAO.Customer_CouponDAO;
 import DBDAO.CompanyDBDAO;
 import DBDAO.Company_CouponDBDAO;
 import DBDAO.CouponDBDAO;
@@ -22,22 +27,45 @@ import SystemUtils.ClientType;
  *
  */
 
+/*
+ * This class sets the business logic and actions for the Admin client. Methods
+ * in this class based on following pattern: (1) Using Iterators in order to go
+ * through and check all the list objects. (2) Checking relevant restrictions by
+ * business logic. (3) Throwing relevant Exception when it activated.
+ */
+
 public class AdminUserFacade implements CouponClientFacade {
 
-	// data members of AdminUserFacade
-	private ClientType clientType = ClientType.ADMIN;
-	private CompanyDBDAO compAdminDAO = new CompanyDBDAO();
-	private CustomerDBDAO custAdminDAO = new CustomerDBDAO();
-	private CouponDBDAO coupAdminDAO = new CouponDBDAO();
-	private Company_CouponDBDAO com_couAdminDAO = new Company_CouponDBDAO();
-	private Customer_CouponDBDAO cus_couAdminDAO = new Customer_CouponDBDAO();
+	/* Data members which hold client type and Access to DAO */
+	private ClientType clientType;
+	private CompanyDAO compAdminDAO;
+	private CustomerDAO custAdminDAO;
+	private CouponDAO coupAdminDAO;
+	private Company_CouponDAO com_couAdminDAO;
+	private Customer_CouponDAO cus_couAdminDAO;
 
-	// empty CTOR of AdminUserFacade
+	/* Full CTOR: sets the client type and DAO to DBDAO */
 	public AdminUserFacade() {
-
+		this.clientType = ClientType.ADMIN;
+		this.compAdminDAO = new CompanyDBDAO();
+		this.custAdminDAO = new CustomerDBDAO();
+		this.coupAdminDAO = new CouponDBDAO();
+		this.com_couAdminDAO = new Company_CouponDBDAO();
+		this.cus_couAdminDAO = new Customer_CouponDBDAO();
 	}
 
-	// insert company to Company table after check there is not duplicate name
+	// ---------------------------
+	// Companies related methods
+	// ---------------------------
+
+	/*
+	 * This method receive 1 parameter: company object.
+	 * Inserts a new company in the companies table under the following
+	 * restrictions: Can't insert a company with the same name. If the restriction
+	 * is exceeded, CompanyExistsException activated. There is List which holds all
+	 * the companies in DB, Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public void insertCompany(Company company) throws Exception {
 		try {
 
@@ -68,13 +96,25 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	}
 
-	// remove company - include: remove all coupons from Coupon, Company_Coupon,
-	// Customer_Coupon tables
+	/*
+	 * This method receive 1 parameter: company ID.
+	 * Removes a company and all its coupons from the database. Removing a company
+	 * with this method impacts the following database tables: (a) Coupon table: if
+	 * any coupon record has been created. (b) Company_Coupon table: if any
+	 * company's coupon record has been created. (c) Customer_Coupon table: if any
+	 * customer-coupon record has been created. (d) Company table. It is imperative
+	 * we will remove all company's related data from these tables in order to be
+	 * able to remove the company data. once we clear all related data it is safe to
+	 * remove the company from the companies table. There are Lists which hold
+	 * relevant objects. Using Iterator in order to go through and check all the
+	 * list objects. If company id doesn't exist in DB, ObjectNotFoundException is
+	 * activated.
+	 */
 	public void removeCompany(long companyId) throws Exception {
 
 		try {
 
-			// check if compnayId exist
+			/* Check if compnayId exist */
 			List<Company> companies = compAdminDAO.getAllCompanies();
 			Iterator<Company> i = companies.iterator();
 			int flag = 0;
@@ -88,14 +128,16 @@ public class AdminUserFacade implements CouponClientFacade {
 				throw new ObjectNotFoundException("companyId does not exist in system", 0, this.clientType, companyId);
 			}
 
-			// get all coupons that belongs to company from Company_Coupon table
+			/* get all coupons that belongs to company from Company_Coupon table */
 			List<Long> coupons = com_couAdminDAO.getCouponId(companyId);
 
-			// run on ID of coupons in loop
+			/* Run on ID of coupons in loop */
 			for (Long cId : coupons) {
 
-				// get all Coupons objects that belongs to company and remove them from Coupon
-				// and Customer_Coupon and Company_Coupon table
+				/*
+				 * Get all Coupons objects that belongs to company and remove them from
+				 * Customer_Coupon, Company_Coupon, Coupon tables
+				 */
 				List<Coupon> couponsToRemove = coupAdminDAO.getAllCoupons(cId);
 				for (Coupon c : couponsToRemove) {
 					coupAdminDAO.removeCoupon(c);
@@ -111,7 +153,7 @@ public class AdminUserFacade implements CouponClientFacade {
 				}
 
 			}
-			// remove company from Company table
+			/* Remove company from Company table */
 			compAdminDAO.removeCompany(compAdminDAO.getCompany(companyId));
 		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -121,11 +163,19 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	}
 
-	// update company - can't update companyId or compayName
+	/*
+	 * This method receive 3 parameters: company ID, new company password and new company email.
+	 * Updates an existing company in the Company table under the following
+	 * restrictions: 1. There is no option to update company name or company id 2.
+	 * Can't update a company that has not been created first. If the restriction is
+	 * exceeded, ObjectNotFoundException activated. There are Lists which hold
+	 * relevant objects. Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public void updateCompany(long companyId, String newCompanyPassword, String newCompanyEmail) throws Exception {
 		try {
 
-			// check if compnayId exist
+			/* Check if compnayId exist */
 			List<Company> companies = compAdminDAO.getAllCompanies();
 			Iterator<Company> i = companies.iterator();
 			int flag = 0;
@@ -140,6 +190,7 @@ public class AdminUserFacade implements CouponClientFacade {
 						companyId);
 			}
 
+			/* Set new values to company object */
 			Company company = compAdminDAO.getCompany(companyId);
 			company.setCompanyPassword(newCompanyPassword);
 			company.setCompanyEmail(newCompanyEmail);
@@ -151,7 +202,11 @@ public class AdminUserFacade implements CouponClientFacade {
 		}
 	}
 
-	// get all companies
+	/*
+	 * Retrieves a all companies in DB. If there are no records in DB,
+	 * NoDetailsFoundException is activated. There are Lists which hold relevant
+	 * objects.
+	 */
 	public List<Company> getAllCompanies() throws Exception {
 		try {
 			List<Company> companies = compAdminDAO.getAllCompanies();
@@ -173,11 +228,17 @@ public class AdminUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// get specific company by companyId
+	/*
+	 * This method receive 1 parameter: company ID.
+	 * Retrieves a specific company using its ID.If there are no records in DB for
+	 * this id, ObjectNotFoundException is activated.There are Lists which hold
+	 * relevant objects. Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public Company getCompany(long companyId) throws Exception {
 		try {
 
-			// check if compnayId exist
+			/* Check if compnayId exist */
 			List<Company> companies = compAdminDAO.getAllCompanies();
 			Iterator<Company> i = companies.iterator();
 			int flag = 0;
@@ -202,12 +263,24 @@ public class AdminUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// insert customer to Customer table after check there is not duplicate name
+	// --------------------------
+	// Customers related methods
+	// --------------------------
+
+	/*
+	 * This method receive 1 parameter: customer object.
+	 * Inserts a new customer in the customers table under the following
+	 * restrictions: Can't insert a customer with the same name. If the restriction
+	 * is exceeded, CustomerExistsException activated. There is List which holds all
+	 * the customers in DB, Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public void insertCustomer(Customer customer) throws Exception {
 		try {
 
 			List<Customer> customers = custAdminDAO.getAllCustomers();
 
+			/* Check for same name of customer */
 			Iterator<Customer> i = customers.iterator();
 			while (i.hasNext()) {
 				Customer current = i.next();
@@ -229,13 +302,23 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	}
 
-	// remove customer - include: remove all coupons that belong to customer from
-	// Customer_Coupon table and customer from Customer table
+	/*
+	 * This method receive 1 parameter: customer ID.
+	 * Removes a customer and all its coupons from the database. Removing a customer
+	 * with this method impacts the following database tables: (a) Customer_Coupon
+	 * table: if any customer-coupon record has been created. (b) Customer table. It
+	 * is imperative we will remove all customer's related data from these tables in
+	 * order to be able to remove the customer data. once we clear all related data
+	 * it is safe to remove the customer from the Customer table. There are Lists
+	 * which hold relevant objects. Using Iterator in order to go through and check
+	 * all the list objects. If customer id doesn't exist in DB,
+	 * ObjectNotFoundException is activated.
+	 */
 	public void removeCustomer(long customerId) throws Exception {
 
 		try {
 
-			// check if customerId exist
+			/* check if customerId exist */
 			List<Customer> customers = custAdminDAO.getAllCustomers();
 			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
@@ -250,12 +333,17 @@ public class AdminUserFacade implements CouponClientFacade {
 						customerId);
 			}
 
+			/*
+			 * Get all lists of coupons which related to customer, if records exist - remove
+			 * them from Customer_Coupon table
+			 */
 			Customer customer = custAdminDAO.getCustomer(customerId);
-			List<Long>couponsId = cus_couAdminDAO.getCouponId(customer.getCustomerId());
+			List<Long> couponsId = cus_couAdminDAO.getCouponId(customer.getCustomerId());
 			if (!couponsId.isEmpty()) {
-				cus_couAdminDAO.removeCustomer_Coupon(customer);	
+				cus_couAdminDAO.removeCustomer_Coupon(customer);
 				custAdminDAO.removeCustomer(customer);
 			}
+			/* After all coupons removed, remove data from Customer table */
 			custAdminDAO.removeCustomer(customer);
 
 		} catch (ObjectNotFoundException e) {
@@ -266,12 +354,20 @@ public class AdminUserFacade implements CouponClientFacade {
 
 	}
 
-	// update customer - can't update customerId or customerName
+	/*
+	 * This method receive 2 parameters: customer ID and new customer password.
+	 * Updates an existing customer in the Customer table under the following
+	 * restrictions: 1. There is no option to update customer name or customer id 2.
+	 * Can't update a customer that has not been created first. If the restriction
+	 * is exceeded, ObjectNotFoundException activated. There are Lists which hold
+	 * relevant objects. Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public void updateCustomer(long customerId, String newCustomerPassword) throws Exception {
 
 		try {
 
-			// check if customerId exist
+			/* Check if customerId exist */
 			List<Customer> customers = custAdminDAO.getAllCustomers();
 			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
@@ -286,6 +382,7 @@ public class AdminUserFacade implements CouponClientFacade {
 						customerId);
 			}
 
+			/* Set new values to customer object */
 			Customer customer = custAdminDAO.getCustomer(customerId);
 			customer.setCustomerPassword(newCustomerPassword);
 			custAdminDAO.updateCustomer(customer);
@@ -296,7 +393,11 @@ public class AdminUserFacade implements CouponClientFacade {
 		}
 	}
 
-	// get all customers
+	/*
+	 * Retrieves a all customers in DB. If there are no records in DB,
+	 * NoDetailsFoundException is activated. There are Lists which hold relevant
+	 * objects.
+	 */
 	public List<Customer> getAllCustomers() throws Exception {
 		try {
 			List<Customer> customers = custAdminDAO.getAllCustomers();
@@ -318,11 +419,17 @@ public class AdminUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// get specific customer by customerId
+	/*
+	 * This method receive 1 parameter: customer ID.
+	 * Retrieves a specific customer using its ID.If there are no records in DB for
+	 * this id, ObjectNotFoundException is activated.There are Lists which hold
+	 * relevant objects. Using Iterator in order to go through and check all the
+	 * list objects.
+	 */
 	public Customer getCustomer(long customerId) throws Exception {
 		try {
 
-			// check if customerId exist
+			/* Check if customerId exist */
 			List<Customer> customers = custAdminDAO.getAllCustomers();
 			Iterator<Customer> i = customers.iterator();
 			int flag = 0;
@@ -347,7 +454,11 @@ public class AdminUserFacade implements CouponClientFacade {
 		return null;
 	}
 
-	// override from interface - make it available to return facade for login method
+	/*
+	 * NOT IN USE - login process performed in the CouponSystem class. Override from
+	 * CouponClientFacade interface - make it available to return facade for login
+	 * method.
+	 */
 	@Override
 	public void login(String name, String password, ClientType clientType) throws Exception {
 

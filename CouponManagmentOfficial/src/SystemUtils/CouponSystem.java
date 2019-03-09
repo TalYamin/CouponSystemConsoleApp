@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 
+import DAO.CompanyDAO;
+import DAO.CustomerDAO;
 import DB.DataBase;
 import DBDAO.CompanyDBDAO;
 import DBDAO.CustomerDBDAO;
@@ -22,14 +24,36 @@ import SystemUtils.DailyCouponExpirationTask;
  *
  */
 
+/*
+ * This is the coupon system Single-tone class which: (1) Allows only one
+ * Instance to be created and only within the CouponSystem Class. other classes
+ * can interact with this instance via getInstance() Method. (2) Allows the
+ * different clients to Login into the system and perform different actions
+ * according to the Client type. (3) Getting instance of ConnectionPool (4)
+ * Creating and running the DailyCouponExpirationTask. (5) Contains the shutdown
+ * method which shuts the coupon system.
+ */
+
 public class CouponSystem {
 
+	/* the CouponSystem one instance */
 	private static CouponSystem instance = new CouponSystem();
-	private CompanyDBDAO companySystemDAO = new CompanyDBDAO();
-	private CustomerDBDAO customerSystemDAO = new CustomerDBDAO();
+
+	/* the DAO objects for Login method */
+	private CompanyDAO companySystemDAO = new CompanyDBDAO();
+	private CustomerDAO customerSystemDAO = new CustomerDBDAO();
+
+	/* ConnectionPool object */
 	private ConnectionPool connectionPool;
+
+	/* DailyCouponExpirationTask object */
 	private static DailyCouponExpirationTask dailyCouponExpirationTask;
 
+	/*
+	 * Private CTOR (SingelTone design pattern). only one Instance can be created,
+	 * and only within the CouponSystem Class. other classes can interact with this
+	 * instance via getInstance() Method. This CTOR includes Data Base building.
+	 */
 	private CouponSystem() {
 		System.out.println("Welcome to Coupon System");
 		try {
@@ -37,9 +61,14 @@ public class CouponSystem {
 		} catch (Exception e) {
 			System.out.println("DB already exists");
 		}
-		
+
 	}
 
+	/*
+	 * allows to get the single instance variable that was created in the singleton
+	 * class. when the instance received: ConnectionPool and
+	 * DailyCouponExpirationTask are activated.
+	 */
 	public static CouponSystem getInstance() throws Exception {
 		try {
 			ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -48,7 +77,7 @@ public class CouponSystem {
 			return instance;
 		} catch (DailyTaskException e) {
 			System.out.println(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			throw new Exception("DailyCouponExpirationTask failed to start");
 		}
 		return instance;
@@ -69,7 +98,7 @@ public class CouponSystem {
 
 			case ADMIN:
 
-				// check the validity of the parameters values
+				/* Check the validity of the parameters values */
 				if (userName.equals("admin") && password.equals("1234")) {
 					AdminUserFacade adminF = new AdminUserFacade();
 					System.out.println("Admin logged in to system");
@@ -80,12 +109,12 @@ public class CouponSystem {
 				}
 
 			case COMPANY:
-				
-				// take the list of companies from DB
+
+				/* Take the list of companies from DB */
 				List<Company> companies = companySystemDAO.getAllCompanies();
 				Iterator<Company> i = companies.iterator();
 
-				// for any company in DB check the validity of the parameters values
+				/* For any company in DB check the validity of the parameters values */
 				while (i.hasNext()) {
 					Company current = i.next();
 					if (current.getCompanyName().equals(userName) && current.getCompanyPassword().equals(password)) {
@@ -100,11 +129,11 @@ public class CouponSystem {
 
 			case CUSTOMER:
 
-				// take the list of customers from DB
+				/* Take the list of customers from DB */
 				List<Customer> customers = customerSystemDAO.getAllCustomers();
 				Iterator<Customer> it = customers.iterator();
 
-				// for any customer in DB check the validity of the parameters values
+				/* For any customer in DB check the validity of the parameters values */
 				while (it.hasNext()) {
 					Customer current = it.next();
 					if (current.getCustomerName().equals(userName) && current.getCustomerPassword().equals(password)) {
@@ -126,6 +155,11 @@ public class CouponSystem {
 		return null;
 	}
 
+	/*
+	 * Shutdown CouponSystem:
+	 * (1) Close all connections in connectionPool.
+	 * (2) Stop DailyCouponExpirationTask.
+	 */
 	public void shutdown() {
 		try {
 			connectionPool = ConnectionPool.getInstance();
