@@ -58,3 +58,8 @@ userName: admin
 
 password: 1234
 
+
+3. DataBase folder:
+
+DB derby > bin > CouponManagment
+
