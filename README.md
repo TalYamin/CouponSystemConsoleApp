@@ -25,7 +25,7 @@ Test requirements:
 
 1. Configuration of Derby Drivers
 
-Download Derby DB:
+1- Download Derby DB:
 (1) Download the database from https://db.apache.org/derby/derby_downloads.html
 (2) Make sure you are downloading: For Java 8 and Higher
 (3) Open cmd
