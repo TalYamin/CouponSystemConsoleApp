@@ -33,13 +33,13 @@ Test requirements:
 (5) Run startNetworkServer -p 3301
 (6) When succeed you should get: “Started & Ready”
 
-2 - Add JAR to our Project
+2 - Add JAR to our Project:
 (1) Add new lib folder to our Project.
 (2) Improte into this lib new folder:
 (3) General->File System->Browse -> Under the Derby folder ->lib->add derbyclient.jar
 (4) Project -> Build Path ->Configure build path - add derby.jar and derbyclient.jar
 
-3  - Install Derby Database Plugins into eclipse 
+3  - Install Derby Database Plugins into eclipse:
 (1) Download 2 jars from this url : 
 http://db.apache.org/derby/releases/release-10.1.3.1.html
 Derby_core_plugin_10.3.1  and Derby_ui_plugin_1.1.1 
