@@ -39,3 +39,13 @@ Download Derby DB:
 (3) General->File System->Browse -> Under the Derby folder ->lib->add derbyclient.jar
 (4) Project -> Build Path ->Configure build path - add derby.jar and derbyclient.jar
 
+3  - Install Derby Database Plugins into eclipse 
+(1) Download 2 jars from this url : 
+http://db.apache.org/derby/releases/release-10.1.3.1.html
+Derby_core_plugin_10.3.1  and Derby_ui_plugin_1.1.1 
+(2) Extract 
+(3) Follow the attached tutorial to install the plugin: 
+https://www.youtube.com/watch?v=rhT_XXAaRYE  
+(4) The connection string and the properties of the database should be correlated
+Local host, Port : 3301, Database: Test
+
