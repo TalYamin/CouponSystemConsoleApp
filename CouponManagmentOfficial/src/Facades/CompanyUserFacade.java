@@ -110,7 +110,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				coupCompanyDAO.insertCoupon(coupon);
 				com_couCompany.insertCompany_Coupon(this.company, coupon);
 				System.out.println(
-						"Company " + this.company.getCompanyName() + " add new coupon: " + coupon.getCouponId());
+						"Company " + this.company.getCompanyName() + " added new coupon: " + coupon.getCouponId());
 			}
 
 		} catch (EndDatePassedException e) {

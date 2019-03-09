@@ -100,7 +100,7 @@ public class FinalTest {
 			System.out.println("*************************************");
 			System.out.println("(6) Remove Company test: ");
 			admin.removeCompany(4321);
-			System.out.println("List of companies after removeing company: ");
+			System.out.println("List of companies after removing company: ");
 			companies = admin.getAllCompanies();
 
 			// (7) update company
