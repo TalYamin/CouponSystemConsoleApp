@@ -14,6 +14,7 @@ import DAO.CouponDAO;
 import JavaBeans.Coupon;
 import JavaBeans.CouponType;
 import SystemUtils.ConnectionPool;
+import SystemUtils.DateConverterUtil;
 
 /**
  * @author Tal Yamin
@@ -227,8 +228,8 @@ public class CouponDBDAO implements CouponDAO {
 			resultSet.next();
 			coupon.setCouponId(resultSet.getLong(1));
 			coupon.setTitle(resultSet.getString(2));
-			coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-			coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+			coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+			coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 			coupon.setAmount(resultSet.getInt(5));
 			switch (resultSet.getString(6)) {
 			case "Resturants":
@@ -291,8 +292,8 @@ public class CouponDBDAO implements CouponDAO {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+				coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 				coupon.setAmount(resultSet.getInt(5));
 				switch (resultSet.getString(6)) {
 				case "Resturants":
@@ -359,8 +360,8 @@ public class CouponDBDAO implements CouponDAO {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+				coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 				coupon.setAmount(resultSet.getInt(5));
 				switch (resultSet.getString(6)) {
 				case "Resturants":
@@ -428,8 +429,8 @@ public class CouponDBDAO implements CouponDAO {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+				coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 				coupon.setAmount(resultSet.getInt(5));
 				switch (resultSet.getString(6)) {
 				case "Resturants":
@@ -496,8 +497,8 @@ public class CouponDBDAO implements CouponDAO {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+				coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 				coupon.setAmount(resultSet.getInt(5));
 				switch (resultSet.getString(6)) {
 				case "Resturants":
@@ -565,8 +566,8 @@ public class CouponDBDAO implements CouponDAO {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
 				coupon.setTitle(resultSet.getString(2));
-				coupon.setStartDate(LocalDate.parse(resultSet.getString(3)));
-				coupon.setEndDate(LocalDate.parse(resultSet.getString(4)));
+				coupon.setStartDate(DateConverterUtil.convertDateLocal(resultSet.getDate(3)));
+				coupon.setEndDate(DateConverterUtil.convertDateLocal(resultSet.getDate(4)));
 				coupon.setAmount(resultSet.getInt(5));
 				switch (resultSet.getString(6)) {
 				case "Resturants":

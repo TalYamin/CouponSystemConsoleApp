@@ -1,8 +1,9 @@
 package JavaBeans;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import SystemUtils.DateConverterUtil;
 
 /**
  * @author Shay Ben Haroush
@@ -14,37 +15,34 @@ import java.time.format.DateTimeFormatter;
  */
 
 public class Coupon {
-	
+
 	/* Data members of Coupon */
 	private long couponId;
 	private String title;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
 	private int amount;
-	private CouponType type;  
+	private CouponType type;
 	private String couponMessage;
 	private double price;
 	private String image;
 	private String customStartDate;
 	private String customeEndDate;
 	private boolean active;
-	
-	
+
 	/* Empty CTOR Coupon */
-	public Coupon(){
-		
+	public Coupon() {
+
 	}
-	
-	
-	//Full CTOR Coupon: sets the couponId, title, endDate, amount, type, couponMessage, price, image */
-	public Coupon(long couponId, String title, String endDate, int amount, CouponType type,
-			String couponMessage, double price, String image) {
+
+	// Full CTOR Coupon: sets the couponId, title, endDate, amount, type,
+	// couponMessage, price, image */
+	public Coupon(long couponId, String title, String endDate, int amount, CouponType type, String couponMessage,
+			double price, String image) {
 		this.couponId = couponId;
 		this.title = title;
 		this.startDate = LocalDate.now();
-		LocalDate endLocalDate = LocalDate.parse(endDate, this.formatter);
-		this.endDate = endLocalDate;
+		this.endDate = DateConverterUtil.convertStringDate(endDate);
 		this.amount = amount;
 		this.type = type;
 		this.couponMessage = couponMessage;
@@ -53,7 +51,6 @@ public class Coupon {
 		this.active = true;
 	}
 
-	
 	/* Getter method to receive the value of coupon id */
 	public long getCouponId() {
 		return this.couponId;
@@ -88,7 +85,7 @@ public class Coupon {
 	public LocalDate getEndDate() {
 		return this.endDate;
 	}
-	
+
 	/* Setter method to set the value of coupon end date */
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
@@ -143,7 +140,7 @@ public class Coupon {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+
 	/* Getter method to receive the value of coupon activation */
 	public boolean isActive() {
 		return active;
@@ -154,28 +151,20 @@ public class Coupon {
 		this.active = active;
 	}
 
-	/* 
-	 * toString method of Coupon - allows pattern to print
-	 * Using formatter pattern to custom date view. 
+	/*
+	 * toString method of Coupon - allows pattern to print Using formatter pattern
+	 * to custom date view.
 	 */
 	@Override
 	public String toString() {
-		
-		customStartDate = this.startDate.format(this.formatter);
-		customeEndDate = this.endDate.format(this.formatter);
-		
-		return "Coupon [couponId=" + this.getCouponId() + ", title=" + this.getTitle() + ", startDate=" + this.customStartDate + ", endDate=" + this.customeEndDate
-				+ ", amount=" + this.getAmount() + ", type=" + this.getType() + ", couponMessage=" + this.getCouponMessage() + ", price=" + this.getPrice()
-				+ ", image=" + this.getImage() + ", active=" + this.isActive()+ "]";
+
+		customStartDate = DateConverterUtil.DateStringFormat(this.startDate);
+		customeEndDate = DateConverterUtil.DateStringFormat(this.endDate);
+
+		return "Coupon [couponId=" + this.getCouponId() + ", title=" + this.getTitle() + ", startDate="
+				+ this.customStartDate + ", endDate=" + this.customeEndDate + ", amount=" + this.getAmount() + ", type="
+				+ this.getType() + ", couponMessage=" + this.getCouponMessage() + ", price=" + this.getPrice()
+				+ ", image=" + this.getImage() + ", active=" + this.isActive() + "]";
 	}
-
-
-	
-	
-	
-	
-	
-	
-	
 
 }

@@ -22,6 +22,7 @@ import Exceptions.ObjectNotFoundException;
 import JavaBeans.Company;
 import JavaBeans.Coupon;
 import SystemUtils.ClientType;
+import SystemUtils.DateConverterUtil;
 
 /**
  * @author Tal Yamin
@@ -45,7 +46,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 	private CouponDAO coupCompanyDAO;
 	private Company_CouponDAO com_couCompany;
 	private Customer_CouponDAO cus_couCompany;
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+
 
 	/* Empty CTOR of CompanyUserFacade */
 	public CompanyUserFacade() {
@@ -88,9 +89,9 @@ public class CompanyUserFacade implements CouponClientFacade {
 			/* Check if the end date already passed */
 			if (coupon.getEndDate().isBefore(LocalDate.now())) {
 				throw new EndDatePassedException("Company failed to add coupon - the end date already passed. ",
-						coupon.getEndDate().format(formatter), coupon.getCouponId(), this.company.getCompanyId());
+						DateConverterUtil.DateStringFormat(coupon.getEndDate()), coupon.getCouponId(), this.company.getCompanyId());
 			}
-
+			
 			List<Coupon> coupons = coupCompanyDAO.getAllCoupons();
 
 			Iterator<Coupon> i = coupons.iterator();
@@ -227,8 +228,7 @@ public class CompanyUserFacade implements CouponClientFacade {
 				long current = it.next();
 				if (current == this.company.getCompanyId()) {
 					Coupon coupon = coupCompanyDAO.getCoupon(couponId);
-					LocalDate endLocalDate = LocalDate.parse(newEndDate, this.formatter);
-					coupon.setEndDate(endLocalDate);
+					coupon.setEndDate(DateConverterUtil.convertStringDate(newEndDate));
 					coupon.setPrice(newPrice);
 
 					/* Check if end date already passed */
