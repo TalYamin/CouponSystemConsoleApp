@@ -19,7 +19,7 @@ Description:
 
 At this phase, the database will be configured to store and retrieve information about customers, companies and coupons.
 A layer of insulation will be created over the database to allow convenient work from Java to the SQL required for DB operations.
-In addition, basic infrastructure services such as ConnectionPool and a daily Thread will be established that will maintain the system and clean it out of expired coupons. 3 Points Entry will be defined for each type of customer (administrator, company or customer) who has signed up for a login.
+In addition, basic infrastructure services such as ConnectionPool and a daily Thread will be established that will maintain the system and clean it out of expired coupons. 3 Points Entry will be defined for each type of client (administrator, company or customer) who has signed up for a login.
 
 Test requirements:
 
