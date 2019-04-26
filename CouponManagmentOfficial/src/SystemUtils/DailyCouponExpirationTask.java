@@ -53,10 +53,11 @@ public class DailyCouponExpirationTask implements Runnable {
 	 */
 	public void startTask() throws Exception {
 		try {
-
-			taskThread = new Thread(this);
-			taskThread.start();
-			System.out.println("Daily Coupon Expiration Task starting now");
+			if (Thread.activeCount() < 2) {
+				taskThread = new Thread(this);
+				taskThread.start();
+				System.out.println("Daily Coupon Expiration Task starting now");
+			}
 		} catch (Exception e) {
 			throw new DailyTaskException("Daily Coupon Expiration Task failed starting");
 		}
@@ -86,7 +87,7 @@ public class DailyCouponExpirationTask implements Runnable {
 				/* Change expired coupon to not active */
 				while (i.hasNext()) {
 					Coupon current = i.next();
-					if (current.getEndDate().isBefore(LocalDate.now())) {
+					if (current.getEndDate().isBefore(LocalDate.now()) && current.isActive() == true) {
 						couTaskDAO.updateNoActiveCoupon(current);
 					}
 				}
