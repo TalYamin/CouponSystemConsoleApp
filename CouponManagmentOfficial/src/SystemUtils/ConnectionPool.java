@@ -52,7 +52,10 @@ public class ConnectionPool {
 		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-		/* DB connection port */
+		/*
+		 * DB connection port - Using While Loop in order to set all the available connections
+		 * in BlockingQueue
+		 */
 		while (this.conQ.size() < MAX_CON_NUM) {
 			Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
 			this.conQ.offer(con1);
@@ -80,6 +83,7 @@ public class ConnectionPool {
 	/*
 	 * Send a connection if available and forces threads to wait if the connections
 	 * have reach the Maximum connections allowed simultaneously.
+	 * This method is synchronized so only one thread can get to the connection pool at a time.
 	 */
 	public synchronized Connection getConnection() throws Exception {
 
@@ -103,6 +107,7 @@ public class ConnectionPool {
 	/*
 	 * Returns the connection once it has been released and notifying all that there
 	 * is an available connection within the connection pool.
+	 * This method is synchronized so only one thread can get to the connection pool at a time.
 	 */
 	public synchronized void returnConnection(Connection c) throws Exception {
 		try {
