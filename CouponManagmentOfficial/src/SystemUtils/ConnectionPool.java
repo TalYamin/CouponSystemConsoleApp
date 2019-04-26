@@ -53,10 +53,8 @@ public class ConnectionPool {
 			System.out.println(e.getMessage());
 		}
 		/* DB connection port */
-		Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
-		con1.close();
 		while (this.conQ.size() < MAX_CON_NUM) {
-			con1 = DriverManager.getConnection(DataBase.getConnectionString());
+			Connection con1 = DriverManager.getConnection(DataBase.getConnectionString());
 			this.conQ.offer(con1);
 		}
 
