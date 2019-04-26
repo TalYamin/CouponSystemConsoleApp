@@ -132,12 +132,12 @@ public class ConnectionPool {
 			c = this.conQ.poll();
 			try {
 				c.close();
-				instance = null;
 			} catch (Exception e) {
 				throw new ConnectionException("Unable to close all connections. ", this.conQ.size());
 			}
 		}
-
+		
+		instance = null;
 		System.out.println("All connections have been closed in ConnectionPool");
 	}
 
