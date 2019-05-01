@@ -44,7 +44,7 @@ public class ExpiredCouponDBDAO implements ExpiredCouponDAO {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 
-		String sql = "insert into Expired_Coupon(ID, TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE, ACTIVE) values (?,?,?,?,?,?,?,?,?,?)";
+		String sql = "insert into Expired_Coupon(ID_ExCoupon, TITLE, START_DATE, END_DATE, AMOUNT, TYPE, MESSAGE, PRICE, IMAGE, ACTIVE) values (?,?,?,?,?,?,?,?,?,?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 

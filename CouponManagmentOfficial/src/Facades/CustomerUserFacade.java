@@ -282,7 +282,8 @@ public class CustomerUserFacade implements CouponClientFacade {
 	 * method.
 	 */
 	@Override
-	public void login(String name, String password, ClientType clientType) throws Exception {
+	public CouponClientFacade login(String name, String password, ClientType clientType) throws Exception {
+		return null;
 
 	}
 }

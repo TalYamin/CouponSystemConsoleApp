@@ -39,16 +39,16 @@ public class Coupon {
 	// couponMessage, price, image */
 	public Coupon(long couponId, String title, String endDate, int amount, CouponType type, String couponMessage,
 			double price, String image) {
-		this.couponId = couponId;
-		this.title = title;
-		this.startDate = LocalDate.now();
-		this.endDate = DateConverterUtil.convertStringDate(endDate);
-		this.amount = amount;
-		this.type = type;
-		this.couponMessage = couponMessage;
-		this.price = price;
-		this.image = image;
-		this.active = true;
+		setCouponId(couponId);
+		setTitle(title);
+		setStartDate(LocalDate.now());
+		setEndDate(DateConverterUtil.convertStringDate(endDate));
+		setAmount(amount);
+		setType(type);
+		setCouponMessage(couponMessage);
+		setPrice(price);
+		setImage(image);
+		setActive(true);
 	}
 
 	/* Getter method to receive the value of coupon id */
