@@ -24,10 +24,10 @@ public class Company {
 
 	//Full CTOR Company: sets the companyId, companyName, companyPassword, companyEmail */
 	public Company(long companyId, String companyName, String companyPassword, String companyEmail) {
-		this.companyId = companyId;
-		this.companyName = companyName;
-		this.companyPassword = companyPassword;
-		this.companyEmail = companyEmail;
+		setCompanyId(companyId);
+		setCompanyName(companyName);
+		setCompanyPassword(companyPassword);
+		setCompanyEmail(companyEmail);
 	}
 
 	

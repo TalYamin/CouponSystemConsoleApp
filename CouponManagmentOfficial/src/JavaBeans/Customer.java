@@ -27,9 +27,9 @@ public class Customer {
 
 	//Full CTOR Company: sets the customerId, customerName, customerPassword */
 	public Customer(long customerId, String customerName, String customerPassword) {
-		this.customerId = customerId;
-		this.customerName = customerName;
-		this.customerPassword = customerPassword;
+		setCustomerId(customerId);
+		setCustomerName(customerName);
+		setCustomerPassword(customerPassword);
 	}
 
 	

@@ -150,9 +150,11 @@ public class DataBase {
 
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
-
+		
 		String sql = "create table Customer_Coupon (" + "Customer_ID bigint, " + "Coupon_ID bigint, "
-				+ "primary key (Customer_ID, Coupon_ID))";
+				+ "primary key (Customer_ID, Coupon_ID), FOREIGN KEY (Customer_ID) REFERENCES Customer(ID), "
+				+ "FOREIGN KEY (Coupon_ID) REFERENCES Coupon(ID))";
+
 
 		try (Statement statement = connection.createStatement()) {
 
@@ -181,9 +183,11 @@ public class DataBase {
 
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
-
+		
 		String sql = "create table Company_Coupon (" + "Company_ID bigint, " + "Coupon_ID bigint, "
-				+ "primary key (Company_ID, Coupon_ID))";
+				+ "primary key (Company_ID, Coupon_ID), FOREIGN KEY (Company_ID) REFERENCES Company(ID), "
+				+ "FOREIGN KEY (Coupon_ID) REFERENCES Coupon(ID))";
+
 
 		try (Statement statement = connection.createStatement()) {
 
@@ -213,7 +217,8 @@ public class DataBase {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 		
-		String sql = "create table Expired_Coupon (" + "ID bigint not null primary key, " + "TITLE varchar(50) not null, "
+		String sql = "create table Expired_Coupon (" 
+				+ "ID_ExCoupon bigint not null primary key, " + "TITLE varchar(50) not null, "
 				+ "START_DATE date not null, " + "END_DATE date not null, " + "AMOUNT integer not null, "
 				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
 				+ "IMAGE varchar(200) not null," + "Active boolean not null)";
@@ -438,11 +443,11 @@ public class DataBase {
 	public static void DropDB() throws Exception {
 
 		try {
+			DataBase.dropCompany_CouponTable();
+			DataBase.dropCustomer_CouponTable();
 			DataBase.dropCompanyTable();
 			DataBase.dropCustomerTable();
 			DataBase.dropCouponTable();
-			DataBase.dropCompany_CouponTable();
-			DataBase.dropCustomer_CouponTable();
 			DataBase.dropExpiredCouponTable();
 		} catch (SQLException e) {
 			throw new Exception("unable to drop all tables of DB");

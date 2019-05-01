@@ -100,10 +100,10 @@ public class DailyCouponExpirationTask implements Runnable {
 				while (it.hasNext()) {
 					Coupon currentUpdated = it.next();
 					if (currentUpdated.isActive() == false) {
-						exp_couTaskDAO.insertCoupon(currentUpdated);
-						couTaskDAO.removeCoupon(currentUpdated);
 						com_couTaskDAO.removeCompany_Coupon(currentUpdated);
 						cus_couTaskDAO.removeCustomer_Coupon(currentUpdated);
+						couTaskDAO.removeCoupon(currentUpdated);
+						exp_couTaskDAO.insertCoupon(currentUpdated);
 					}
 
 				}
@@ -115,7 +115,6 @@ public class DailyCouponExpirationTask implements Runnable {
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.out.println("Daily Coupon Expiration Task failed running"); // there is no option to throw exception
 		}
 

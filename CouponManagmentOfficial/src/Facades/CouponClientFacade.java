@@ -6,7 +6,7 @@ import SystemUtils.ClientType;
 
 public interface CouponClientFacade {
 
-	void login(String name, String password, ClientType clientType) throws Exception;
+	CouponClientFacade login(String name, String password, ClientType clientType) throws Exception;
 	
 	
 }
