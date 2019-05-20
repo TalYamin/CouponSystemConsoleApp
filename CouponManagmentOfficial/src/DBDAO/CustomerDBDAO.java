@@ -162,9 +162,9 @@ public class CustomerDBDAO implements CustomerDAO {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 		Customer customer = new Customer();
-		try (Statement statement = connection.createStatement()) {
-			String sql = "SELECT * FROM Customer WHERE ID=" + customerId;
-			ResultSet resultSet = statement.executeQuery(sql);
+		String sql = "SELECT * FROM Customer WHERE ID=" + customerId;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			customer.setCustomerId(resultSet.getLong(1));
 			customer.setCustomerName(resultSet.getString(2));
@@ -199,8 +199,8 @@ public class CustomerDBDAO implements CustomerDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Customer> list = new ArrayList<>();
 		String sql = "select * from Customer";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				long customerId = resultSet.getLong(1);
 				String customerName = resultSet.getString(2);

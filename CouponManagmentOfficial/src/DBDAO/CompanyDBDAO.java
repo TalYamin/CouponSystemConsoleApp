@@ -167,9 +167,9 @@ public class CompanyDBDAO implements CompanyDAO {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 		Company company = new Company();
-		try (Statement statement = connection.createStatement()) {
-			String sql = "SELECT * FROM Company WHERE ID=" + companyId;
-			ResultSet resultSet = statement.executeQuery(sql);
+		String sql = "SELECT * FROM Company WHERE ID=" + companyId;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			company.setCompanyId(resultSet.getLong(1));
 			company.setCompanyName(resultSet.getString(2));
@@ -207,7 +207,7 @@ public class CompanyDBDAO implements CompanyDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Company> list = new ArrayList<>();
 		String sql = "select * from Company";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
 				long companyId = resultSet.getLong(1);

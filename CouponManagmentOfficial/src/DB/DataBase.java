@@ -55,9 +55,9 @@ public class DataBase {
 		String sql = "create table Company (" + "ID bigint not null primary key, " + "COMP_NAME varchar(50) not null, "
 				+ "PASSWORD varchar(50) not null, " + "EMAIL varchar(50) not null)";
 
-		try (Statement statement = connection.createStatement()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			statement.executeUpdate(sql);
+			preparedStatement.executeUpdate();
 
 			System.out.println("Company table has been created");
 
@@ -88,9 +88,9 @@ public class DataBase {
 		String sql = "create table Customer (" + "ID bigint not null primary key, " + "CUST_NAME varchar(50) not null, "
 				+ "PASSWORD varchar(50) not null)";
 
-		try (Statement statement = connection.createStatement()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			statement.executeUpdate(sql);
+			preparedStatement.executeUpdate();
 
 			System.out.println("Customer table has been created");
 
@@ -123,9 +123,9 @@ public class DataBase {
 				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
 				+ "IMAGE varchar(200) not null," + "Active boolean not null)";
 
-		try (Statement statement = connection.createStatement()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			statement.executeUpdate(sql);
+			preparedStatement.executeUpdate();
 
 			System.out.println("Coupon table has been created");
 
@@ -156,9 +156,9 @@ public class DataBase {
 				+ "FOREIGN KEY (Coupon_ID) REFERENCES Coupon(ID))";
 
 
-		try (Statement statement = connection.createStatement()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-			statement.executeUpdate(sql);
+			preparedStatement.executeUpdate();
 
 			System.out.println("Customer_Coupon table has been created");
 
@@ -189,9 +189,9 @@ public class DataBase {
 				+ "FOREIGN KEY (Coupon_ID) REFERENCES Coupon(ID))";
 
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Company_Coupon table has been created");
 
@@ -223,9 +223,9 @@ public class DataBase {
 				+ "TYPE varchar(50) not null, " + "MESSAGE varchar(50) not null, " + " PRICE float not null, "
 				+ "IMAGE varchar(200) not null," + "Active boolean not null)";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("ExpiredCoupon table has been created");
 
@@ -253,9 +253,9 @@ public class DataBase {
 
 		String sql = "drop table Company";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Company Table dropped successfully");
 
@@ -281,9 +281,9 @@ public class DataBase {
 
 		String sql = "drop table Customer";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Customer Table dropped successfully");
 
@@ -309,9 +309,9 @@ public class DataBase {
 
 		String sql = "drop table Coupon";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Coupon Table dropped successfully");
 
@@ -337,9 +337,9 @@ public class DataBase {
 
 		String sql = "drop table Customer_Coupon";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Customer_Coupon Table dropped successfully");
 
@@ -365,9 +365,9 @@ public class DataBase {
 
 		String sql = "drop table Company_Coupon";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("Company_Coupon Table dropped successfully");
 
@@ -394,9 +394,9 @@ public class DataBase {
 
 		String sql = "drop table Expired_Coupon";
 
-		try (Statement statement = connection.createStatement()) {
-
-			statement.executeUpdate(sql);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			
+			preparedStatement.executeUpdate();
 
 			System.out.println("ExpiredCoupon Table dropped successfully");
 
