@@ -38,9 +38,7 @@ public class Coupon {
 	// Full CTOR Coupon: sets the couponId, title, endDate, amount, type,
 	// couponMessage, price, image */
 	public Coupon(long couponId, String title, String endDate, int amount, CouponType type, String couponMessage,
-			double price, String image) throws Exception {
-	try {
-		
+			double price, String image) {
 		setCouponId(couponId);
 		setTitle(title);
 		setStartDate(LocalDate.now());
@@ -51,10 +49,6 @@ public class Coupon {
 		setPrice(price);
 		setImage(image);
 		setActive(true);
-		
-	}catch (Exception e) {
-		System.out.println(e.getMessage());
-	}
 	}
 
 	/* Getter method to receive the value of coupon id */
@@ -63,20 +57,8 @@ public class Coupon {
 	}
 
 	/* Setter method to set the value of coupon id */
-	public void setCouponId(long couponId) throws Exception {
-		
-		try {
-		
-		if (couponId > 0) {
-			this.couponId = couponId;
-		}else {
-			throw new Exception("Not vaild ID for Coupon");
-		}
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		
+	public void setCouponId(long couponId) {
+		this.couponId = couponId;
 	}
 
 	/* Getter method to receive the value of coupon title */
@@ -115,8 +97,8 @@ public class Coupon {
 	}
 
 	/* Setter method to set the value of coupon amount */
-	public void setAmount(int amount) throws Exception {
-			this.amount = amount;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 	/* Getter method to receive the value of coupon type */
@@ -145,17 +127,8 @@ public class Coupon {
 	}
 
 	/* Setter method to set the value of coupon price */
-	public void setPrice(double price) throws Exception {
-		try {
-		if (price > 0) {
-			this.price = price;
-		}else {
-			throw new Exception("Not vaild price for Coupon");
-		}
-		
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	/* Getter method to receive the value of coupon image */

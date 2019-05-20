@@ -26,15 +26,10 @@ public class Customer {
 	}
 
 	//Full CTOR Company: sets the customerId, customerName, customerPassword */
-	public Customer(long customerId, String customerName, String customerPassword) throws Exception {
-		try {
-		
+	public Customer(long customerId, String customerName, String customerPassword) {
 		setCustomerId(customerId);
 		setCustomerName(customerName);
 		setCustomerPassword(customerPassword);
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
 	}
 
 	
@@ -44,20 +39,8 @@ public class Customer {
 	}
 
 	/* Setter method to set the value of customer id */
-	public void setCustomerId(long customerId) throws Exception {
-		
-		try {
-		
-		if (customerId > 0) {
-			this.customerId = customerId;
-		}else {
-			throw new Exception("Not vaild ID for Customer");
-		}
-		
-		}catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
+	public void setCustomerId(long customerId) {
+		this.customerId = customerId;
 	}
 
 	/* Getter method to receive the value of customer name */
