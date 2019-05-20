@@ -222,9 +222,9 @@ public class CouponDBDAO implements CouponDAO {
 		connectionPool = ConnectionPool.getInstance();
 		Connection connection = connectionPool.getConnection();
 		Coupon coupon = new Coupon();
-		try (Statement statement = connection.createStatement()) {
-			String sql = "SELECT * FROM Coupon WHERE ID=" + couponId;
-			ResultSet resultSet = statement.executeQuery(sql);
+		String sql = "SELECT * FROM Coupon WHERE ID=" + couponId;
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			ResultSet resultSet = preparedStatement.executeQuery();
 			resultSet.next();
 			coupon.setCouponId(resultSet.getLong(1));
 			coupon.setTitle(resultSet.getString(2));
@@ -286,7 +286,7 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
 				Coupon coupon = new Coupon();
@@ -354,8 +354,8 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon where ID = " + couponId;
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
@@ -423,8 +423,8 @@ public class CouponDBDAO implements CouponDAO {
 		List<Coupon> list = new ArrayList<>();
 		String sql = String.format("select * from Coupon where ID = %d and TYPE = '%s'", couponId, typeName);
 
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
@@ -491,8 +491,8 @@ public class CouponDBDAO implements CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Coupon> list = new ArrayList<>();
 		String sql = "select * from Coupon where ID = " + couponId + " and PRICE <= " + priceTop;
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));
@@ -560,8 +560,8 @@ public class CouponDBDAO implements CouponDAO {
 		List<Coupon> list = new ArrayList<>();
 		LocalDate untilLocalDate = LocalDate.parse(untilDate, formatter);
 		String sql = "select * from Coupon where ID = " + couponId + " and END_DATE <= '" + untilLocalDate.toString()+"'";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				Coupon coupon = new Coupon();
 				coupon.setCouponId(resultSet.getLong(1));

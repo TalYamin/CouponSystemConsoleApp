@@ -210,8 +210,8 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Long> customersId = new ArrayList<>();
 		String sql = "select * from Customer_Coupon where Coupon_ID = " + couponId;
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				long customerId = resultSet.getLong(1);
 				customersId.add(customerId);
@@ -246,7 +246,7 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Long> customersId = new ArrayList<>();
 		String sql = "select * from Customer_Coupon";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
 			while (resultSet.next()) {
 				long customerId = resultSet.getLong(1);
 				customersId.add(customerId);
@@ -282,8 +282,8 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Long> couponsId = new ArrayList<>();
 		String sql = "select * from Customer_Coupon where Customer_ID = " + customerId;
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+			
 			while (resultSet.next()) {
 				long couponId = resultSet.getLong(2);
 				couponsId.add(couponId);
@@ -318,8 +318,8 @@ public class Customer_CouponDBDAO implements Customer_CouponDAO {
 		Connection connection = connectionPool.getConnection();
 		List<Long> couponsId = new ArrayList<>();
 		String sql = "select * from Customer_Coupon";
-		try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(sql)) {
-			while (resultSet.next()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql); ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
 				long couponId = resultSet.getLong(2);
 				couponsId.add(couponId);
 
