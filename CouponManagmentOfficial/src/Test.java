@@ -350,8 +350,9 @@ public class Test {
 //			companyUserFacade2.insertCoupon(coupon2);
 //			companyUserFacade2.insertCoupon(coupon3);
 //			companyUserFacade2.insertCoupon(coupon4);
+//			adminUserFacade.removeCompany(5791);
 
-
+//			adminUserFacade.insertCompany(new Company(5791, "Discount", "Discount5791", "israel@discount.com"));
 //			DataBase.createExpiredCouponTable();
 //			DataBase.dropExpiredCouponTable();
 		} catch (Exception e) {

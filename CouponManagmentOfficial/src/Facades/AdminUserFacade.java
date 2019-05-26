@@ -140,7 +140,6 @@ public class AdminUserFacade implements CouponClientFacade {
 				 */
 				List<Coupon> couponsToRemove = coupAdminDAO.getAllCoupons(cId);
 				for (Coupon c : couponsToRemove) {
-					coupAdminDAO.removeCoupon(c);
 					List<Long> customersId = cus_couAdminDAO.getAllCustomersId();
 					List<Long> companiesId = com_couAdminDAO.getAllCompaniesId();
 					if (!customersId.isEmpty()) {
@@ -150,6 +149,7 @@ public class AdminUserFacade implements CouponClientFacade {
 						com_couAdminDAO.removeCompany_Coupon(c);
 
 					}
+					coupAdminDAO.removeCoupon(c);
 				}
 
 			}
@@ -158,7 +158,8 @@ public class AdminUserFacade implements CouponClientFacade {
 		} catch (ObjectNotFoundException e) {
 			System.out.println(e.getMessage());
 		} catch (Exception e) {
-			throw new Exception("Admin failed to remove company. companyId: " + companyId);
+//			throw new Exception("Admin failed to remove company. companyId: " + companyId);
+			e.printStackTrace();
 		}
 
 	}
