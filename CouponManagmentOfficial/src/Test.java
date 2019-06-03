@@ -56,7 +56,7 @@ public class Test {
 			
 //			Coupon coupon = new Coupon(123, "BBB", "31/12/2019", 10, CouponType.RESTURANTS, "BBB for couple", 70.4, "bbb image");
 //			Coupon coupon2 = new Coupon(456, "Gilboa", "1/6/2019", 5, CouponType.TRAVELING, "trip to giboa", 500, "giboa image");
-//			Coupon coupon3 = new Coupon(789, "ski", "1/3/2019", 4, CouponType.SPORTS, "ski weekend", 1500, "ski image");
+//			Coupon coupon3 = new Coupon(30, "ski", "31/12/2019", 4, CouponType.SPORTS, "ski weekend", 1500, "ski image");
 //			Coupon coupon4 = new Coupon(717, "Domino Pizza", "31/12/2019", 20, CouponType.RESTURANTS, "family pizza", 50, "domino image");
 //			Coupon coupon5 = new Coupon(111, "spa", "1/1/2019", 15, CouponType.HEALTH, "spa for couple", 100.5, "spa image");
 //			
@@ -338,15 +338,15 @@ public class Test {
 //			DataBase.createCouponTable();
 			
 			
-//			CouponSystem couponSystem = CouponSystem.getInstance();
+			CouponSystem couponSystem = CouponSystem.getInstance();
 //			AdminUserFacade adminUserFacade = (AdminUserFacade) couponSystem.login("admin", "1234", ClientType.ADMIN);
 //			adminUserFacade.insertCompany(new Company(123, "Dell", "Dell123", "check"));
 //			Coupon coupon = new Coupon(123, "test", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
 //			Coupon coupon2 = new Coupon(124, "test2", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
 //			Coupon coupon3 = new Coupon(125, "test3", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
 //			Coupon coupon4 = new Coupon(126, "test4", "31/12/2018", 10, CouponType.HEALTH, "test", 100, "test");
-//			CompanyUserFacade companyUserFacade2 = (CompanyUserFacade)couponSystem.login("Dell", "Dell123", ClientType.COMPANY);
-//			companyUserFacade2.insertCoupon(coupon);
+//			CompanyUserFacade companyUserFacade2 = (CompanyUserFacade)couponSystem.login("Dell", "Dell9876", ClientType.COMPANY);
+//			companyUserFacade2.insertCoupon(coupon3);
 //			companyUserFacade2.insertCoupon(coupon2);
 //			companyUserFacade2.insertCoupon(coupon3);
 //			companyUserFacade2.insertCoupon(coupon4);

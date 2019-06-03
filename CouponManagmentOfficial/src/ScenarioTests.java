@@ -202,12 +202,12 @@ public class ScenarioTests {
 			companyUser.insertCoupon(new Coupon(11, "Ski", "31/12/2019", 1, CouponType.SPORTS,
 					"Ski vacation, 5 stars hotel", 500.5,
 					"https://www.snowmagazine.com/media/reviews/photos/original/59/e6/5f/Alpe-dhuez-istock-1-40-1450092356.jpg"));
-			companyUser.insertCoupon(new Coupon(12, "BBB", "31/5/2019", 5, CouponType.RESTURANTS, "dinner for couple",
+			companyUser.insertCoupon(new Coupon(12, "BBB", "31/5/2019", 5, CouponType.RESTAURANTS, "dinner for couple",
 					70.3, "https://images1.calcalist.co.il/PicServer2/20122005/522772/YE1218528_l.jpg"));
 			companyUser.insertCoupon(
 					new Coupon(13, "Spa", "31/7/2019", 15, CouponType.HEALTH, "free entrance for spa facilities", 249.9,
 							"https://img.grouponcdn.com/iam/NG2PuHCH332Ax1sL19w4GDDyvyE/NG-1500x900/v1/c700x420.jpg"));
-			companyUser.insertCoupon(new Coupon(14, "Goons Pizza", "31/12/2019", 5, CouponType.RESTURANTS,
+			companyUser.insertCoupon(new Coupon(14, "Goons Pizza", "31/12/2019", 5, CouponType.RESTAURANTS,
 					"family pizza", 60.7,
 					"https://lh3.googleusercontent.com/p/AF1QipMHRbrkD5FglAreY6ZtKzZYBeee-t4OsmupQNKn=s1600-w1280-h1280"));
 
@@ -220,8 +220,8 @@ public class ScenarioTests {
 			// (6) print all coupons by type
 			System.out.println("*************************************");
 			System.out.println("(6) Print all coupons by type test: ");
-			System.out.println("List of coupons by type RESTURANTS: ");
-			companyUser.getAllCouponsByType("Resturants");
+			System.out.println("List of coupons by type RESTAURANTS: ");
+			companyUser.getAllCouponsByType("Restaurants");
 
 			// (7) print all coupons by price limit
 			System.out.println("*************************************");
@@ -253,14 +253,14 @@ public class ScenarioTests {
 			System.out.println("*************************************");
 			System.out.println("(11) try to add coupon with same title: ");
 			companyUser
-					.insertCoupon(new Coupon(15, "BBB", "31/12/2019", 5, CouponType.RESTURANTS, "breakfast for couple",
+					.insertCoupon(new Coupon(15, "BBB", "31/12/2019", 5, CouponType.RESTAURANTS, "breakfast for couple",
 							50.5, "https://media-cdn.tripadvisor.com/media/photo-s/07/14/8a/20/enjoy.jpg"));
 
 			// (12) try to add coupon with date that already passed
 			System.out.println("*************************************");
 			System.out.println("(12) Try to add coupon with date that already passed: ");
 			companyUser.insertCoupon(
-					new Coupon(16, "Cafe Cafe", "1/1/2012", 5, CouponType.RESTURANTS, "breakfast for couple", 50.5,
+					new Coupon(16, "Cafe Cafe", "1/1/2012", 5, CouponType.RESTAURANTS, "breakfast for couple", 50.5,
 							"https://media-cdn.tripadvisor.com/media/photo-s/07/14/8a/20/enjoy.jpg"));
 
 			// (13) try to remove coupon of another company
@@ -368,8 +368,8 @@ public class ScenarioTests {
 
 			// (9) print all coupons that belong to customer by type
 			System.out.println("*************************************");
-			System.out.println("(9) Print all coupons that belong to customer by type RESTURANTS: ");
-			customerUser.getAllCouponsByType("Resturants");
+			System.out.println("(9) Print all coupons that belong to customer by type RESTAURANTS: ");
+			customerUser.getAllCouponsByType("Restaurants");
 
 			// (10) print all coupons that belong to customer by price limit
 			System.out.println("*************************************");
@@ -405,9 +405,9 @@ public class ScenarioTests {
 			admin.insertCompany(new Company(777, "Cellcom", "cellcom777", "israel@cellcom.com"));
 			companyUser3 = (CompanyUserFacade) couponSystem.login("Cellcom", "cellcom777", ClientType.COMPANY);
 			companyUser3.insertCoupon(
-					new Coupon(21, "Falafel Moosa", "1/1/2019", 5, CouponType.RESTURANTS, "falafel for couple", 50,
+					new Coupon(21, "Falafel Moosa", "1/1/2019", 5, CouponType.RESTAURANTS, "falafel for couple", 50,
 							"http://www.10bis.co.il/ImageViewer.aspx?imgName=4195&imgDir=ResProfile"));
-			companyUser3.insertCoupon(new Coupon(22, "Sushi", "1/2/2019", 10, CouponType.RESTURANTS, "Sushi meal", 25,
+			companyUser3.insertCoupon(new Coupon(22, "Sushi", "1/2/2019", 10, CouponType.RESTAURANTS, "Sushi meal", 25,
 					"http://images.saloona.co.il/tadmit11/files/2017/07/76bkg4n0im664qrktf82.jpg"));
 			companyUser3.insertCoupon(new Coupon(23, "Metzada", "1/1/2019", 2, CouponType.TRAVELING, "Metzada Trip",
 					500,
