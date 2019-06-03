@@ -14,11 +14,11 @@ package JavaBeans;
 
 public enum CouponType {
 
-	RESTURANTS
+	RESTAURANTS
 	{
 		@Override
 	    public String toString() {
-	      return "Resturants";
+	      return "Restaurants";
 		}
 	},	
 	
