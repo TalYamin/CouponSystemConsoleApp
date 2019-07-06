@@ -319,7 +319,7 @@ public class ScenarioTests {
 		System.out.println("(1) Checking bad login as Company: ");
 
 		try {
-			customerUser = (CustomerUserFacade) couponSystem.login("Kobi Shasha", "KobiKobi", ClientType.CUSTOMER);
+			customerUser = (CustomerUserFacade) couponSystem.login("Tal Yamin", "KobiKobi", ClientType.CUSTOMER);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -329,7 +329,7 @@ public class ScenarioTests {
 		System.out.println("(2) Checking valid login as customer: ");
 
 		try {
-			customerUser = (CustomerUserFacade) couponSystem.login("Kobi Shasha", "Kobi963", ClientType.CUSTOMER);
+			customerUser = (CustomerUserFacade) couponSystem.login("Tal Yamin", "313Tal313", ClientType.CUSTOMER);
 
 			// (3) print customer
 			System.out.println("*************************************");
