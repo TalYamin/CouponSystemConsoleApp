@@ -1,4 +1,4 @@
-# CouponSystemOfficial
+# CouponSystemConsoleApp
 
 System description:
 
